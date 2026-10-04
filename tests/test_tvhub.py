@@ -762,6 +762,90 @@ class TestLiveConfig(unittest.TestCase):
         self.assertEqual(st["noname"], 1)
 
 
+class TestUrlScrubbing(unittest.TestCase):
+    """回归测试：配置里不得存在客户端无法解析的 URL。
+
+    真实事故（老板实测「全部无法解析 + 加载很慢」）：
+      wallpaper = https://深色壁纸.xxooo.cf/   ← 中文域名
+    Android 的 OkHttp 用 java.net.URI 解析 URL，非 ASCII 直接抛异常，
+    客户端随即反复重试 → 表现为「一直转圈 / 加载很慢」。
+    Python urlopen 走同一套 latin-1 规则，可精确复现该判定。
+
+    实测脏数据规模：ysc_single_agg 16 处、tv.json 113 处。
+    """
+
+    def test_is_valid_remote_url(self):
+        self.assertFalse(C.url_encodable("https://深色壁纸.xxooo.cf/"))
+        self.assertTrue(C.url_encodable("https://xn--dkw0c.v.nxog.top/tv"))
+        self.assertFalse(C.is_valid_remote_url("./lives/a.txt"))
+        self.assertFalse(C.is_valid_remote_url("http://127.0.0.1:9978/a.txt"))
+        self.assertFalse(C.is_valid_remote_url("http://localhost/a"))
+        self.assertTrue(C.is_valid_remote_url("https://a.com/x.json"))
+
+    def test_scrub_urls_removes_bad(self):
+        src = {"wallpaper": "https://深色壁纸.xxooo.cf/",
+               "logo": "http://ok.com/a.gif",
+               "sites": [{"key": "k", "type": 1, "api": "http://iyiwang.com/花姐"},
+                         {"key": "k2", "type": 1, "api": "https://ok.com/api"},
+                         {"key": "k3", "type": 3, "api": "csp_X",
+                          "jar": "https://jar.com/中文名.jar"}],
+               "lives": [{"name": "L", "url": "http://127.0.0.1/a"},
+                         {"name": "L2", "url": "https://ok.com/live"}]}
+        out = C.scrub_urls(src)
+        # 非 ASCII 的标量 URL 字段直接丢弃
+        self.assertNotIn("wallpaper", out)
+        self.assertIn("logo", out)
+        # type=1 且 api 非 ASCII → 整条丢弃；api 合法的 k2 保留
+        self.assertEqual([s["key"] for s in out["sites"]], ["k2", "k3"])
+        self.assertNotIn("jar", out["sites"][1])      # 中文 jar 被剔除
+        # localhost 直播丢弃
+        self.assertEqual([l["name"] for l in out["lives"]], ["L2"])
+
+    def test_no_unencodable_url_in_any_artifact(self):
+        """所有产物中不得存在无法编码的 URL。"""
+        bad: list[str] = []
+        pub = os.path.join(ROOT, "public")
+        if not os.path.isdir(pub):
+            self.skipTest("尚未构建")
+
+        def walk(obj, path, f):
+            if isinstance(obj, dict):
+                for k, v in obj.items():
+                    walk(v, f"{path}.{k}", f)
+            elif isinstance(obj, list):
+                for i, v in enumerate(obj):
+                    walk(v, f"{path}[{i}]", f)
+            elif isinstance(obj, str) and obj.startswith(("http://", "https://")):
+                if not C.url_encodable(obj):
+                    bad.append(f"{f}{path} = {obj[:60]}")
+
+        for dirpath, _, files in os.walk(pub):
+            for fn in files:
+                if not fn.endswith((".json", ".txt", ".webp")):
+                    continue
+                p = os.path.join(dirpath, fn)
+                try:
+                    with open(p, encoding="utf-8-sig") as f:
+                        walk(json.load(f), "", os.path.relpath(p, ROOT) + " ")
+                except Exception:  # noqa: BLE001
+                    continue
+        self.assertEqual(bad, [], "以下产物含客户端无法解析的 URL：\n" + "\n".join(bad[:20]))
+
+    def test_keep_alive_lives_drops_empties(self):
+        import merge as M
+        lives = [
+            {"name": "有引用", "url": "https://a.com/l"},
+            {"name": "全非法", "channels": [{"name": "C", "urls": ["./x.txt"]}]},
+            {"name": "部分", "channels": [{"name": "C1", "urls": ["./x.txt"]},
+                                          {"name": "C2", "urls": ["https://a.com/1"]}]},
+            {"name": "无内容"},
+        ]
+        out = M.keep_alive_lives(lives)
+        names = [x["name"] for x in out]
+        self.assertEqual(names, ["有引用", "部分"])
+        self.assertEqual([c["name"] for c in out[1]["channels"]], ["C2"])
+
+
 class TestRealArtifacts(unittest.TestCase):
     """针对真实产物与真实上游结果的断言。"""
 

@@ -204,6 +204,77 @@ def norm_group(raw: str) -> str:
     return g
 
 
+def url_encodable(u: str) -> bool:
+    """URL 是否能通过 latin-1 编码（Android java.net.URI / OkHttp 的前置要求）。
+
+    实测（讴歌 6.0.9.3）：配置里只要有一个非 ASCII 域名（如中文域名），
+    客户端解析 URL 时就会抛异常，导致整份配置加载失败或无限重试。
+    Python 的 urlopen 用同一套 latin-1 规则，可准确复现。
+    """
+    if not isinstance(u, str) or not u:
+        return False
+    try:
+        u.encode("latin-1")
+        return True
+    except UnicodeEncodeError:
+        return False
+
+
+def is_valid_remote_url(u: str) -> bool:
+    """能否被客户端使用：http(s) + 非本地地址 + 可编码。"""
+    if not url_encodable(u):
+        return False
+    if not u.startswith(("http://", "https://")):
+        return False
+    if u.startswith(("http://127.0.0.1", "http://localhost", "http://0.0.0.0")):
+        return False
+    return True
+
+
+def scrub_urls(obj: Any, drop_keys: bool = True) -> Any:
+    """递归剔除所有「客户端无法解析」的 URL 字符串。
+
+    覆盖范围不止 api/ext/jar：实测上游还存在 key/homePage 等字段带中文域名
+    （如 `http://iyiwang.com/花姐`、`.../厂长.html`），以及 query 里含中文
+    （`?ou=33c` 实际是「没了」）。这些字段虽然客户端通常不请求，
+    但保守起见一律清除，确保配置里不存在任何非 ASCII URL。
+    """
+    if isinstance(obj, dict):
+        out = {}
+        for k, v in obj.items():
+            if isinstance(v, str) and v.startswith(("http://", "https://"))                     and not is_valid_remote_url(v):
+                if drop_keys:
+                    continue          # 整个字段丢掉
+                out[k] = ""
+                continue
+            out[k] = scrub_urls(v, drop_keys)
+        return out
+    if isinstance(obj, list):
+        res = []
+        for v in obj:
+            if isinstance(v, str):
+                if v.startswith(("http://", "https://")) and not is_valid_remote_url(v):
+                    continue
+                res.append(v)
+                continue
+            if isinstance(v, dict):
+                cleaned = scrub_urls(v, drop_keys)
+                # 清洗后变空壳的 dict 元素必须丢弃：
+                #   - 全空
+                #   - type=1 却没 api（api 被剔除）
+                # 否则客户端 initSite 会遇到无法使用的站点而判定配置异常。
+                if isinstance(cleaned, dict):
+                    if not cleaned:
+                        continue
+                    if cleaned.get("type", 0) == 1 and not cleaned.get("api"):
+                        continue
+                res.append(cleaned)
+                continue
+            res.append(scrub_urls(v, drop_keys))
+        return res
+    return obj
+
+
 def detect_shape(data: Any) -> str:
     if isinstance(data, list):
         return "list"

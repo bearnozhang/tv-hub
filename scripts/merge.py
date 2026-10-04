@@ -134,6 +134,26 @@ def normalize_site(s: dict) -> dict:
         out["type"] = int(t)
     elif not isinstance(t, int):
         out["type"] = 0
+    # ★ 剔除客户端无法解析的 URL（非 ASCII 域名 / 相对路径 / localhost）。
+    #   实测：ysc_single_agg 里有 16 处这类 URL（中文域名如「央视大全.json」、
+    #   「欧歌」），Android 的 URI 解析会抛异常，导致整份配置加载失败或无限重试。
+    for f in ("api", "jar", "ext"):
+        v = out.get(f)
+        if isinstance(v, str) and v and not C.is_valid_remote_url(v):
+            out.pop(f, None)
+    # ext 可能是 dict（{分组名: url}），也要逐个清洗
+    if isinstance(out.get("ext"), dict):
+        conv = {k: v for k, v in out["ext"].items()
+                if isinstance(v, str) and C.is_valid_remote_url(v)}
+        out["ext"] = conv if conv else ""
+        if not conv:
+            out.pop("ext", None)
+    # 仍有合法 url 数组的情况（如 api: [a, b]）
+    if isinstance(out.get("api"), list):
+        out["api"] = [x for x in out["api"]
+                      if isinstance(x, str) and C.is_valid_remote_url(x)]
+        if not out["api"]:
+            out["api"] = ""
     # api 为空串时视为缺失，避免下游误判为有效接口
     if out.get("api") == "":
         out.pop("api")
@@ -195,6 +215,38 @@ def merge_flags(items: list[tuple[str, object]], dd: Deduper, stats: dict) -> li
             continue
         if dd.accept([f"flags:{f.strip().lower()}"], src_id):
             out.append(f)
+    return out
+
+
+def keep_alive_lives(lives: list) -> list[dict]:
+    """剔除空壳直播条目：先清洗URL，再要求引用型有 url、分组型有至少一个有效频道。
+    清洗后变空的频道也必须剔除，否则客户端判定配置损坏。"""
+    out: list[dict] = []
+    for lv in C.scrub_urls(lives):
+        if not isinstance(lv, dict):
+            continue
+        if lv.get("url"):
+            out.append(lv)
+            continue
+        chans = lv.get("channels")
+        if not isinstance(chans, list):
+            continue
+        cleaned = []
+        for c in chans:
+            if not isinstance(c, dict) or not c.get("name"):
+                continue
+            urls = c.get("urls")
+            if isinstance(urls, list):
+                urls = [u for u in urls
+                        if isinstance(u, str) and C.is_valid_remote_url(u)]
+                if not urls:
+                    continue
+                c = {**c, "urls": urls}
+            elif not (c.get("url") or c.get("urls")):
+                continue
+            cleaned.append(c)
+        if cleaned:
+            out.append({**lv, "channels": cleaned})
     return out
 
 
@@ -264,6 +316,19 @@ def clean_live_entries(lives: list[dict]) -> tuple[list[dict], dict]:
         seen.add(name)
         y = dict(x)
         y["name"] = name
+        if isinstance(y.get("channels"), list):
+            chans = []
+            for c in y["channels"]:
+                if not isinstance(c, dict):
+                    continue
+                urls = [u for u in (c.get("urls") or [])
+                        if isinstance(u, str) and C.is_valid_remote_url(u)]
+                if not urls:
+                    continue          # 无可用 url 的频道直接丢弃
+                chans.append({**c, "urls": urls})
+            if not chans:
+                continue
+            y["channels"] = chans
         out.append(y)
     return out, stats
 
@@ -281,7 +346,7 @@ def write_live_tiers(live_out: list[dict], ref_lives: list[dict], spider: str,
     因此直播同样按体积分档，urls[0] 给最小最稳的一档。
     """
     written: list[dict] = []
-    grp = [x for x in live_out if x.get("channels")]
+    grp = [x for x in keep_alive_lives(live_out) if x.get("channels")]
 
     def ch_count(items: list[dict]) -> int:
         return sum(len(x.get("channels") or []) for x in items)
@@ -311,7 +376,7 @@ def write_live_tiers(live_out: list[dict], ref_lives: list[dict], spider: str,
                 continue
             chs = []
             for c in g["channels"]:
-                urls = c.get("urls") or []
+                urls = [u for u in (c.get("urls") or []) if C.is_valid_remote_url(u)]
                 if len(urls) > cap:
                     c = {**c, "urls": urls[:cap]}
                 chs.append(c)
@@ -476,7 +541,7 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
         if flags:
             obj["flags"] = flags
         obj["lives"] = []
-        C.write_json(os.path.join(C.PUBLIC_DIR, name), ordered(obj))
+        C.write_json(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(ordered(obj)))
         written.append(name)
     return written
 
@@ -518,6 +583,9 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
         for k in ("spider", "wallpaper", "logo", "warningText", "proxy", "doh",
                   "hosts", "rules", "version", "ad", "tihuan"):
             if k in data and data[k] not in (None, "", [], {}):
+                # 标量 URL 同样要能通过客户端的 URI 解析
+                if isinstance(data[k], str) and data[k].startswith(("http://", "https://"))                         and not C.is_valid_remote_url(data[k]):
+                    continue
                 out[k] = data[k]
 
         # 注意：这里必须用**独立的 Deduper**。
@@ -531,18 +599,28 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
         if rescued:
             out["sites"] = out["sites"] + merge_sites(
                 [(f"r:{r['key']}", r) for r in rescued], Deduper(), stats)
-        out["lives"] = merge_named(good_lives, "lives", Deduper(), stats)
+        merged_lives = merge_named(good_lives, "lives", Deduper(), stats)
+        out["lives"], _ = clean_live_entries(merged_lives)
 
         out["parses"] = merge_named([(sid, x) for x in (data.get("parses") or [])],
                                     "parses", Deduper(), stats)
         out["flags"] = merge_flags([(sid, x) for x in (data.get("flags") or [])], Deduper(), stats)
+
+        # 清洗后剔除空壳：type=1 却没 api / lives 无有效频道
+        out["sites"] = [x for x in out["sites"]
+                        if isinstance(x, dict) and (x.get("key") or x.get("name"))
+                        and (x.get("type", 0) != 1 or x.get("api"))]
+        if isinstance(out.get("lives"), list):
+            out["lives"] = keep_alive_lives(out["lives"])
+        out["parses"] = [x for x in out.get("parses") or []
+                         if isinstance(x, dict) and x.get("name")]
 
         # 直播引用壳（sites=0）落盘后是「空配置」，客户端会直接报解析失败，
         # 不产出。它们的价值已被 merge 主流程吸收（live_groups）。
         if not out["sites"]:
             continue
 
-        C.write_json(os.path.join(out_dir, f"{sid}.json"), out)
+        C.write_json(os.path.join(out_dir, f"{sid}.json"), C.scrub_urls(out))
         written.append(sid)
     return written
 
@@ -663,12 +741,33 @@ def merge(build: bool = False) -> dict:
             entry["logo"] = node["logo"]
         live_out.append(entry)
 
+    # ★ 落盘前统一递归清洗：剔除一切客户端无法解析的 URL
+    #   （非 ASCII 域名、相对路径、localhost）。
+    #   实测数据点：ysc_single_agg 有 16 处、tv.json 有 113 处。
+    scalars = C.scrub_urls(scalars)
+    spider = spider if C.is_valid_remote_url(spider) else ""
+
+    # ★ 落盘前统一递归清洗，随后剔除因清洗而变空的壳
+    #   （否则会出现「type=1 却没api」「lives 既无 channels 也无 url」的空壳，
+    #    源码里 initSite/initLive 对这些会直接抛异常或判定加载失败）
+    tv_sites = [x for x in C.scrub_urls(sites)
+                if isinstance(x, dict) and (x.get("key") or x.get("name"))]
+    tv_sites = [x for x in tv_sites
+                if x.get("type", 0) != 1 or x.get("api")]
+
+    tv_lives = keep_alive_lives(lives + live_out)
+    tv_parses = [x for x in C.scrub_urls(parses)
+                 if isinstance(x, dict) and x.get("name")]
+
+    stats["scrubbed_empty_sites"] = len(sites) - len(tv_sites)
+    stats["scrubbed_empty_lives"] = len(lives) + len(live_out) - len(tv_lives)
+
     raw_site_count = len(sites_items) + len(rescued)
     tv: dict = {"spider": spider}
     tv.update(scalars)
-    tv["sites"] = sites
-    tv["lives"] = lives + live_out
-    tv["parses"] = parses
+    tv["sites"] = tv_sites
+    tv["lives"] = tv_lives
+    tv["parses"] = tv_parses
     tv["flags"] = flags
 
     stats.update({
@@ -710,7 +809,7 @@ def merge(build: bool = False) -> dict:
         "live": C.write_json(os.path.join(C.PUBLIC_DIR, "live.json"), {
             "updated_at": C.bjnow(), "generated_at": C.iso(),
             "groups": len(clean_groups), "channels": ch_total,
-            "lives": clean_groups + clean_refs,
+            "lives": C.scrub_urls(keep_alive_lives(clean_groups + clean_refs)),
         }),
         "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
     }
