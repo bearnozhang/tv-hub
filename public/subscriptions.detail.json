@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-10-04 19:50:27",
+  "updated_at": "2026-10-04 23:22:27",
   "count": 6,
   "base_url": "https://tv.bearno1.dpdns.org",
   "profiles": [
     {
-      "name": "★ tv-lite（300 站 · 兼容版）",
+      "name": "★ tv-lite（60 站 · 兼容版）",
       "url": "https://tv.bearno1.dpdns.org/tv-lite.json",
       "note": "体积最小，启动首选；老客户端兼容最好",
       "kind": "aggregate-lite"
     },
     {
-      "name": "★ tv-standard（1000 站 · 兼容版）",
+      "name": "★ tv-standard（300 站 · 兼容版）",
       "url": "https://tv.bearno1.dpdns.org/tv-standard.json",
       "note": "站点更多，兼容中等体积客户端",
       "kind": "aggregate-lite"
@@ -22,19 +22,19 @@
       "kind": "aggregate"
     },
     {
-      "name": "影视仓·单仓聚合 · 167 站",
+      "name": "影视仓·单仓聚合 · 15 站",
       "url": "https://tv.bearno1.dpdns.org/profiles/ysc_single_agg.json",
       "note": "实测 2026-10-04：dict 结构，含 sites(167)/lives(7)/parses(33)/flags(61)/rules(33)。默认分支 ",
       "kind": "single"
     },
     {
-      "name": "hebijunge·TVBox 全量 · 4285 站",
+      "name": "hebijunge·TVBox 全量 · 1013 站",
       "url": "https://tv.bearno1.dpdns.org/profiles/hebi_tvbox.json",
       "note": "实测 2026-10-04：dict，含 sites(4331)/lives(586)/parses(194)/spider，约 1.6MB。仓库 has_pa",
       "kind": "single"
     },
     {
-      "name": "hebijunge·纯点播 · 4277 站",
+      "name": "hebijunge·纯点播 · 1011 站",
       "url": "https://tv.bearno1.dpdns.org/profiles/hebi_vod.json",
       "note": "与 hebi_tvbox 同源同结构（无 lives），保留作为补链备用；去重后增量有限。",
       "kind": "single"
@@ -45,25 +45,25 @@
       "name": "live-mini.txt",
       "groups": 2,
       "channels": 153,
-      "bytes": 43882
+      "bytes": 43776
     },
     {
       "name": "live-lite.txt",
       "groups": 7,
       "channels": 461,
-      "bytes": 146520
+      "bytes": 146414
     },
     {
       "name": "live-standard.txt",
       "groups": 22,
       "channels": 758,
-      "bytes": 224144
+      "bytes": 224038
     },
     {
       "name": "live-full.txt",
       "groups": 34,
       "channels": 900,
-      "bytes": 257629
+      "bytes": 257523
     }
   ]
 }

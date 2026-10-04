@@ -658,8 +658,12 @@ class TestBomConsistency(unittest.TestCase):
                 continue
             r = V.validate_tv_output(d)
             self.assertTrue(r["ok"], f"{fn} 不可用: {r['errors'][:3]}")
-            self.assertGreater(len(d.get("sites") or []), 100,
-                               f"{fn} 站点数异常偏少，疑似被跨源 Deduper 误去重")
+            # 站点数下限。ysc_single_agg 上游有 150+ 个 type=3 但缺 api 的残缺站点，
+        # 按 TVBox 契约（type 1/3 必须有 api）必须剔除，否则内核抛异常 →
+            # 整份配置「解析配置失败」。数量下降是修复的预期结果，不是回归。
+            self.assertGreater(len(d.get("sites") or []), 10,
+                               f"{fn} 站点数为 0，疑似被跨源 Deduper 误去重")
+            # 契约本身由 validate_tv_output 断言（每条 type 1/3 都必须有 api）
         if n == 0:
             self.skipTest("profiles/ 为空")
 
@@ -746,19 +750,24 @@ class TestLiveConfig(unittest.TestCase):
 
     def test_clean_live_entries_filters_bad(self):
         import merge as M
+        # 分组名必须落在 merge.TV_GROUPS 白名单（央视/卫视/港台/地方-*）内，
+        # 否则会被 keep_group_name 提前剔除，测不到后面三类过滤。
         bad = [
-            {"name": "相对", "url": "./lives/a.txt"},
-            {"name": "本地", "url": "http://127.0.0.1:9978/a.txt"},
+            {"name": "地方-相对", "url": "./lives/a.txt"},
+            {"name": "地方-本地", "url": "http://127.0.0.1:9978/a.txt"},
             {"name": "", "url": "http://x/a.txt"},
-            {"name": "OK", "url": "http://x/a.txt"},
-            {"name": "组", "channels": [{"name": "C1", "urls": ["http://x/1"]}]},
+            {"name": "央视", "url": "http://x/a.txt"},
+            {"name": "卫视", "channels": [{"name": "C1", "urls": ["http://x/1"]}]},
+            {"name": "轮播", "url": "http://x/a.txt"},
         ]
         out, st = M.clean_live_entries(bad)
         names = [x["name"] for x in out]
-        self.assertEqual(names, ["OK", "组"], f"清洗结果不符：{names}")
+        self.assertEqual(names, ["央视", "卫视"], f"清洗结果不符：{names}")
         self.assertEqual(st["relative"], 1)
         self.assertEqual(st["localhost"], 1)
         self.assertEqual(st["noname"], 1)
+        # 非电视台分组（轮播/其他等）应被白名单剔除
+        self.assertEqual(st["non_tv_group"], 1)
 
 
 class TestUrlScrubbing(unittest.TestCase):

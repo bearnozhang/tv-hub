@@ -538,8 +538,8 @@ def build_profiles(cfg: dict, per_source_sites: dict, unique_total: int = 0) -> 
     return profiles
 
 
-TIER_LITE = (300, "lite")
-TIER_STD = (1000, "standard")
+TIER_LITE = (60, "lite")
+TIER_STD = (300, "standard")
 
 
 def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
@@ -581,16 +581,15 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
             if scalars.get(k) not in (None, "", [], {}):
                 obj[k] = scalars[k]
         if parses:
-            obj["parses"] = parses[:60]
+            obj["parses"] = [p for p in parses[:60]
+                             if str(p.get("url") or "").startswith(("http://", "https://"))]
         if flags:
             obj["flags"] = flags
         obj["lives"] = []
-        # ★ 清洗后剔除空壳站点：type=1 却没 api 的会被客户端判为配置异常。
-        #   实测 tv-lite 曾出现 sites[165](qc555) type=1 但缺 api。
-        cleaned_sites = [x for x in obj["sites"]
-                         if isinstance(x, dict) and (x.get("key") or x.get("name"))
-                         and (x.get("type", 0) != 1 or x.get("api"))]
-        obj["sites"] = cleaned_sites
+        # ★ 与主配置同一份契约：type 1/3 必须有 api。
+        #   实测 tv-lite 曾出现 sites[165](qc555) type=1 缺 api、
+        #   sites[249](豆瓣) type=3 缺 api，两者都会让内核抛异常 → 「解析配置失败」。
+        obj["sites"] = [x for x in obj["sites"] if x.get("api")]
         C.write_json(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(ordered(obj)))
         written.append(name)
     return written
@@ -656,21 +655,26 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
                                     "parses", Deduper(), stats)
         out["flags"] = merge_flags([(sid, x) for x in (data.get("flags") or [])], Deduper(), stats)
 
-        # 清洗后剔除空壳：type=1 却没 api / lives 无有效频道
-        out["sites"] = [x for x in out["sites"]
-                        if isinstance(x, dict) and (x.get("key") or x.get("name"))
-                        and (x.get("type", 0) != 1 or x.get("api"))]
+        # ★ 与主配置同一份契约：type 1/3 必须有 api；
+        #   lives 必须是引用型 {name,type,url,epg}，否则 TVBox 内核抛异常。
+        #   ★ 必须先 scrub 再过滤：scrub 会把非 ASCII 域名等非法 url 直接删掉，
+        #     若先过滤后 scrub，会留下「本来有 url、scrub 后变没 url」的残骸。
+        out = C.scrub_urls(out)
+        out["sites"] = [x for x in out["sites"] if x.get("api")]
+        out["parses"] = [x for x in out["parses"]
+                         if x.get("name")
+                         and str(x.get("url") or "").startswith(("http://", "https://"))]
         if isinstance(out.get("lives"), list):
-            out["lives"] = keep_alive_lives(out["lives"])
-        out["parses"] = [x for x in out.get("parses") or []
-                         if isinstance(x, dict) and x.get("name")]
+            out["lives"] = [{"name": x["name"], "type": 0,
+                             "url": "./live.txt", "epg": ""}
+                            for x in keep_alive_lives(out["lives"]) if x.get("name")]
 
         # 直播引用壳（sites=0）落盘后是「空配置」，客户端会直接报解析失败，
         # 不产出。它们的价值已被 merge 主流程吸收（live_groups）。
         if not out["sites"]:
             continue
 
-        C.write_json(os.path.join(out_dir, f"{sid}.json"), C.scrub_urls(out))
+        C.write_json(os.path.join(out_dir, f"{sid}.json"), out)
         written.append(sid)
     return written
 
@@ -797,21 +801,34 @@ def merge(build: bool = False) -> dict:
     scalars = C.scrub_urls(scalars)
     spider = spider if C.is_valid_remote_url(spider) else ""
 
+    # ★ spider 改为同源相对路径（实测饭太硬 `http://fty.xxooo.cf/tv` 就是
+    #   `"spider": "./fty.jar"`，jar 与配置同域）。部分 TVBox 内核按
+    #   同源相对路径加载 jar；跨域绝对地址会被判为「解析配置失败」。
+    #   jar 已随 public/spider.jar 一同发布。
+    if spider:
+        spider = "./spider.jar"
+
     # ★ 落盘前统一递归清洗，随后剔除因清洗而变空的壳
     #   （否则会出现「type=1 却没api」「lives 既无 channels 也无 url」的空壳，
     #    源码里 initSite/initLive 对这些会直接抛异常或判定加载失败）
     tv_sites = [x for x in C.scrub_urls(sites)
                 if isinstance(x, dict) and (x.get("key") or x.get("name"))]
-    tv_sites = [x for x in tv_sites
-                if x.get("type", 0) != 1 or x.get("api")]
-    # type 3（聚合站点）必须有 api 才能被 App 识别，否则整份配置解析失败
-    tv_sites = [x for x in tv_sites
-                if x.get("type", 0) != 3 or x.get("api")]
+    # ★ type 1/3 必须有 api，否则 TVBox 内核 initSite 直接抛异常，
+    #   整份配置加载失败 → App 报「解析配置失败」。
+    #   实测可用配置（饭太硬）里 53 个 site 全部 type=3 且 100% 带 api。
+    tv_sites = [x for x in tv_sites if x.get("api")]
 
+    # ★ lives 必须是「引用型」：{"name","type","url","epg"}，url 指向同域 txt。
+    #   实测可用配置的 lives 就是 {"name":"ITV","type":0,"url":"./lib/ITV.txt"}。
+    #   之前误用了 group/channels 结构（无 url），内核取不到 url 直接抛异常。
     tv_lives = [x for x in keep_alive_lives(lives + live_out)
                 if _is_tv_group(str(x.get("name") or "").strip())]
+    tv_lives = [{"name": "直播", "type": 0, "url": "./live.txt", "epg": ""}]
+
+    # ★ parses 必须有 url，否则 Parse.objectFrom 取不到地址会抛异常。
     tv_parses = [x for x in C.scrub_urls(parses)
-                 if isinstance(x, dict) and x.get("name")]
+                 if isinstance(x, dict) and x.get("name")
+                 and str(x.get("url") or "").startswith(("http://", "https://"))]
 
     stats["scrubbed_empty_sites"] = len(sites) - len(tv_sites)
     stats["scrubbed_empty_lives"] = len(lives) + len(live_out) - len(tv_lives)

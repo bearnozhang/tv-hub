@@ -37,8 +37,8 @@ def check_site(site: dict, i: int) -> list[str]:
             errs.append(f"sites[{i}]({site.get('key')}) type 非法: {t!r}")
     elif not isinstance(t, int):
         errs.append(f"sites[{i}]({site.get('key')}) type 非整数: {t!r}")
-    if t in (1, "1") and not site.get("api"):
-        errs.append(f"sites[{i}]({site.get('key')}) type=1 但缺 api")
+    if t in (1, "1", 3, "3") and not site.get("api"):
+        errs.append(f"sites[{i}]({site.get('key')}) type={t} 但缺 api —— 内核会抛异常")
     if "api" in site and not isinstance(site["api"], (str, list)):
         errs.append(f"sites[{i}]({site.get('key')}) api 类型异常")
     if "ext" in site and not isinstance(site["ext"], (str, dict)):
@@ -68,22 +68,22 @@ def validate_tv_output(data: dict, strict: bool = False) -> dict:
             errs.append(f"parses[{i}] 不是对象")
         elif not p.get("name"):
             errs.append(f"parses[{i}] 缺 name")
-    # lives 有两种合法形态：引用型 {name,url} / 分组型 {name,channels:[{name,urls:[]}]}
+        elif not p.get("url"):
+            errs.append(f"parses[{i}]({p.get('name')}) 缺 url —— 内核取不到解析地址会抛异常")
+    # ★ TVBox 内核对 lives 只认「引用型」{name,url}。
+    #   分组型 {name,channels:[...]} 是别的 App 的格式，
+    #   在 TVBox 系（讴歌/影视仓）里取不到 url 会直接抛异常 → 整份配置「解析失败」。
+    #   实测可用配置（饭太硬 api.json）：{"name","type","url","epg"}。
     for i, l in enumerate(data.get("lives") or []):
         if not isinstance(l, dict):
             errs.append(f"lives[{i}] 不是对象")
             continue
-        chans = l.get("channels")
-        if isinstance(chans, list):
-            for j, c in enumerate(chans):
-                if not isinstance(c, dict) or not c.get("name"):
-                    errs.append(f"lives[{i}].channels[{j}] 缺 name")
-                elif not (c.get("urls") or c.get("url")):
-                    errs.append(f"lives[{i}].channels[{j}] 缺 urls/url")
-        elif not l.get("url"):
-            errs.append(f"lives[{i}] 既无 channels 也无 url")
         if not l.get("name"):
             errs.append(f"lives[{i}] 缺 name")
+        if not l.get("url"):
+            errs.append(
+                f"lives[{i}]({l.get('name')}) 缺 url —— "
+                f"TVBox 内核要求引用型，group/channels 格式会导致「解析配置失败」")
     for i, f in enumerate(data.get("flags") or []):
         if not isinstance(f, str):
             errs.append(f"flags[{i}] 不是字符串（TVBox flags 应为字符串数组）")
