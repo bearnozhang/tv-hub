@@ -1,3 +1,7 @@
 name = "tv-hub"
-pages_build_output_dir = "public"
+main = "worker-no-compress.js"
 compatibility_date = "2024-12-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"

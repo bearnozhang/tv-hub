@@ -1,0 +1,38 @@
+name: deploy
+
+# 每次推 main 且 public/scripts/config 变化时，自动把最新产物发布到 Cloudflare Workers
+# 需要在仓库 Secrets 里配置 CLOUDFLARE_API_TOKEN（非空，可编辑 Cloudflare Workers 的 token）
+"on":
+  push:
+    branches: [main]
+    paths:
+      - public/**
+      - scripts/**
+      - config/**
+      - worker-no-compress.js
+      - wrangler.toml
+      - .github/workflows/deploy.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 轻构建（产物校验用）
+        run: python scripts/build.py --skip-fetch
+
+      - name: Deploy to Cloudflare Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

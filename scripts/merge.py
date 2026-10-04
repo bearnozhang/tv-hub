@@ -218,6 +218,15 @@ def merge_flags(items: list[tuple[str, object]], dd: Deduper, stats: dict) -> li
     return out
 
 
+TV_KEEP_GROUPS = {"央视", "卫视", "港台"}
+
+
+def _is_tv_group(name: str) -> bool:
+    if name in TV_KEEP_GROUPS:
+        return True
+    return name.startswith("地方-")
+
+
 def keep_alive_lives(lives: list) -> list[dict]:
     """剔除空壳直播条目：先清洗URL，再要求引用型有 url、分组型有至少一个有效频道。
     清洗后变空的频道也必须剔除，否则客户端判定配置损坏。"""
@@ -280,17 +289,16 @@ TIER_LIVE_CORE = ("央视", "卫视", "地方-", "港台", "其他")
 
 
 def clean_live_entries(lives: list[dict]) -> tuple[list[dict], dict]:
-    """清洗直播条目：剔除客户端无法使用的引用型。
+    TV_GROUPS = {"央视", "卫视", "港台"}
 
-    源码依据（FongMi/TV LiveConfig.initLive）：
-      setLives(Live.objectFrom(...))
-      Collectors.toMap(Live::getName, ...)   // name 空/重复会抛异常
-    实测问题（上游脏数据）：
-      - 70 个 url 是 ./lives/xxx.txt 相对路径 → 客户端无法解析
-      - 49 个 url 指向 127.0.0.1 / localhost → 对客户端毫无意义
-      - 空 name 会让 toMap 抛 IllegalStateException
-    """
-    stats = {"relative": 0, "localhost": 0, "noname": 0, "dupname": 0}
+    def keep_group_name(name: str) -> bool:
+        if name in TV_GROUPS:
+            return True
+        if name.startswith("地方-"):
+            return True
+        return False
+
+    stats = {"relative": 0, "localhost": 0, "noname": 0, "dupname": 0, "non_tv_group": 0}
     seen: set[str] = set()
     out: list[dict] = []
     for x in lives:
@@ -299,6 +307,9 @@ def clean_live_entries(lives: list[dict]) -> tuple[list[dict], dict]:
         name = str(x.get("name") or "").strip()
         if not name:
             stats["noname"] += 1
+            continue
+        if not keep_group_name(name):
+            stats["non_tv_group"] += 1
             continue
         if name in seen:
             stats["dupname"] += 1
@@ -794,7 +805,8 @@ def merge(build: bool = False) -> dict:
     tv_sites = [x for x in tv_sites
                 if x.get("type", 0) != 1 or x.get("api")]
 
-    tv_lives = keep_alive_lives(lives + live_out)
+    tv_lives = [x for x in keep_alive_lives(lives + live_out)
+                if _is_tv_group(str(x.get("name") or "").strip())]
     tv_parses = [x for x in C.scrub_urls(parses)
                  if isinstance(x, dict) and x.get("name")]
 
