@@ -59,7 +59,10 @@ jobs:
 
       - name: 抓取 + 校验 + 合并 + 构建
         env:
-          TVHUB_BASE_URL: ${{ vars.TVHUB_BASE_URL || 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}' }}
+          # 留空即由 scripts/merge.py 回落到 DEFAULT_BASE_URL（自定义域）。
+          # 注意：这里绝不能写嵌套表达式 `${{ vars.X || '${{ y }}' }}`，
+          # GitHub 不会二次展开，会把模板文本原样传入生成坏URL。
+          TVHUB_BASE_URL: ${{ vars.TVHUB_BASE_URL }}
         run: |
           if [ "${{ inputs.skip_fetch }}" = "true" ]; then
             python scripts/build.py --skip-fetch

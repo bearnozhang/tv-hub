@@ -225,8 +225,20 @@ DEFAULT_BASE_URL = "https://tv.bearno1.dpdns.org"
 
 
 def base_url() -> str:
+    """产物对外基址。
+
+    必须防御未渲染的 GitHub Actions 表达式：workflow 里写过
+    `${{ vars.X || 'https://.../${{ github.repository }}/...' }}`，
+    嵌套表达式不会被二次展开，会被原样传进来，导致订阅里出现
+    字面量 `${{ github.repository }}` → 所有线路 URL 失效。
+    因此这里显式检测并回落到默认基址。
+    """
     env = os.environ.get("TVHUB_BASE_URL", "").strip()
-    return (env or DEFAULT_BASE_URL).rstrip("/")
+    if "${{" in env or "}}" in env or not env:
+        return DEFAULT_BASE_URL
+    if not env.startswith(("http://", "https://")):
+        return DEFAULT_BASE_URL
+    return env.rstrip("/")
 
 
 def profile_sites_count(sid: str) -> int:

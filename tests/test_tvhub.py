@@ -554,6 +554,31 @@ class TestBomConsistency(unittest.TestCase):
             self.assertIn("name", u)
             self.assertTrue(u["url"].startswith("https://"))
 
+    def test_base_url_rejects_unrendered_github_expr(self):
+        """回归：workflow 曾传 `${{ vars.X || '${{ y }}' }}`，GitHub 不二次展开，
+        模板文本被原样写入订阅 → 所有线路 URL 失效。
+        验证 base_url() 会识别并回落。"""
+        import merge as M
+        for bad in ("${{ github.repository }}",
+                    "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}",
+                    "${{ vars.TVHUB_BASE_URL }}",
+                    "ftp://bad", "", "   "):
+            with mock.patch.dict(os.environ, {"TVHUB_BASE_URL": bad}):
+                self.assertEqual(M.base_url(), M.DEFAULT_BASE_URL,
+                                 f"非法基址 {bad!r} 应回落到默认值")
+        good = "https://example.com/base/"
+        with mock.patch.dict(os.environ, {"TVHUB_BASE_URL": good}):
+            self.assertEqual(M.base_url(), "https://example.com/base")
+
+    def test_subscription_urls_have_no_template_vars(self):
+        """订阅里的每条 URL 都必须是真实可用的地址，不含 GitHub 表达式。"""
+        d = self._load("subscriptions.json")
+        blob = json.dumps(d, ensure_ascii=False)
+        self.assertNotIn("${{", blob, "订阅文件里出现了未渲染的 GitHub 表达式")
+        for u in d["urls"]:
+            self.assertTrue(u["url"].startswith("https://"), u["url"])
+            self.assertNotIn("${{", u["url"])
+
     def test_first_entry_is_aggregate(self):
         """urls[0] 必须是体积最小的那一档。
 
