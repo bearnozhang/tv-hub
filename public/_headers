@@ -2,37 +2,44 @@
 # 规则：同名头只在一条规则里出现一次，路径必须互不重叠，
 # 否则 Cloudflare Pages 会把多个命中的同名头拼成 "a, a"。
 
+# 关键：Cloudflare Pages 只对「文本类」Content-Type 做 Brotli/Gzip，
+# application/octet-stream 不在压缩列表里 → App 拿到原文，不会被 br/gzip。
+# 讴歌/影视仓按 body 解析 JSON/TXT，不依赖 Content-Type 头。
+
 /*
   Access-Control-Allow-Origin: *
   X-Content-Type-Options: nosniff
 
 /*.json
-  Content-Type: application/json; charset=utf-8
+  Content-Type: application/octet-stream
   Cache-Control: public, max-age=300
 
-# 这些 .txt 实际承载 JSON（多仓订阅/TVBox 配置），强制按 JSON 返回
 /sub.txt
-  Content-Type: application/json; charset=utf-8
+  Content-Type: application/octet-stream
   Cache-Control: public, max-age=300
 
 /live-sub.txt
-  Content-Type: application/json; charset=utf-8
+  Content-Type: application/octet-stream
   Cache-Control: public, max-age=300
 
 /live-mini.txt
-  Content-Type: application/json; charset=utf-8
+  Content-Type: application/octet-stream
   Cache-Control: public, max-age=300
 
 /live-lite.txt
-  Content-Type: application/json; charset=utf-8
+  Content-Type: application/octet-stream
   Cache-Control: public, max-age=300
 
 /live-standard.txt
-  Content-Type: application/json; charset=utf-8
+  Content-Type: application/octet-stream
   Cache-Control: public, max-age=300
 
 /live-full.txt
-  Content-Type: application/json; charset=utf-8
+  Content-Type: application/octet-stream
+  Cache-Control: public, max-age=300
+
+/live.txt
+  Content-Type: application/octet-stream
   Cache-Control: public, max-age=300
 
 # /live.txt 是真正的纯文本直播源（分组,#genre# 格式），
