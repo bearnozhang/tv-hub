@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "updated_at": "2026-10-04",
+  "note": "唯一上游配置入口。增删上游只改本文件。primary=主地址, fallback=备用地址(按序尝试), type=tvbox|live_txt|live_m3u|subscription",
+  "defaults": {
+    "timeout": 45,
+    "retries": 2,
+    "retry_backoff_seconds": 3,
+    "user_agent": "tv-hub/1.0 (+https://github.com/tv-hub) Python-urllib"
+  },
+  "sources": [
+    {
+      "id": "ysc_single_agg",
+      "name": "影视仓·单仓聚合",
+      "type": "tvbox",
+      "repo": "Lightconer/tvbox-ysc-config",
+      "branch": "main",
+      "path": "output/单仓聚合.json",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/%E5%8D%95%E4%BB%93%E8%81%9A%E5%90%88.json",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/Lightconer/tvbox-ysc-config@main/output/%E5%8D%95%E4%BB%93%E8%81%9A%E5%90%88.json",
+        "https://ghfast.top/https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/%E5%8D%95%E4%BB%93%E8%81%9A%E5%90%88.json"
+      ],
+      "notes": "实测 2026-10-04：dict 结构，含 sites(167)/lives(7)/parses(33)/flags(61)/rules(33)。默认分支 main。"
+    },
+    {
+      "id": "ysc_multi_sub",
+      "name": "影视仓·多仓订阅",
+      "type": "subscription",
+      "repo": "Lightconer/tvbox-ysc-config",
+      "branch": "main",
+      "path": "output/多仓订阅.json",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/%E5%A4%9A%E4%BB%93%E8%AE%A2%E9%98%85.json",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/Lightconer/tvbox-ysc-config@main/output/%E5%A4%9A%E4%BB%93%E8%AE%A2%E9%98%85.json"
+      ],
+      "notes": "实测为 {\"urls\":[...]} 多仓订阅清单，不能当 sites 用，单独作为订阅列表输出。"
+    },
+    {
+      "id": "hebi_tvbox",
+      "name": "hebijunge·TVBox 全量",
+      "type": "tvbox",
+      "repo": "hebijunge/tvbox-config",
+      "branch": "main",
+      "path": "tvbox.json",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/hebijunge/tvbox-config/main/tvbox.json",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/hebijunge/tvbox-config@main/tvbox.json",
+        "https://ghfast.top/https://raw.githubusercontent.com/hebijunge/tvbox-config/main/tvbox.json"
+      ],
+      "notes": "实测 2026-10-04：dict，含 sites(4331)/lives(586)/parses(194)/spider，约 1.6MB。仓库 has_pages=true。仅取非成人主配置。"
+    },
+    {
+      "id": "hebi_vod",
+      "name": "hebijunge·纯点播",
+      "type": "tvbox",
+      "repo": "hebijunge/tvbox-config",
+      "branch": "main",
+      "path": "vod.json",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/hebijunge/tvbox-config/main/vod.json",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/hebijunge/tvbox-config@main/vod.json"
+      ],
+      "notes": "与 hebi_tvbox 同源同结构（无 lives），保留作为补链备用；去重后增量有限。"
+    },
+    {
+      "id": "tvs_live_txt",
+      "name": "TVBox-Sources·直播TXT",
+      "type": "live_txt",
+      "repo": "Lightconer/TVBox-Sources",
+      "branch": "main",
+      "path": "output/live.txt",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/live.txt",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/Lightconer/TVBox-Sources@main/output/live.txt"
+      ],
+      "notes": "实测 189 行，格式 `频道名,URL`，分组写作 `名称,#genre#`。已含多备源。"
+    },
+    {
+      "id": "tvs_live_m3u",
+      "name": "TVBox-Sources·直播M3U",
+      "type": "live_m3u",
+      "repo": "Lightconer/TVBox-Sources",
+      "branch": "main",
+      "path": "output/live.m3u",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/live.m3u",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/Lightconer/TVBox-Sources@main/output/live.m3u"
+      ],
+      "notes": "EXTINF 带 group-title / tvg-logo / tvg-id。"
+    },
+    {
+      "id": "hebi_live_all",
+      "name": "hebijunge·直播全量TXT",
+      "type": "live_txt",
+      "repo": "hebijunge/tvbox-config",
+      "branch": "main",
+      "path": "lives/live_all.txt",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/hebijunge/tvbox-config/main/lives/live_all.txt",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/hebijunge/tvbox-config@main/lives/live_all.txt",
+        "https://raw.githubusercontent.com/hebijunge/tvbox-config/main/lives/live.txt"
+      ],
+      "notes": "实测约 639KB / 8167 行分组 txt（央视/卫视/地方/港台/轮播等）。"
+    },
+    {
+      "id": "tvs_tvbox_stub",
+      "name": "TVBox-Sources·TVBox 接口",
+      "type": "tvbox",
+      "repo": "Lightconer/TVBox-Sources",
+      "branch": "main",
+      "path": "output/tvbox.json",
+      "status": "active",
+      "enabled": true,
+      "primary": "https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/tvbox.json",
+      "fallback": [
+        "https://cdn.jsdelivr.net/gh/Lightconer/TVBox-Sources@main/output/tvbox.json"
+      ],
+      "notes": "实测 sites=[] lives=2，是直播引用壳。保留用于 lives 收集，不贡献 sites。"
+    }
+  ]
+}

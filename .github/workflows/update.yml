@@ -1,0 +1,108 @@
+name: update
+
+#北京时间每天 10:00 与 22:00 = UTC 02:00 与 14:00
+# （GitHub Actions cron 一律按 UTC 解释，不能写北京时间）
+"on":
+  schedule:
+    - cron: "2 2 * * *"    # 10:00 Asia/Shanghai
+    - cron: "2 14 * * *"   # 22:00 Asia/Shanghai
+  workflow_dispatch:
+    inputs:
+      skip_fetch:
+        description: "只用现有缓存重建（不抓取）"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tv-hub-update
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 单元测试（先测后跑，抓取不涉网的部分）
+        run: python -m unittest discover -s tests -v
+
+      - name: 抓取 + 校验 + 合并 + 构建
+        env:
+          TVHUB_BASE_URL: ${{ vars.TVHUB_BASE_URL || 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}' }}
+        run: |
+          if [ "${{ inputs.skip_fetch }}" = "true" ]; then
+            python scripts/build.py --skip-fetch
+          else
+            python scripts/build.py
+          fi
+
+      - name: 独立复核产物
+        run: python scripts/validate.py --scope output
+
+      - name: 汇总结果
+        id: summary
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          s = json.load(open("public/status.json", encoding="utf-8"))
+          su = s["summary"]
+          print(f"sites={su['unique_sites']}")
+          print(f"deduped={su['sites_deduped']}")
+          print(f"parses={su['unique_parses']}")
+          print(f"live_groups={su['live_groups']}")
+          print(f"live_channels={su['live_channels']}")
+          print(f"ok={su['ok']}/{su['total_sources']}")
+          md = [
+            "## tv-hub 构建报告",
+            "",
+            f"- 生成时间：{s['generated_at_bj']}",
+            f"- TVBox 站点：**{su['unique_sites']}**（原始 {su['raw_sites']}，去重 {su['sites_deduped']}）",
+            f"- 解析器：{su['unique_parses']}",
+            f"- 直播：{su['live_groups']} 组 / {su['live_channels']} 频道",
+            f"- 上游成功：{su['ok']} / {su['total_sources']}（stale {su['stale']}，failed {su['failed']}）",
+            "",
+            "| 上游 | 类型 | 状态 | 使用地址 | 连续失败 |",
+            "| --- | --- | --- | --- | --- |",
+          ]
+          for r in s["sources"]:
+              u = (r.get("used_url") or "-")
+              u = u if len(u) <= 70 else u[:70] + "…"
+              badge = {"ok": "✅", "stale": "📦缓存", "failed": "❌"}.get(r["status"], r["status"])
+              md.append(f"| {r['name']} | {r['type']} | {badge} | `{u}` | {r['consecutive_failures']} |")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+              f.write("\n".join(md) + "\n")
+          PY
+
+      - name: 提交变化（产物 + 缓存 + 状态）
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A public cache config
+          if git diff --staged --quiet; then
+            echo "无变化，跳过提交。"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: 自动更新配置 ${{ github.run_id }}（sites=${{ steps.summary.outputs.sites }} 去重=${{ steps.summary.outputs.deduped }}）"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 上传构建产物（Actions Artifacts）
+        uses: actions/upload-artifact@v4
+        with:
+          name: tv-hub-public-${{ github.run_number }}
+          path: public/
+          retention-days: 30

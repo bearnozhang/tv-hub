@@ -1,0 +1,390 @@
+#!/usr/bin/env python3
+"""
+merge.py —— 去重 + 合并。
+
+去重策略（按稳定字段优先级，不因来源 URL 不同而重复保留同一站点）：
+  sites : key → (name, api归一化) → (name, type) → 完整内容哈希
+  parses: name → 完整内容哈希
+  lives : name → (name, 首个 url)
+  channels: name+url 精确 → url
+
+结构策略：不同结构的 JSON 不粗暴拼接。
+  tvbox 源合并 sites/parses/lives/flags/spider/标量；
+  live_txt / live_m3u 源合并为「按 group 归类的 channels」，
+  再作为 group 条目追加到 lives（不塞进 sites）。
+  subscription 源只产出订阅清单，不参与 sites 合并。
+
+用法：
+  python scripts/merge.py                # 输出合并统计
+  python scripts/merge.py --stats-only
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import common as C  # noqa: E402
+
+URL_SPLIT = re.compile(r"[,，]")
+
+
+def norm_url(u: str) -> str:
+    return (u or "").strip().rstrip("/").lower()
+
+
+def norm_api(a: object) -> str:
+    if isinstance(a, list):
+        return "|".join(norm_url(x) for x in a)
+    return norm_url(str(a))
+
+
+def norm_name(n: object) -> str:
+    s = str(n or "").strip().lower()
+    return re.sub(r"\s+", "", s)
+
+
+def site_fingerprint(s: dict) -> str:
+    """站点内容哈希（用于完全相同但无 key/name 稳定字段的情形）。"""
+    keep = {k: s[k] for k in ("key", "name", "type", "api", "ext", "jar", "playUrl", "categories") if k in s}
+    return C.sha256_of(json.dumps(keep, ensure_ascii=False, sort_keys=True))
+
+
+def site_identity(s: dict) -> list[str]:
+    """返回该站点的候选身份键，优先级从高到低。"""
+    ids: list[str] = []
+    key = s.get("key")
+    if key:
+        ids.append(f"key:{str(key).strip()}")
+    nm, api = norm_name(s.get("name")), norm_api(s.get("api"))
+    if nm and api:
+        ids.append(f"na:{nm}|{api}")
+    if nm:
+        ids.append(f"n:{nm}|t{s.get('type', 0)}")
+    ids.append(f"h:{site_fingerprint(s)}")
+    return ids
+
+
+class Deduper:
+    """跨来源去重器：记录每个身份键归属的首个来源。"""
+
+    def __init__(self) -> None:
+        self.owner: dict[str, str] = {}
+        self.dropped: dict[str, int] = {}
+        self.kept: int = 0
+
+    def accept(self, ident: list[str], src_id: str) -> bool:
+        for i in ident:
+            prev = self.owner.get(i)
+            if prev is None:
+                self.owner[i] = src_id
+            else:
+                if prev != src_id:
+                    self.dropped[prev] = self.dropped.get(prev, 0) + 1
+                return False
+        self.kept += 1
+        return True
+
+    def count_for(self, src_id: str) -> int:
+        return sum(1 for v in self.owner.values() if v == src_id)
+
+
+def classify_lives(items: list[tuple[str, dict]], stats: dict) -> tuple[list[dict], list[dict]]:
+    """上游实测存在两类异常，需分流而不是原样透传：
+       A) lives 里混入「站点对象」（带 key/api/jar，type=3）→ 实为 site，应回填 sites
+       B) url 为空字符串的占位条目→ 无效，直接丢弃
+    返回 (合法 lives, 从 lives 中救出的 sites)。"""
+    good: list[dict] = []
+    rescued: list[dict] = []
+    for src_id, l in items:
+        if not isinstance(l, dict):
+            stats["lives_invalid"] = stats.get("lives_invalid", 0) + 1
+            continue
+        has_ch = isinstance(l.get("channels"), list) and l["channels"]
+        has_url = isinstance(l.get("url"), str) and l["url"].strip()
+        # A) 站点对象误入 lives
+        if not has_ch and not has_url and (l.get("api") or l.get("key") or l.get("jar")):
+            rescued.append({"key": l.get("key") or f"live_misplaced_{len(rescued)}",
+                            "name": l.get("name") or "未命名",
+                            "type": l.get("type") if isinstance(l.get("type"), int) else (int(l["type"]) if str(l.get("type", "")).strip().isdigit() else 0),
+                            "api": l.get("api"),
+                            "ext": l.get("ext"),
+                            "_rescued_from": "lives"})
+            stats["lives_rescued_as_site"] = stats.get("lives_rescued_as_site", 0) + 1
+            continue
+        if not has_ch and not has_url:
+            stats["lives_invalid"] = stats.get("lives_invalid", 0) + 1
+            continue
+        good.append((src_id, l))
+    return good, rescued
+
+
+def normalize_site(s: dict) -> dict:
+    """上游实测存在字符串型 type（如 "3"）与缺失 type，统一归一化后再落盘，
+    避免下游 TVBox 客户端因类型不一致而解析异常。返回新对象（不改原缓存）。"""
+    out = dict(s)
+    t = out.get("type", 0)
+    if isinstance(t, str):
+        t2 = t.strip()
+        out["type"] = int(t2) if t2.lstrip("-").isdigit() else 0
+    elif isinstance(t, bool):
+        out["type"] = int(t)
+    elif not isinstance(t, int):
+        out["type"] = 0
+    # api 为空串时视为缺失，避免下游误判为有效接口
+    if out.get("api") == "":
+        out.pop("api")
+    # ext 实测存在三种形态：str（JSON 串）、dict（{k:url}）、
+    # list（[{name,url}]，非TVBox 标准）。list 归一化为 dict，空值直接剔除。
+    ext = out.get("ext")
+    if isinstance(ext, list):
+        conv: dict[str, str] = {}
+        for it in ext:
+            if isinstance(it, dict) and it.get("name") and it.get("url"):
+                conv[str(it["name"])] = str(it["url"])
+        out["ext"] = conv if conv else ""
+    elif isinstance(ext, dict) and not ext:
+        out["ext"] = ""
+    # ext 为 null / 空 dict / 空 list 归一：直接剔除，避免下游拿到非标准值
+    if not isinstance(out.get("ext"), (str, dict)) or not out.get("ext"):
+        out.pop("ext", None)
+    # 去掉本项目内部标记字段，不外泄到最终配置
+    out.pop("_rescued_from", None)
+    return out
+
+
+def merge_sites(items: list[tuple[str, dict]], dd: Deduper, stats: dict) -> list[dict]:
+    out: list[dict] = []
+    for src_id, s in items:
+        if not isinstance(s, dict):
+            stats["sites_invalid"] = stats.get("sites_invalid", 0) + 1
+            continue
+        if not (s.get("key") or s.get("name")):
+            stats["sites_invalid"] = stats.get("sites_invalid", 0) + 1
+            continue
+        s = normalize_site(s)
+        if dd.accept(site_identity(s), src_id):
+            out.append(s)
+    return out
+
+
+def merge_named(items: list[tuple[str, dict]], kind: str, dd: Deduper, stats: dict) -> list[dict]:
+    """合并「对象数组」型字段（parses / lives 引用型）。
+    每项必须有可识别标识（name），否则计入 invalid。"""
+    out: list[dict] = []
+    for src_id, p in items:
+        if not isinstance(p, dict) or not p.get("name"):
+            stats[f"{kind}_invalid"] = stats.get(f"{kind}_invalid", 0) + 1
+            continue
+        nm = norm_name(p["name"])
+        if dd.accept([f"{kind}:{nm}", f"{kind}:h:{C.sha256_of(json.dumps(p, sort_keys=True, ensure_ascii=False))}"], src_id):
+            out.append(p)
+    return out
+
+
+def merge_flags(items: list[tuple[str, object]], dd: Deduper, stats: dict) -> list[str]:
+    """flags 实测为纯字符串数组（如 ["youku","优酷","优 酷"]），不是对象。
+    去重时忽略空白与大小写，但保留原始写法（上游习惯全大写/中文）。"""
+    out: list[str] = []
+    for src_id, f in items:
+        if not isinstance(f, str) or not f.strip():
+            stats["flags_invalid"] = stats.get("flags_invalid", 0) + 1
+            continue
+        if dd.accept([f"flags:{f.strip().lower()}"], src_id):
+            out.append(f)
+    return out
+
+
+def group_channels(channels: list[dict], src_id: str) -> dict[str, dict]:
+    """把 channel 列表按 group 归类，同名频道聚合多备源。"""
+    groups: dict[str, dict] = {}
+    for c in channels:
+        g = c.get("group") or "未分组"
+        node = groups.setdefault(g, {"name": g, "type": 0, "group": g,
+                                     "channels": {}, "from": set(), "logo": c.get("logo", "")})
+        node["from"].add(src_id)
+        name = str(c.get("name") or c.get("url")).strip()
+        ch = node["channels"].setdefault(name, {"name": name, "urls": [], "sources": set()})
+        u = c.get("url")
+        if u and u not in ch["urls"]:
+            ch["urls"].append(u)
+        ch["sources"].add(src_id)
+        if c.get("tvg_id"):
+            ch["tvg_id"] = c["tvg_id"]
+        if not node["logo"] and c.get("logo"):
+            node["logo"] = c["logo"]
+    return groups
+
+
+def merge(build: bool = False) -> dict:
+    """build=True 时把结果写入 public/；否则只统计。"""
+    cfg = C.load_sources()
+    state = C.load_state()
+    src_by_id = {s["id"]: s for s in cfg["sources"]}
+
+    sites_items: list[tuple[str, dict]] = []
+    parses_items: list[tuple[str, dict]] = []
+    lives_items: list[tuple[str, dict]] = []
+    flags_items: list[tuple[str, object]] = []
+    live_groups: dict[str, dict] = {}
+    subscriptions: list[dict] = []
+    scalars: dict[str, object] = {}
+    spider = ""
+    stats: dict = {"sources_used": [], "sources_skipped": [], "sites_invalid": 0,
+                   "parses_invalid": 0, "lives_invalid": 0, "flags_invalid": 0}
+
+    dd_sites, dd_parses, dd_lives, dd_flags = Deduper(), Deduper(), Deduper(), Deduper()
+
+    for sid, s in src_by_id.items():
+        if not s.get("enabled", True):
+            stats["sources_skipped"].append({"id": sid, "reason": "enabled=false"})
+            continue
+        rec = state["sources"].get(sid, {})
+        path = C.cache_path(sid)
+        if not os.path.exists(path):
+            stats["sources_skipped"].append({"id": sid, "reason": "无缓存（抓取失败且无历史）"})
+            continue
+        with open(path, "rb") as f:
+            body = f.read()
+        v = C.validate_payload(s, body)
+        if not v.get("ok"):
+            stats["sources_skipped"].append({"id": sid, "reason": "缓存结构校验失败",
+                                             "errors": v.get("errors", [])[:3]})
+            continue
+
+        kind = s["type"]
+        if kind == "subscription":
+            data = json.loads(body.decode("utf-8-sig"))
+            for u in data.get("urls", []):
+                if isinstance(u, dict) and u.get("url"):
+                    subscriptions.append({"name": u.get("name", ""), "url": u["url"],
+                                          "via": sid})
+            stats["sources_used"].append({"id": sid, "kind": kind,
+                                          "counts": v.get("counts", {}), "status": rec.get("status")})
+            continue
+
+        if kind in ("live_txt", "live_m3u"):
+            for gname, node in group_channels(v["channels"], sid).items():
+                tgt = live_groups.setdefault(gname, node)
+                for cname, ch in node["channels"].items():
+                    cur = tgt["channels"].setdefault(cname, {"name": cname, "urls": [], "sources": set()})
+                    for u in ch["urls"]:
+                        if u not in cur["urls"]:
+                            cur["urls"].append(u)
+                    cur["sources"] |= ch["sources"]
+                    if ch.get("tvg_id"):
+                        cur["tvg_id"] = ch["tvg_id"]
+                tgt["from"] |= node["from"]
+            stats["sources_used"].append({"id": sid, "kind": kind,
+                                          "counts": v.get("counts", {}), "status": rec.get("status")})
+            continue
+
+        # tvbox：按字段语义合并，绝不整对象覆盖
+        data = json.loads(body.decode("utf-8-sig"))
+        sites_items += [(sid, x) for x in (data.get("sites") or [])]
+        parses_items += [(sid, x) for x in (data.get("parses") or [])]
+        lives_items += [(sid, x) for x in (data.get("lives") or [])]
+        flags_items += [(sid, x) for x in (data.get("flags") or [])]
+        sp = data.get("spider")
+        if isinstance(sp, str) and sp and not spider:
+            spider = sp
+        for f in ("wallpaper", "logo", "warningText", "proxy", "doh", "hosts", "rules",
+                  "version", "ad", "tihuan"):
+            if f in data and f not in scalars and data[f] not in (None, "", [], {}):
+                scalars[f] = data[f]
+        stats["sources_used"].append({"id": sid, "kind": kind,
+                                      "counts": v.get("counts", {}), "status": rec.get("status")})
+
+    sites = merge_sites(sites_items, dd_sites, stats)
+    # lives 先分类；救出的站点对象追加到 sites 末尾一并去重
+    # （必须放在原有 sites 之后：Deduper 以「首个出现的来源」为准，
+    #  放前面会让 rescue 项抢占 key 归属，把真实站点误判为重复）
+    good_lives, rescued = classify_lives(lives_items, stats)
+    if rescued:
+        sites += merge_sites([(f"rescued:{r['key']}", r) for r in rescued], dd_sites, stats)
+        stats["sites_from_rescued_lives"] = len(rescued)
+    parses = merge_named(parses_items, "parses", dd_parses, stats)
+    lives = merge_named(good_lives, "lives", dd_lives, stats)
+    flags = merge_flags(flags_items, dd_flags, stats)
+
+    # live group → lives 条目（频道多的作为展开型 group）
+    live_out: list[dict] = []
+    ch_total = 0
+    ch_dedup = 0
+    seen_urls: set[str] = set()
+    for gname, node in sorted(live_groups.items(), key=lambda kv: -len(kv[1]["channels"])):
+        chans = []
+        for cname, ch in sorted(node["channels"].items()):
+            urls = ch["urls"]
+            if len(urls) > 1:
+                ch_dedup += 0
+            for u in urls:
+                if u in seen_urls:
+                    ch_dedup += 1
+                    continue
+                seen_urls.add(u)
+            chans.append({"name": cname, "urls": urls})
+        if not chans:
+            continue
+        ch_total += len(chans)
+        entry = {"name": node["name"], "type": 0, "group": node["name"], "channels": chans}
+        if node.get("logo"):
+            entry["logo"] = node["logo"]
+        live_out.append(entry)
+
+    raw_site_count = len(sites_items) + len(rescued)
+    tv: dict = {"spider": spider}
+    tv.update(scalars)
+    tv["sites"] = sites
+    tv["lives"] = lives + live_out
+    tv["parses"] = parses
+    tv["flags"] = flags
+
+    stats.update({
+        "raw_sites": raw_site_count,
+        "unique_sites": len(sites),
+        "sites_deduped": raw_site_count - len(sites),
+        "raw_parses": len(parses_items), "unique_parses": len(parses),
+        "raw_lives": len(lives_items), "unique_lives": len(lives),
+        "live_groups": len(live_out), "live_channels": ch_total,
+        "live_url_deduped": ch_dedup,
+        "unique_flags": len(flags),
+        "subscriptions": len(subscriptions),
+        "per_source_sites": {sid: dd_sites.count_for(sid) for sid in {i for i, _ in sites_items}},
+    })
+
+    if not build:
+        return {"ok": len(sites) > 0, "stats": stats, "tv": None}
+
+    ensure = C.ensure_dirs()
+    del ensure
+    res = {
+        "tv": C.write_json(os.path.join(C.PUBLIC_DIR, "tv.json"), tv),
+        "live": C.write_json(os.path.join(C.PUBLIC_DIR, "live.json"), {
+            "updated_at": C.bjnow(), "generated_at": C.iso(),
+            "groups": len(live_out), "channels": ch_total,
+            "lives": live_out + lives,
+        }),
+        "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), {
+            "updated_at": C.bjnow(), "count": len(subscriptions), "urls": subscriptions,
+        }),
+    }
+    stats["sha256"] = {k: v[:16] for k, v in res.items()}
+    return {"ok": len(sites) > 0, "stats": stats, "tv": tv, "hashes": res}
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--stats-only", action="store_true")
+    ap.add_argument("--build", action="store_true", help="写入 public/")
+    a = ap.parse_args()
+    r = merge(build=not a.stats_only)
+    C.log("[merge] " + json.dumps(r["stats"], ensure_ascii=False, indent=2))
+    return 0 if (a.stats_only or r["ok"]) else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

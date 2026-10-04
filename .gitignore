@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.tmp
+.DS_Store
+.vscode/
+.idea/
+
+# 说明：cache/ 与 public/ 是构建产物，但**必须提交**，
+# 这样 raw.githubusercontent.com 才能直接取到，且失败回退依赖历史缓存。
+# 若只想本地调试，可用 --skip-fetch 并临时注释 workflow 的 git add 行。

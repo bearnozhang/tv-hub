@@ -1,0 +1,17 @@
+# 统一换行符：避免 Windows CRLF / Linux LF 差异导致
+# Actions 每次构建都产生无意义 diff，污染提交历史。
+* text=auto eol=lf
+
+*.json   text eol=lf
+*.py     text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.html   text eol=lf
+*.txt    text eol=lf
+*.m3u    text eol=lf
+
+# 明确排除（理论上本项目无二进制，但保留兜底）
+*.png    binary
+*.jpg    binary
+*.jar    binary

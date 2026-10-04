@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tv-hub · 配置状态</title>
+<style>
+:root{color-scheme:dark}
+body{margin:0;padding:32px 20px;background:#0d1117;color:#e6edf3;
+ font:14px/1.6 -apple-system,"Segoe UI",Microsoft YaHei,sans-serif}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}p.sub{color:#8b949e;margin:0 0 24px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px}
+.kpi b{display:block;font-size:24px;font-weight:600}
+.kpi span{color:#8b949e;font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #21262d}
+th{color:#8b949e;font-weight:500;font-size:12px}
+code{background:#161b22;padding:1px 5px;border-radius:4px;font-size:12px;
+ word-break:break-all;color:#79c0ff}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.ok{color:#3fb950}.stale{color:#d29922}.failed{color:#f85149}
+.err{color:#8b949e;font-size:12px;margin-top:3px;word-break:break-all}
+footer{margin-top:28px;color:#8b949e;font-size:12px;border-top:1px solid #21262d;padding-top:14px}
+</style></head><body><div class="wrap">
+<h1>tv-hub · 配置状态</h1>
+<p class="sub">聚合 · 校验 · 去重 · 失败回退 ｜ 生成于 2026-10-04 12:54:49</p>
+<div class="kpis">
+<div class="kpi"><b>4334</b><span>TVBox 站点</span></div><div class="kpi"><b>222</b><span>解析器 parses</span></div><div class="kpi"><b>37</b><span>直播分组</span></div><div class="kpi"><b>3765</b><span>直播频道</span></div><div class="kpi"><b>8/8</b><span>成功上游</span></div><div class="kpi"><b>4503</b><span>去重掉站点</span></div>
+</div>
+<table><thead><tr><th>上游</th><th>类型</th><th>状态</th><th>数量</th><th>使用地址</th><th>最后成功</th><th>连续失败</th></tr></thead>
+<tbody><tr><td><b>影视仓·单仓聚合</b><br><code>ysc_single_agg</code></td><td>tvbox</td><td class="ok">ok</td><td>{"sites": 167, "parses": 33, "lives": 7, "flags": 61, "doh": 16, "rules": 33, "spider": 1, "scalars": 3}</td><td><code>https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/%E5%8D%95%E4%BB%93%E8%81%9A%E5%90%88.json</code></td><td>2026-10-04T04:54:46Z</td><td>0</td></tr>
+<tr><td><b>影视仓·多仓订阅</b><br><code>ysc_multi_sub</code></td><td>subscription</td><td class="ok">ok</td><td>{"urls": 4}</td><td><code>https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/%E5%A4%9A%E4%BB%93%E8%AE%A2%E9%98%85.json</code></td><td>2026-10-04T04:54:46Z</td><td>0</td></tr>
+<tr><td><b>hebijunge·TVBox 全量</b><br><code>hebi_tvbox</code></td><td>tvbox</td><td class="ok">ok</td><td>{"sites": 4331, "parses": 194, "lives": 586, "spider": 1, "scalars": 1}</td><td><code>https://raw.githubusercontent.com/hebijunge/tvbox-config/main/tvbox.json</code></td><td>2026-10-04T04:54:47Z</td><td>0</td></tr>
+<tr><td><b>hebijunge·纯点播</b><br><code>hebi_vod</code></td><td>tvbox</td><td class="ok">ok</td><td>{"sites": 4331, "parses": 194, "spider": 1, "scalars": 1}</td><td><code>https://raw.githubusercontent.com/hebijunge/tvbox-config/main/vod.json</code></td><td>2026-10-04T04:54:48Z</td><td>0</td></tr>
+<tr><td><b>TVBox-Sources·直播TXT</b><br><code>tvs_live_txt</code></td><td>live_txt</td><td class="ok">ok</td><td>{"lines": 189, "channels": 172, "groups": 17}</td><td><code>https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/live.txt</code></td><td>2026-10-04T04:54:48Z</td><td>0</td></tr>
+<tr><td><b>TVBox-Sources·直播M3U</b><br><code>tvs_live_m3u</code></td><td>live_m3u</td><td class="ok">ok</td><td>{"lines": 364, "channels": 172, "groups": 17}</td><td><code>https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/live.m3u</code></td><td>2026-10-04T04:54:48Z</td><td>0</td></tr>
+<tr><td><b>hebijunge·直播全量TXT</b><br><code>hebi_live_all</code></td><td>live_txt</td><td class="ok">ok</td><td>{"lines": 8167, "channels": 8125, "groups": 35}</td><td><code>https://raw.githubusercontent.com/hebijunge/tvbox-config/main/lives/live_all.txt</code></td><td>2026-10-04T04:54:49Z</td><td>0</td></tr>
+<tr><td><b>TVBox-Sources·TVBox 接口</b><br><code>tvs_tvbox_stub</code></td><td>tvbox</td><td class="ok">ok</td><td>{"sites": 0, "lives": 2, "spider": 0}</td><td><code>https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/tvbox.json</code></td><td>2026-10-04T04:54:49Z</td><td>0</td></tr></tbody></table>
+<footer>
+订阅地址（部署 Pages 后可直接使用）：<br>
+· tv.json → <code>https://<你的域名>//tv.json</code><br>
+· live.json → <code>https://<你的域名>//live.json</code><br>
+· status.json → <code>https://<你的域名>//status.json</code><br>
+数据来源版权归各原始作者所有，本仓库仅做聚合与镜像。
+</footer>
+</div></body></html>
