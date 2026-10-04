@@ -405,7 +405,8 @@ def cache_path(src_id: str) -> str:
 def load_state() -> dict:
     if os.path.exists(STATE_FILE):
         try:
-            with open(STATE_FILE, "r", encoding="utf-8") as f:
+            # utf-8-sig：状态文件带 BOM（与其他产物保持一致），不能用 utf-8 读
+            with open(STATE_FILE, "r", encoding="utf-8-sig") as f:
                 st = json.load(f)
             if isinstance(st, dict) and "sources" in st:
                 st.setdefault("runs", [])
@@ -418,7 +419,7 @@ def load_state() -> dict:
 def save_state(st: dict) -> None:
     ensure_dirs()
     tmp = STATE_FILE + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
+    with open(tmp, "w", encoding="utf-8-sig") as f:
         json.dump(st, f, ensure_ascii=False, indent=2)
     os.replace(tmp, STATE_FILE)
 

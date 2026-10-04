@@ -479,10 +479,64 @@ class TestWorkflowLint(unittest.TestCase):
         self.assertEqual(workflow_lint.lint(self.WF), [])
 
 
-class TestSubscriptionAndProfiles(unittest.TestCase):
-    """订阅清单与单仓配置 —— 用户只需填一个订阅地址，靠它切换多个仓。"""
+class TestBomConsistency(unittest.TestCase):
+    """回归测试：产物一律带 UTF-8 BOM，因此所有读取处必须用 utf-8-sig。
 
-    SUB = os.path.join(ROOT, "public", "subscriptions.json")
+    真实事故：引入 BOM 后，update.yml 的「汇总结果」步骤用 encoding="utf-8"
+    读 status.json → JSONDecodeError: Unexpected UTF-8 BOM → run#3 在第 8 步失败。
+    本类确保同类问题不会再发生。
+    """
+
+    PROD_DIR = os.path.join(ROOT, "public")
+
+    def test_all_json_artifacts_have_bom(self):
+        """所有 json 产物都应带 BOM —— 这是老客户端加载的前提。"""
+        if not os.path.isdir(self.PROD_DIR):
+            self.skipTest("尚未构建")
+        n = 0
+        for fn in sorted(os.listdir(self.PROD_DIR)):
+            if not fn.endswith(".json"):
+                continue
+            with open(os.path.join(self.PROD_DIR, fn), "rb") as f:
+                head = f.read(3)
+            self.assertEqual(head, b"\xef\xbb\xbf", f"{fn} 缺少 UTF-8 BOM")
+            n += 1
+        if n == 0:
+            self.skipTest("无json 产物")
+
+    def test_state_file_roundtrip_with_bom(self):
+        """状态文件读写闭环：写入带 BOM → 读取必须成功。"""
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            orig = C.STATE_FILE
+            try:
+                C.STATE_FILE = os.path.join(td, "_state.json")
+                C.save_state({"version": 1, "sources": {"x": {"status": "ok"}}, "runs": []})
+                with open(C.STATE_FILE, "rb") as f:
+                    self.assertEqual(f.read(3), b"\xef\xbb\xbf", "状态文件写入应带 BOM")
+                st = C.load_state()          # 不得抛异常
+                self.assertIn("x", st["sources"])
+            finally:
+                C.STATE_FILE = orig
+
+    def test_no_plain_utf8_reads_of_bom_artifacts(self):
+        """扫描源码：读可能带 BOM 的文件时不得用 encoding="utf-8"。"""
+        bad: list[str] = []
+        targets = ("scripts/build.py", "scripts/validate.py", "scripts/merge.py",
+                   "scripts/common.py", ".github/workflows/update.yml")
+        for rel in targets:
+            fp = os.path.join(ROOT, *rel.split("/"))
+            if not os.path.exists(fp):
+                continue
+            with open(fp, encoding="utf-8-sig") as f:
+                for i, line in enumerate(f, 1):
+                    if 'encoding="utf-8-sig"' in line or 'encoding="utf-8"' not in line:
+                        continue
+                    st = line.strip()
+                    if '"r"' in st or "json.load" in st:
+                        bad.append(f"{rel}:{i}: {st[:78]}")
+        msg = "以下位置用 utf-8 读可能带 BOM 的文件（应改 utf-8-sig）：" + chr(10) + chr(10).join(bad)
+        self.assertEqual(bad, [], msg)
 
     def _load(self, name):
         p = os.path.join(ROOT, "public", name)

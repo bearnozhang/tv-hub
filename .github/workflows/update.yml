@@ -75,7 +75,8 @@ jobs:
         run: |
           python - <<'PY'
           import json, os, sys
-          s = json.load(open("public/status.json", encoding="utf-8"))
+          # 用utf-8-sig：产物带 UTF-8 BOM（BOM 是老客户端加载的前提）
+          s = json.load(open("public/status.json", encoding="utf-8-sig"))
           su = s["summary"]
           # GITHUB_OUTPUT / GITHUB_STEP_SUMMARY 可能不存在（本地复现、第三方 CI 等），
           # 缺失时降级为 stdout 输出，绝不因KeyError 让整个步骤失败。
