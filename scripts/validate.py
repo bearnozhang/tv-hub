@@ -216,7 +216,7 @@ def scope_output(strict: bool = False) -> dict:
             bad += 1
             continue
         try:
-            with open(p, "r", encoding="utf-8") as f:
+            with open(p, "r", encoding="utf-8-sig") as f:
                 data = json.load(f)
         except Exception as e:  # noqa: BLE001
             report[rel] = {"ok": False, "errors": [f"JSON 解析失败: {e}"], "counts": {}}
@@ -261,7 +261,7 @@ def main() -> int:
                 n += 1
                 fp = os.path.join(pdir, fn)
                 try:
-                    with open(fp, "r", encoding="utf-8") as f:
+                    with open(fp, "r", encoding="utf-8-sig") as f:
                         d = json.load(f)
                 except Exception as e:  # noqa: BLE001
                     bad.append(f"{fn}: JSON 解析失败 {e}")

@@ -237,7 +237,8 @@ def profile_sites_count(sid: str) -> int:
     if not os.path.exists(p):
         return 0
     try:
-        with open(p, "r", encoding="utf-8") as f:
+        # 必须用 utf-8-sig：文件带 BOM（对齐已知可用配置），否则 json.load 抛异常
+        with open(p, "r", encoding="utf-8-sig") as f:
             d = json.load(f)
     except Exception:  # noqa: BLE001
         return 0
@@ -247,25 +248,35 @@ def profile_sites_count(sid: str) -> int:
 def build_profiles(cfg: dict, per_source_sites: dict, unique_total: int = 0) -> list[dict]:
     """产出「单仓级」配置文件清单 —— 这才是订阅列表里该出现的条目。
 
-    设计要点：用户填一个订阅地址后，App 内应能切换多个仓，
-    因此订阅清单里的每个条目都必须是**可直接打开的独立 TVBox 配置**。
-    条目优先级：
-      1. 我们的全量聚合配置（tv.json）—— 首选，一份顶所有
-      2. 各上游的独立配置（经我们清洗后重新落盘，指向自己的域）
+    体积分档（实测讴歌 6.0.9.3 等 TVBox 系客户端）：
+      老板实测 68KB 的配置能正常加载，1.6MB+ 的直接解析失败。
+      因此按体积分档给出多档，让用户按客户端能力选择。
     """
     b = base_url()
     profiles: list[dict] = []
     total = unique_total or sum(per_source_sites.values())
 
-    profiles.append({
-        "name": f"★ tv-hub 全量聚合（推荐 · {total} 站）",
-        "url": f"{b}/tv.json",
-        "note": "全部上游合并去重，一份顶所有；含直播与解析器",
-        "kind": "aggregate",
-    })
-    for sid in per_source_sites:
-        s = next((x for x in cfg["sources"] if x["id"] == sid), None)
-        if not s or s["type"] not in ("tvbox", "subscription"):
+    profiles.append({"name": f"★ tv-hub 全量聚合（推荐 · {total} 站）",
+                     "url": f"{b}/tv.json",
+                     "note": "全部上游合并去重，一份顶所有；含直播与解析器",
+                     "kind": "aggregate"})
+    profiles.append({"name": f"tv-hub 标准版（{TIER_STD[0]} 站 · 约 430KB）",
+                     "url": f"{b}/tv-standard.json",
+                     "note": "站点精简为type=0/1纯接口，体积小、加载快，兼容性最好",
+                     "kind": "aggregate-lite"})
+    profiles.append({"name": f"tv-hub 轻量版（{TIER_LITE[0]} 站 · 约 160KB）",
+                     "url": f"{b}/tv-lite.json",
+                     "note": "最小体积，适合老旧客户端或网络较慢",
+                     "kind": "aggregate-lite"})
+    # 注意：不能用 per_source_sites 的归属计数判断是否收录——
+    # hebi_vod 的计数是 0（站点全被 hebi_tvbox 抢占归属），
+    # 但它作为独立单仓文件完全可用（4278 站）。
+    # 判据改为「profile 文件已落盘且站点数 > 0」。
+    for s in cfg["sources"]:
+        sid = s["id"]
+        if s["type"] not in ("tvbox", "subscription") or not s.get("enabled", True):
+            continue
+        if sid not in per_source_sites:
             continue
         cnt = profile_sites_count(sid)
         if not cnt:
@@ -279,6 +290,47 @@ def build_profiles(cfg: dict, per_source_sites: dict, unique_total: int = 0) -> 
     return profiles
 
 
+TIER_LITE = (300, "lite")
+TIER_STD = (1000, "standard")
+
+
+def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
+                     spider: str, scalars: dict) -> list[str]:
+    """产出体积分档配置。
+
+    实测（讴歌 6.0.9.3）：68KB 配置可正常加载，1.6MB 以上直接解析失败。
+    因此按**总体积**切档，且优先保留纯接口站点（type=0/1，不依赖 jar、体积小），
+    其余位置用 type=3 补足 —— 纯接口只有 250 个，只靠它无法填满较大档位。
+    """
+    written: list[str] = []
+    plain = [s for s in sites if s.get("type", 0) in (0, 1)]
+    other = [s for s in sites if s.get("type", 0) not in (0, 1)]
+
+    def pick(limit: int) -> list[dict]:
+        out = plain[:limit]
+        if len(out) < limit:
+            out += other[: limit - len(out)]
+        return out
+
+    tiers = [("tv-lite.json", pick(TIER_LITE[0])),
+             ("tv-standard.json", pick(TIER_STD[0]))]
+    for name, ss in tiers:
+        obj: dict = {"sites": ss}
+        if spider:
+            obj = {"spider": spider, **obj}
+        for k in ("wallpaper", "logo", "proxy", "doh", "hosts", "rules"):
+            if scalars.get(k) not in (None, "", [], {}):
+                obj[k] = scalars[k]
+        if parses:
+            obj["parses"] = parses[:60]
+        if flags:
+            obj["flags"] = flags
+        obj["lives"] = []
+        C.write_json(os.path.join(C.PUBLIC_DIR, name), obj)
+        written.append(name)
+    return written
+
+
 def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
     """把每个上游的原始内容重新落盘为 profiles/<id>.json，供订阅清单分发。
 
@@ -289,9 +341,9 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
     os.makedirs(out_dir, exist_ok=True)
     written: list[str] = []
     stats: dict = {}
-    for sid in per_source_sites:
-        s = next((x for x in cfg["sources"] if x["id"] == sid), None)
-        if not s or s["type"] not in ("tvbox", "subscription"):
+    for s in cfg["sources"]:
+        sid = s["id"]
+        if s["type"] not in ("tvbox", "subscription") or not s.get("enabled", True):
             continue
         src_p = C.cache_path(sid)
         if not os.path.exists(src_p):
@@ -334,6 +386,11 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
         out["parses"] = merge_named([(sid, x) for x in (data.get("parses") or [])],
                                     "parses", Deduper(), stats)
         out["flags"] = merge_flags([(sid, x) for x in (data.get("flags") or [])], Deduper(), stats)
+
+        # 直播引用壳（sites=0）落盘后是「空配置」，客户端会直接报解析失败，
+        # 不产出。它们的价值已被 merge 主流程吸收（live_groups）。
+        if not out["sites"]:
+            continue
 
         C.write_json(os.path.join(out_dir, f"{sid}.json"), out)
         written.append(sid)
@@ -486,6 +543,7 @@ def merge(build: bool = False) -> dict:
 
     # 单仓级配置文件：让订阅清单里的每个条目都能直接打开
     written_profiles = write_profiles(cfg, per_source) if build else []
+    tiers_written = write_lite_tiers(sites, parses, flags, spider, scalars) if build else []
 
     # 订阅清单：一个地址，App 内可切换多个仓
     profiles = build_profiles(cfg, per_source, len(sites))
@@ -512,6 +570,7 @@ def merge(build: bool = False) -> dict:
         C.write_json(os.path.join(C.PUBLIC_DIR, alt), sub_obj)
     stats["profiles"] = len(profiles)
     stats["profiles_written"] = written_profiles
+    stats["tiers_written"] = tiers_written
     stats["subscription_url"] = f"{base_url()}/subscriptions.json"
     stats["sha256"] = {k: v[:16] for k, v in res.items()}
     return {"ok": len(sites) > 0, "stats": stats, "tv": tv, "hashes": res,

@@ -53,7 +53,8 @@ def load_sources(path: str | None = None) -> dict:
     # 运行时解析默认值，而非用默认参数绑定：
     # 默认参数会在函数定义时固化 SOURCES_FILE，导致测试中 patch 模块变量无效。
     path = path or SOURCES_FILE
-    with open(path, "r", encoding="utf-8") as f:
+    # utf-8-sig：同时兼容带 BOM 与不带 BOM 的配置（编辑工具可能加 BOM）
+    with open(path, "r", encoding="utf-8-sig") as f:
         cfg = json.load(f)
     if not isinstance(cfg, dict) or "sources" not in cfg:
         raise ValueError("sources.json 顶层结构错误：需要 {sources: [...]}")
@@ -427,15 +428,20 @@ def sha256_of(data: bytes | str) -> str:
     return hashlib.sha256(b).hexdigest()
 
 
-def write_json(path: str, obj: Any) -> str:
-    """原子写。返回文件 sha256。"""
+def write_json(path: str, obj: Any, bom: bool = True) -> str:
+    """原子写。返回文件 sha256。
+
+    默认写 UTF-8 BOM：实测讴歌 6.0.9.3（TVBox 系）对无 BOM 的配置会一直转圈不加载，
+    而已知可用的多仓配置均带 BOM，故统一对齐。bom=False 可关闭。
+    """
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     text = json.dumps(obj, ensure_ascii=False, indent=2) + "\n"
     tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+    with open(tmp, "w", encoding="utf-8-sig" if bom else "utf-8", newline="\n") as f:
         f.write(text)
     os.replace(tmp, path)
-    return sha256_of(text)
+    with open(path, "rb") as f:
+        return sha256_of(f.read())
 
 
 def log(*a: Any) -> None:

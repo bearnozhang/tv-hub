@@ -60,7 +60,7 @@ class TestSourcesConfig(unittest.TestCase):
         for i, bad in enumerate(bad_cases):
             with tempfile.TemporaryDirectory() as td:
                 p = os.path.join(td, "sources.json")
-                with open(p, "w", encoding="utf-8") as f:
+                with open(p, "w", encoding="utf-8-sig") as f:
                     json.dump(bad, f, ensure_ascii=False)
                 with self.assertRaises(ValueError, msg=f"case {i} 应被拒绝"):
                     C.load_sources(p)
@@ -340,7 +340,7 @@ class TestFetchFallback(unittest.TestCase):
         os.makedirs(C.CONFIG_DIR, exist_ok=True)
         cfg = {"version": 1, "sources": [{"id": "dead", "name": "死源", "type": "tvbox",
                                           "primary": "https://dead.invalid/x.json", "enabled": True}]}
-        with open(C.SOURCES_FILE, "w", encoding="utf-8") as f:
+        with open(C.SOURCES_FILE, "w", encoding="utf-8-sig") as f:
             json.dump(cfg, f, ensure_ascii=False)
         import fetch as F
         dflt = {"timeout": 3, "retries": 0, "retry_backoff_seconds": 0, "user_agent": "test"}
@@ -400,7 +400,7 @@ class TestWorkflowLint(unittest.TestCase):
     def test_catches_top_level_step_name(self):
         """真实事故的回归测试：顶格 - name 必须被抓出。"""
         import workflow_lint
-        src = open(self.WF, encoding="utf-8").read()
+        src = open(self.WF, encoding="utf-8-sig").read()
         broken = src.replace("      - name: 汇总结果", "- name: 汇总结果")
         self.assertNotEqual(broken, src, "测试前提失效：未找到汇总结果锚点")
         with tempfile.TemporaryDirectory() as td:
@@ -413,7 +413,7 @@ class TestWorkflowLint(unittest.TestCase):
 
     def test_catches_missing_quotes_on_on(self):
         import workflow_lint
-        src = open(self.WF, encoding="utf-8").read()
+        src = open(self.WF, encoding="utf-8-sig").read()
         broken = src.replace('"on":', "on:")
         self.assertNotEqual(broken, src, "测试前提失效：未找到 on 锚点")
         self.assertNotEqual(broken, src)
@@ -426,7 +426,7 @@ class TestWorkflowLint(unittest.TestCase):
 
     def test_catches_bad_cron(self):
         import workflow_lint
-        src = open(self.WF, encoding="utf-8").read()
+        src = open(self.WF, encoding="utf-8-sig").read()
         broken = src.replace('cron: "5 2 * * *"', 'cron: "5 2 * *"')
         self.assertNotEqual(broken, src, "测试前提失效：未找到 cron 锚点")
         with tempfile.TemporaryDirectory() as td:
@@ -438,7 +438,7 @@ class TestWorkflowLint(unittest.TestCase):
 
     def test_catches_tab_indent(self):
         import workflow_lint
-        src = open(self.WF, encoding="utf-8").read()
+        src = open(self.WF, encoding="utf-8-sig").read()
         broken = src.replace("      - name: Checkout", "\t- name: Checkout")
         self.assertNotEqual(broken, src)
         with tempfile.TemporaryDirectory() as td:
@@ -453,7 +453,7 @@ class TestWorkflowLint(unittest.TestCase):
         cron 五段顺序是「分 时 日 月 周」，所以 10:05 → `5 2`，22:05 → `5 14`。
         刻意避开整点（`2 2` / `2 14` 已废弃），减少 GitHub 整点高峰排队延迟。"""
         import re
-        src = open(self.WF, encoding="utf-8").read()
+        src = open(self.WF, encoding="utf-8-sig").read()
         crons = sorted(re.findall(r'cron:\s*"([^"]+)"', src))
         self.assertEqual(crons, ["5 14 * * *", "5 2 * * *"],
                          f"cron 与北京 10:05/22:05 不符：{crons}（应为 5 2 与 5 14）")
@@ -462,7 +462,7 @@ class TestWorkflowLint(unittest.TestCase):
         """回归测试：曾写成 `2 2`/`2 14`（注释说整点、实际第2 分钟运行），
         已改为 `5 2`/`5 14`。本用例防止回退。"""
         import re
-        src = open(self.WF, encoding="utf-8").read()
+        src = open(self.WF, encoding="utf-8-sig").read()
         crons = re.findall(r'cron:\s*"([^"]+)"', src)
         self.assertTrue(crons, "未找到 cron 配置")
         for c in crons:
@@ -474,7 +474,7 @@ class TestWorkflowLint(unittest.TestCase):
     def test_heredoc_terminators_aligned(self):
         import workflow_lint
         # lint 内部对未闭合/错位 heredoc 会报错；此处确保真实文件确实有 heredoc 且被正确识别
-        src = open(self.WF, encoding="utf-8").read()
+        src = open(self.WF, encoding="utf-8-sig").read()
         self.assertIn("<<'PY'", src)
         self.assertEqual(workflow_lint.lint(self.WF), [])
 
@@ -488,7 +488,7 @@ class TestSubscriptionAndProfiles(unittest.TestCase):
         p = os.path.join(ROOT, "public", name)
         if not os.path.exists(p):
             self.skipTest("尚未构建，先跑 python scripts/build.py")
-        with open(p, "r", encoding="utf-8") as f:
+        with open(p, "r", encoding="utf-8-sig") as f:
             return json.load(f)
 
     def test_subscription_is_urls_list(self):
@@ -518,7 +518,7 @@ class TestSubscriptionAndProfiles(unittest.TestCase):
             rel = m.group(1)
             p = os.path.join(ROOT, "public", *rel.split("/"))
             self.assertTrue(os.path.exists(p), f"订阅条目无对应文件: {url} -> {p}")
-            with open(p, encoding="utf-8") as f:
+            with open(p, encoding="utf-8-sig") as f:
                 data = json.load(f)
             if "urls" in data:          # 多仓订阅原样转发，跳过 TVBox 校验
                 self.assertTrue(data["urls"])
@@ -538,7 +538,7 @@ class TestSubscriptionAndProfiles(unittest.TestCase):
             if not fn.endswith(".json"):
                 continue
             n += 1
-            with open(os.path.join(pdir, fn), encoding="utf-8") as f:
+            with open(os.path.join(pdir, fn), encoding="utf-8-sig") as f:
                 d = json.load(f)
             if "urls" in d:
                 continue
@@ -562,7 +562,7 @@ class TestRealArtifacts(unittest.TestCase):
         p = os.path.join(ROOT, "public", "tv.json")
         if not os.path.exists(p):
             self.skipTest("尚未构建，先跑 python scripts/build.py")
-        with open(p, encoding="utf-8") as f:
+        with open(p, encoding="utf-8-sig") as f:
             data = json.load(f)
         r = V.validate_tv_output(data)
         self.assertTrue(r["ok"], r["errors"])
@@ -572,7 +572,7 @@ class TestRealArtifacts(unittest.TestCase):
         p = os.path.join(ROOT, "public", "live.json")
         if not os.path.exists(p):
             self.skipTest("尚未构建")
-        with open(p, encoding="utf-8") as f:
+        with open(p, encoding="utf-8-sig") as f:
             data = json.load(f)
         r = V.validate_live_output(data)
         self.assertTrue(r["ok"], r["errors"])
@@ -582,7 +582,7 @@ class TestRealArtifacts(unittest.TestCase):
         p = os.path.join(ROOT, "public", "status.json")
         if not os.path.exists(p):
             self.skipTest("尚未构建")
-        with open(p, encoding="utf-8") as f:
+        with open(p, encoding="utf-8-sig") as f:
             data = json.load(f)
         self.assertTrue(V.validate_status(data)["ok"])
         self.assertEqual(data["summary"]["total_sources"], len(C.load_sources()["sources"]))
@@ -591,7 +591,7 @@ class TestRealArtifacts(unittest.TestCase):
         p = os.path.join(ROOT, "public", "tv.json")
         if not os.path.exists(p):
             self.skipTest("尚未构建")
-        with open(p, encoding="utf-8") as f:
+        with open(p, encoding="utf-8-sig") as f:
             data = json.load(f)
         keys = [s.get("key") for s in data["sites"] if s.get("key")]
         self.assertEqual(len(keys), len(set(keys)), "最终配置中存在重复 key")
