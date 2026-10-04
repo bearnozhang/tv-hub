@@ -219,6 +219,127 @@ def group_channels(channels: list[dict], src_id: str) -> dict[str, dict]:
     return groups
 
 
+# 产物对外基址。Cloudflare 部署后为自定义域，未部署时回落 GitHub raw。
+# 可用环境变量 TVHUB_BASE_URL 覆盖。
+DEFAULT_BASE_URL = "https://tv.bearno1.dpdns.org"
+
+
+def base_url() -> str:
+    env = os.environ.get("TVHUB_BASE_URL", "").strip()
+    return (env or DEFAULT_BASE_URL).rstrip("/")
+
+
+def profile_sites_count(sid: str) -> int:
+    """读已落盘的 profile，取真实站点数。
+    不用 per_source_sites（那是「去重归属计数」，同key 被多源命中时只算给首个来源，
+    各源数字相加会远大于实际唯一站点数）。"""
+    p = os.path.join(C.PUBLIC_DIR, "profiles", f"{sid}.json")
+    if not os.path.exists(p):
+        return 0
+    try:
+        with open(p, "r", encoding="utf-8") as f:
+            d = json.load(f)
+    except Exception:  # noqa: BLE001
+        return 0
+    return len(d.get("sites") or [])
+
+
+def build_profiles(cfg: dict, per_source_sites: dict, unique_total: int = 0) -> list[dict]:
+    """产出「单仓级」配置文件清单 —— 这才是订阅列表里该出现的条目。
+
+    设计要点：用户填一个订阅地址后，App 内应能切换多个仓，
+    因此订阅清单里的每个条目都必须是**可直接打开的独立 TVBox 配置**。
+    条目优先级：
+      1. 我们的全量聚合配置（tv.json）—— 首选，一份顶所有
+      2. 各上游的独立配置（经我们清洗后重新落盘，指向自己的域）
+    """
+    b = base_url()
+    profiles: list[dict] = []
+    total = unique_total or sum(per_source_sites.values())
+
+    profiles.append({
+        "name": f"★ tv-hub 全量聚合（推荐 · {total} 站）",
+        "url": f"{b}/tv.json",
+        "note": "全部上游合并去重，一份顶所有；含直播与解析器",
+        "kind": "aggregate",
+    })
+    for sid in per_source_sites:
+        s = next((x for x in cfg["sources"] if x["id"] == sid), None)
+        if not s or s["type"] not in ("tvbox", "subscription"):
+            continue
+        cnt = profile_sites_count(sid)
+        if not cnt:
+            continue
+        profiles.append({
+            "name": f"{s['name']} · {cnt} 站",
+            "url": f"{b}/profiles/{sid}.json",
+            "note": (s.get("notes") or "")[:80],
+            "kind": "single",
+        })
+    return profiles
+
+
+def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
+    """把每个上游的原始内容重新落盘为 profiles/<id>.json，供订阅清单分发。
+
+    必须应用与主配置**完全相同**的清洗，否则用户切到单仓会踩到上游脏数据
+    （实测：hebijunge 的 lives 里混有站点对象、ysc 有缺 name 的条目）。
+    """
+    out_dir = os.path.join(C.PUBLIC_DIR, "profiles")
+    os.makedirs(out_dir, exist_ok=True)
+    written: list[str] = []
+    stats: dict = {}
+    for sid in per_source_sites:
+        s = next((x for x in cfg["sources"] if x["id"] == sid), None)
+        if not s or s["type"] not in ("tvbox", "subscription"):
+            continue
+        src_p = C.cache_path(sid)
+        if not os.path.exists(src_p):
+            continue
+        with open(src_p, "rb") as f:
+            body = f.read()
+        try:
+            data = json.loads(body.decode("utf-8-sig"))
+        except Exception:  # noqa: BLE001
+            continue
+
+        if s["type"] == "subscription":
+            # 多仓订阅原样转发（它本身就是给 App 切换用的清单）
+            urls = data.get("urls")
+            if isinstance(urls, list) and urls:
+                C.write_json(os.path.join(out_dir, f"{sid}.json"),
+                             {"urls": [u for u in urls if isinstance(u, dict) and u.get("url")]})
+                written.append(sid)
+            continue
+
+        out: dict = {}
+        for k in ("spider", "wallpaper", "logo", "warningText", "proxy", "doh",
+                  "hosts", "rules", "version", "ad", "tihuan"):
+            if k in data and data[k] not in (None, "", [], {}):
+                out[k] = data[k]
+
+        # 注意：这里必须用**独立的 Deduper**。
+        # 主配置的 Deduper 跨源共享，hebi_tvbox 已抢占了全部 key 归属，
+        # 若复用同一个，hebi_vod 的 sites 会被全部去重掉 → 产出空配置。
+        out["sites"] = merge_sites([(sid, x) for x in (data.get("sites") or [])],
+                                    Deduper(), stats)
+
+        # lives 分类：站点对象分流回 sites，空 url 丢弃
+        good_lives, rescued = classify_lives([(sid, x) for x in (data.get("lives") or [])], stats)
+        if rescued:
+            out["sites"] = out["sites"] + merge_sites(
+                [(f"r:{r['key']}", r) for r in rescued], Deduper(), stats)
+        out["lives"] = merge_named(good_lives, "lives", Deduper(), stats)
+
+        out["parses"] = merge_named([(sid, x) for x in (data.get("parses") or [])],
+                                    "parses", Deduper(), stats)
+        out["flags"] = merge_flags([(sid, x) for x in (data.get("flags") or [])], Deduper(), stats)
+
+        C.write_json(os.path.join(out_dir, f"{sid}.json"), out)
+        written.append(sid)
+    return written
+
+
 def merge(build: bool = False) -> dict:
     """build=True 时把结果写入 public/；否则只统计。"""
     cfg = C.load_sources()
@@ -361,6 +482,16 @@ def merge(build: bool = False) -> dict:
 
     ensure = C.ensure_dirs()
     del ensure
+    per_source = stats.get("per_source_sites", {})
+
+    # 单仓级配置文件：让订阅清单里的每个条目都能直接打开
+    written_profiles = write_profiles(cfg, per_source) if build else []
+
+    # 订阅清单：一个地址，App 内可切换多个仓
+    profiles = build_profiles(cfg, per_source, len(sites))
+    sub_obj = {
+        "urls": [{"name": p["name"], "url": p["url"]} for p in profiles],
+    }
     res = {
         "tv": C.write_json(os.path.join(C.PUBLIC_DIR, "tv.json"), tv),
         "live": C.write_json(os.path.join(C.PUBLIC_DIR, "live.json"), {
@@ -368,12 +499,19 @@ def merge(build: bool = False) -> dict:
             "groups": len(live_out), "channels": ch_total,
             "lives": live_out + lives,
         }),
-        "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), {
-            "updated_at": C.bjnow(), "count": len(subscriptions), "urls": subscriptions,
-        }),
+        "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
     }
+    # 富信息版（带 note/kind），便于人看；App 只读上面的 urls
+    C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.detail.json"), {
+        "updated_at": C.bjnow(), "count": len(profiles),
+        "base_url": base_url(), "profiles": profiles,
+    })
+    stats["profiles"] = len(profiles)
+    stats["profiles_written"] = written_profiles
+    stats["subscription_url"] = f"{base_url()}/subscriptions.json"
     stats["sha256"] = {k: v[:16] for k, v in res.items()}
-    return {"ok": len(sites) > 0, "stats": stats, "tv": tv, "hashes": res}
+    return {"ok": len(sites) > 0, "stats": stats, "tv": tv, "hashes": res,
+            "profiles": profiles}
 
 
 def main() -> int:

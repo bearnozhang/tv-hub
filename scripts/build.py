@@ -130,7 +130,7 @@ def build_status(cfg: dict, state: dict, stats: dict) -> dict:
     return {
         "generated_at": C.iso(),
         "generated_at_bj": C.bjnow(),
-        "base_url": os.environ.get("TVHUB_BASE_URL", ""),
+        "base_url": os.environ.get("TVHUB_BASE_URL", "").strip() or M.base_url(),
         "summary": {
             "total_sources": len(srcs), "ok": ok, "stale": stale, "failed": failed,
             "raw_sites": stats.get("raw_sites", 0),

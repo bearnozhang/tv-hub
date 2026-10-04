@@ -146,6 +146,33 @@ def validate_status(data: dict) -> dict:
             "counts": {"sources": len(data["sources"])}}
 
 
+def validate_subscription(data: dict) -> dict:
+    """订阅清单校验：必须是 {urls:[{name,url}]}，且每条 URL 可解析。
+    这是用户唯一需要填的地址，坏了整条链路就断了。"""
+    errs: list[str] = []
+    warns: list[str] = []
+    if not isinstance(data, dict):
+        return {"ok": False, "errors": ["subscriptions.json 顶层不是对象"], "warnings": []}
+    urls = data.get("urls")
+    if not isinstance(urls, list) or not urls:
+        return {"ok": False, "errors": ["subscriptions.json 缺少非空 urls 数组"], "warnings": []}
+    base = ""
+    for i, u in enumerate(urls):
+        if not isinstance(u, dict):
+            errs.append(f"urls[{i}] 不是对象"); continue
+        if not u.get("name"):
+            errs.append(f"urls[{i}] 缺 name")
+        url = u.get("url", "")
+        if not url.startswith(("http://", "https://")):
+            errs.append(f"urls[{i}] url 非法: {url[:60]}")
+        elif url.endswith("/tv.json"):
+            base = url[:-len("/tv.json")]
+    if not base:
+        warns.append("清单里没有指向 tv.json 的聚合配置条目")
+    return {"ok": not errs, "errors": errs[:20], "warnings": warns,
+            "counts": {"urls": len(urls), "base": base or "-"}}
+
+
 def scope_cache() -> dict:
     cfg = C.load_sources()
     state = C.load_state()
@@ -179,6 +206,7 @@ def scope_output(strict: bool = False) -> dict:
         ("public/tv.json", lambda d: validate_tv_output(d, strict)),
         ("public/live.json", lambda d: validate_live_output(d, strict)),
         ("public/status.json", validate_status),
+        ("public/subscriptions.json", validate_subscription),
     ]
     bad = 0
     for rel, fn in targets:
@@ -221,6 +249,36 @@ def main() -> int:
         rep["cache"] = cr
         if not cr["_summary"]["ok"]:
             rep["_summary"] = {"ok": False, "errors": ["cache 校验不通过"], "warnings": []}
+        # 校验单仓配置：订阅清单里点进去的每一个都必须能用
+        pdir = os.path.join(C.PUBLIC_DIR, "profiles")
+        if os.path.isdir(pdir):
+            C.log("[validate] 补充校验 public/profiles/ …")
+            bad = []
+            n = 0
+            for fn in sorted(os.listdir(pdir)):
+                if not fn.endswith(".json"):
+                    continue
+                n += 1
+                fp = os.path.join(pdir, fn)
+                try:
+                    with open(fp, "r", encoding="utf-8") as f:
+                        d = json.load(f)
+                except Exception as e:  # noqa: BLE001
+                    bad.append(f"{fn}: JSON 解析失败 {e}")
+                    continue
+                if "urls" in d:
+                    rep.setdefault(f"public/profiles/{fn}", {})["ok"] = bool(d["urls"])
+                    continue
+                r = validate_tv_output(d)
+                if not r["ok"]:
+                    bad.append(f"{fn}: {len(r['errors'])} 处错误 {r['errors'][:2]}")
+                else:
+                    C.log(f"  [OK ] public/profiles/{fn:24s} {r['counts']}")
+            rep["profiles"] = {"ok": not bad, "errors": bad[:10], "warnings": [],
+                               "counts": {"files": n, "bad": len(bad)}}
+            if bad:
+                rep["_summary"] = {"ok": False, "errors": [f"{len(bad)} 个单仓配置不可用"],
+                                    "warnings": []}
     C.log(f"[validate] 结果: {json.dumps(rep['_summary'], ensure_ascii=False)}")
     return 0 if rep["_summary"]["ok"] else 1
 

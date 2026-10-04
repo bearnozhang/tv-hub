@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -476,6 +477,82 @@ class TestWorkflowLint(unittest.TestCase):
         src = open(self.WF, encoding="utf-8").read()
         self.assertIn("<<'PY'", src)
         self.assertEqual(workflow_lint.lint(self.WF), [])
+
+
+class TestSubscriptionAndProfiles(unittest.TestCase):
+    """订阅清单与单仓配置 —— 用户只需填一个订阅地址，靠它切换多个仓。"""
+
+    SUB = os.path.join(ROOT, "public", "subscriptions.json")
+
+    def _load(self, name):
+        p = os.path.join(ROOT, "public", name)
+        if not os.path.exists(p):
+            self.skipTest("尚未构建，先跑 python scripts/build.py")
+        with open(p, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def test_subscription_is_urls_list(self):
+        """必须是 App 认识的 {urls:[{name,url}]}，否则填了也没用。"""
+        d = self._load("subscriptions.json")
+        self.assertIsInstance(d.get("urls"), list)
+        self.assertGreater(len(d["urls"]), 0)
+        for u in d["urls"]:
+            self.assertIn("name", u)
+            self.assertTrue(u["url"].startswith("https://"))
+
+    def test_first_entry_is_aggregate(self):
+        """第一个条目必须是全量聚合 —— 用户默认就该拿到最全的。"""
+        d = self._load("subscriptions.json")
+        self.assertTrue(d["urls"][0]["url"].endswith("/tv.json"),
+                        "首个订阅条目必须是聚合配置 tv.json")
+
+    def test_all_entries_reachable_and_valid(self):
+        """订阅清单里每一条都必须真实可打开 —— 这是用户切换时会踩的地方。"""
+        import validate as V
+        d = self._load("subscriptions.json")
+        for u in d["urls"]:
+            url = u["url"]
+            # URL 形如 https://host/tv.json 或 https://host/profiles/xxx.json
+            m = re.match(r"^https://[^/]+/(.+)$", url)
+            self.assertTrue(m, f"URL 格式异常: {url}")
+            rel = m.group(1)
+            p = os.path.join(ROOT, "public", *rel.split("/"))
+            self.assertTrue(os.path.exists(p), f"订阅条目无对应文件: {url} -> {p}")
+            with open(p, encoding="utf-8") as f:
+                data = json.load(f)
+            if "urls" in data:          # 多仓订阅原样转发，跳过 TVBox 校验
+                self.assertTrue(data["urls"])
+                continue
+            r = V.validate_tv_output(data)
+            self.assertTrue(r["ok"], f"{url} 不可用: {r['errors'][:3]}")
+            self.assertGreater(r["counts"]["sites"], 0)
+
+    def test_profiles_dir_has_no_empty_config(self):
+        """单仓配置不能是空的 —— 复用主配置的 Deduper 会导致全站被去重掉。"""
+        import validate as V
+        pdir = os.path.join(ROOT, "public", "profiles")
+        if not os.path.isdir(pdir):
+            self.skipTest("尚未生成 profiles/")
+        n = 0
+        for fn in os.listdir(pdir):
+            if not fn.endswith(".json"):
+                continue
+            n += 1
+            with open(os.path.join(pdir, fn), encoding="utf-8") as f:
+                d = json.load(f)
+            if "urls" in d:
+                continue
+            r = V.validate_tv_output(d)
+            self.assertTrue(r["ok"], f"{fn} 不可用: {r['errors'][:3]}")
+            self.assertGreater(len(d.get("sites") or []), 100,
+                               f"{fn} 站点数异常偏少，疑似被跨源 Deduper 误去重")
+        if n == 0:
+            self.skipTest("profiles/ 为空")
+
+    def test_base_url_is_custom_domain(self):
+        """订阅地址应指向自定义域（Cloudflare），不是 raw。"""
+        import merge as M
+        self.assertIn("dpdns.org", M.base_url())
 
 
 class TestRealArtifacts(unittest.TestCase):
