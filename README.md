@@ -1,7 +1,7 @@
 # tv-hub
 
 TVBox / 影视仓配置聚合器。**多上游自动抓取 → 实际校验 → 去重 → 合并 → 失败回退 → 统一配置输出**，
-由 GitHub Actions 每天两次（北京时间 10:00 / 22:00）自动更新并回提交。
+由 GitHub Actions 每天两次（北京时间 10:05 / 22:05）自动更新并回提交。
 
 纯标准库 Python，无第三方依赖、无Docker、无数据库、无 Redis、无 LLM。
 
@@ -136,7 +136,8 @@ python -m unittest discover -s tests -v
 
 `.github/workflows/update.yml`：
 
-- **每天北京时间 10:00 与 22:00** → cron `2 2 * * *` 与 `2 14 * * *`（Actions 用 UTC）
+- **每天北京时间 10:05 与 22:05** → cron `5 2 * * *` 与 `5 14 * * *`（Actions 用 UTC，
+  UTC = 北京时间减 8 小时；刻意避开整点以减少排队延迟）
 - 支持 `workflow_dispatch` 手动触发，可勾选「只用缓存重建」
 - 流程：lint 自检 → 测试 → build → 独立复核 → 写摘要 → **有变化才commit/push** → 传Artifact
 - 权限最小化：仅 `contents: write`
@@ -153,7 +154,7 @@ GitHub 规则：**workflow 在默认分支上失败后，push 触发器会被抑
 修复后：
 - run#2（`workflow_dispatch`）✅ success，9 个步骤全绿
 - 自动提交 `chore: 自动更新配置 <run_id>` 由 `github-actions[bot]` 完成
-- push 触发仍处抑制期 → 依赖 cron（北京时间 10:00 / 22:00）维持日常更新
+- push 触发仍处抑制期 → 依赖 cron（北京时间 10:05 / 22:05）维持日常更新
 
 **`scripts/workflow_lint.py` 就是为此写的**：它能在提交前抓出这类静默失败。
 

@@ -1,11 +1,12 @@
 name: update
 
-#北京时间每天 10:00 与 22:00 = UTC 02:00 与 14:00
+# 每天北京时间 10:05 与 22:05 = UTC 02:05 与 14:05
 # （GitHub Actions cron 一律按 UTC 解释，不能写北京时间）
+#刻意避开整点：整点是全平台提交高峰，定时任务排队更易被延迟。
 "on":
   schedule:
-    - cron: "2 2 * * *"    # 10:00 Asia/Shanghai
-    - cron: "2 14 * * *"   # 22:00 Asia/Shanghai
+    - cron: "5 2 * * *"    # 10:05 Asia/Shanghai
+    - cron: "5 14 * * *"   # 22:05 Asia/Shanghai
   workflow_dispatch:
     inputs:
       skip_fetch:

@@ -401,7 +401,7 @@ class TestWorkflowLint(unittest.TestCase):
         import workflow_lint
         src = open(self.WF, encoding="utf-8").read()
         broken = src.replace("      - name: 汇总结果", "- name: 汇总结果")
-        self.assertNotEqual(broken, src, "测试前提失效：未找到目标行")
+        self.assertNotEqual(broken, src, "测试前提失效：未找到汇总结果锚点")
         with tempfile.TemporaryDirectory() as td:
             p = os.path.join(td, "broken.yml")
             with open(p, "w", encoding="utf-8", newline="\n") as f:
@@ -414,6 +414,7 @@ class TestWorkflowLint(unittest.TestCase):
         import workflow_lint
         src = open(self.WF, encoding="utf-8").read()
         broken = src.replace('"on":', "on:")
+        self.assertNotEqual(broken, src, "测试前提失效：未找到 on 锚点")
         self.assertNotEqual(broken, src)
         with tempfile.TemporaryDirectory() as td:
             p = os.path.join(td, "broken.yml")
@@ -425,8 +426,8 @@ class TestWorkflowLint(unittest.TestCase):
     def test_catches_bad_cron(self):
         import workflow_lint
         src = open(self.WF, encoding="utf-8").read()
-        broken = src.replace('cron: "2 2 * * *"', 'cron: "2 2 * *"')
-        self.assertNotEqual(broken, src)
+        broken = src.replace('cron: "5 2 * * *"', 'cron: "5 2 * *"')
+        self.assertNotEqual(broken, src, "测试前提失效：未找到 cron 锚点")
         with tempfile.TemporaryDirectory() as td:
             p = os.path.join(td, "broken.yml")
             with open(p, "w", encoding="utf-8", newline="\n") as f:
@@ -446,14 +447,28 @@ class TestWorkflowLint(unittest.TestCase):
             errs = workflow_lint.lint(p)
         self.assertTrue(any("TAB" in e for e in errs), errs)
 
-    def test_cron_times_are_shanghai_10_and_22(self):
-        """cron 必须对应北京时间 10:00 与 22:00 = UTC 02:00与 14:00。
-        cron 五段顺序是「分 时 日 月 周」，所以 10:00→ `2 2`，22:00 → `2 14`。"""
+    def test_cron_times_are_shanghai_1005_and_2205(self):
+        """cron 必须对应北京时间 10:05 与 22:05 = UTC 02:05 与 14:05。
+        cron 五段顺序是「分 时 日 月 周」，所以 10:05 → `5 2`，22:05 → `5 14`。
+        刻意避开整点（`2 2` / `2 14` 已废弃），减少 GitHub 整点高峰排队延迟。"""
         import re
         src = open(self.WF, encoding="utf-8").read()
         crons = sorted(re.findall(r'cron:\s*"([^"]+)"', src))
-        self.assertEqual(crons, ["2 14 * * *", "2 2 * * *"],
-                         f"cron 与北京 10:00/22:00 不符：{crons}（应为 2 2与 2 14）")
+        self.assertEqual(crons, ["5 14 * * *", "5 2 * * *"],
+                         f"cron 与北京 10:05/22:05 不符：{crons}（应为 5 2 与 5 14）")
+
+    def test_cron_avoids_on_the_hour(self):
+        """回归测试：曾写成 `2 2`/`2 14`（注释说整点、实际第2 分钟运行），
+        已改为 `5 2`/`5 14`。本用例防止回退。"""
+        import re
+        src = open(self.WF, encoding="utf-8").read()
+        crons = re.findall(r'cron:\s*"([^"]+)"', src)
+        self.assertTrue(crons, "未找到 cron 配置")
+        for c in crons:
+            minute = int(c.split()[0])
+            self.assertNotEqual(
+                minute, 0,
+                f"cron `{c}` 在整点触发，应偏移到第 5 分钟以避开高峰")
 
     def test_heredoc_terminators_aligned(self):
         import workflow_lint
