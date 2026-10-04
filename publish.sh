@@ -33,18 +33,44 @@ echo "目标仓库：$REPO_ARG  可见性：$PRIVACY"
 echo
 
 # ---- 1. 跑测试（不通过不发布） ------------------------------------------------
+# 注意：`| tail` 会让管道退出码变成 tail 的 0，掩盖前面的失败。
+# 必须开pipefail 且显式校验 ${PIPESTATUS[0]}，否则测试挂了也会继续发布。
 echo "[1/5] 运行测试…"
+set +e
 python -m unittest discover -s tests 2>&1 | tail -3
+_rc=${PIPESTATUS[0]}
+set -e
+if [ "$_rc" -ne 0 ]; then
+  echo "❌ 测试未通过（退出码 $_rc），已中止，未推送任何内容。"
+  exit 1
+fi
+echo "  ✅ 测试通过"
 echo
 
 # ---- 2. 跑构建（不通过不发布） ------------------------------------------------
 echo "[2/5] 运行构建…"
+set +e
 python scripts/build.py 2>&1 | tail -4
+_rc=${PIPESTATUS[0]}
+set -e
+if [ "$_rc" -ne 0 ]; then
+  echo "❌ 构建失败（退出码 $_rc），已中止，未推送任何内容。"
+  exit 1
+fi
+echo "  ✅ 构建通过"
 echo
 
 # ---- 3. 独立校验 ---------------------------------------------------------------
 echo "[3/5] 校验产物…"
+set +e
 python scripts/validate.py --scope output 2>&1 | tail -5
+_rc=${PIPESTATUS[0]}
+set -e
+if [ "$_rc" -ne 0 ]; then
+  echo "❌ 产物校验失败（退出码 $_rc），已中止，未推送任何内容。"
+  exit 1
+fi
+echo "  ✅ 校验通过"
 echo
 
 # ---- 4. 提交 -------------------------------------------------------------------
@@ -60,10 +86,33 @@ echo
 
 # ---- 5. 配置远端并推送 ---------------------------------------------------------
 echo "[5/5] 配置远端并推送…"
-if git remote get-url origin >/dev/null 2>&1; then
-  git remote set-url origin "https://github.com/$REPO_ARG.git"
+REMOTE_URL="https://github.com/$REPO_ARG.git"
+
+# 安全闸：远端若已有提交，先确认是否可安全快进，绝不 --force 覆盖。
+if git ls-remote --heads "$REMOTE_URL" main 2>/dev/null | grep -q .; then
+  _remote_sha=$(git ls-remote "$REMOTE_URL" main | cut -f1)
+  if git cat-file -e "${_remote_sha}^{commit}" 2>/dev/null; then
+    if git merge-base --is-ancestor "$_remote_sha" HEAD; then
+      echo "  远端 main 是本地祖先，快进推送安全。"
+    else
+      echo "❌ 安全闸：远端 main ($_remote_sha) 含本地没有的提交。"
+      echo"   本脚本不会 --force 覆盖。已中止。"
+      echo "   请先人工确认：git fetch origin && git log --oneline main..origin/main"
+      exit 1
+    fi
+  else
+    echo "  远端 main($_remote_sha) 本地无该对象（浅克隆或 force-push 过）。"
+    echo "  为安全起见中止，请人工确认后手动 push。"
+    exit 1
+  fi
 else
-  git remote add origin "https://github.com/$REPO_ARG.git"
+  echo "  远端无 main 分支（空仓库），直接推送。"
+fi
+
+if git remote get-url origin >/dev/null 2>&1; then
+  git remote set-url origin "$REMOTE_URL"
+else
+  git remote add origin "$REMOTE_URL"
 fi
 git push -u origin main
 echo
