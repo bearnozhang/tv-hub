@@ -33,6 +33,6 @@ jobs:
         run: python scripts/build.py --skip-fetch
 
       - name: Deploy to Cloudflare Wrangler
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          npm i -g wrangler@latest
+          CLOUDFLARE_API_TOKEN="${{ secrets.CLOUDFLARE_API_TOKEN }}" wrangler deploy

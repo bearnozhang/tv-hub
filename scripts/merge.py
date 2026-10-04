@@ -804,6 +804,9 @@ def merge(build: bool = False) -> dict:
                 if isinstance(x, dict) and (x.get("key") or x.get("name"))]
     tv_sites = [x for x in tv_sites
                 if x.get("type", 0) != 1 or x.get("api")]
+    # type 3（聚合站点）必须有 api 才能被 App 识别，否则整份配置解析失败
+    tv_sites = [x for x in tv_sites
+                if x.get("type", 0) != 3 or x.get("api")]
 
     tv_lives = [x for x in keep_alive_lives(lives + live_out)
                 if _is_tv_group(str(x.get("name") or "").strip())]
