@@ -2,11 +2,20 @@ name: update
 
 # 每天北京时间 10:05 与 22:05 = UTC 02:05 与 14:05
 # （GitHub Actions cron 一律按 UTC 解释，不能写北京时间）
-#刻意避开整点：整点是全平台提交高峰，定时任务排队更易被延迟。
+# 刻意避开整点：整点是全平台提交高峰，定时任务排队更易被延迟。
 "on":
   schedule:
     - cron: "5 2 * * *"    # 10:05 Asia/Shanghai
     - cron: "5 14 * * *"   # 22:05 Asia/Shanghai
+  # push 触发只用于「改了配置/脚本立刻验证」，不用于日常更新（日常靠 schedule）。
+  # paths 过滤：只有配置或脚本变化才跑，避免产物提交相互触发形成循环。
+  push:
+    branches: [main]
+    paths:
+      - "config/**"
+      - "scripts/**"
+      - "public/_headers"
+      - ".github/workflows/update.yml"
   workflow_dispatch:
     inputs:
       skip_fetch:
@@ -14,6 +23,11 @@ name: update
         required: false
         default: false
         type: boolean
+      reason:
+        description: "本次运行原因（写入提交信息，便于溯源）"
+        required: false
+        default: "manual"
+        type: string
 
 permissions:
   contents: write
