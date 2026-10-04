@@ -1,25 +1,25 @@
 ﻿{
-  "updated_at": "2026-10-04 15:34:42",
+  "updated_at": "2026-10-04 16:02:59",
   "count": 6,
   "base_url": "https://tv.bearno1.dpdns.org",
   "profiles": [
     {
-      "name": "★ tv-hub 全量聚合（推荐 · 4334 站）",
-      "url": "https://tv.bearno1.dpdns.org/tv.json",
-      "note": "全部上游合并去重，一份顶所有；含直播与解析器",
-      "kind": "aggregate"
-    },
-    {
-      "name": "tv-hub 标准版（1000 站 · 约 430KB）",
-      "url": "https://tv.bearno1.dpdns.org/tv-standard.json",
-      "note": "站点精简为type=0/1纯接口，体积小、加载快，兼容性最好",
-      "kind": "aggregate-lite"
-    },
-    {
-      "name": "tv-hub 轻量版（300 站 · 约 160KB）",
+      "name": "★ tv-lite（300 站 · 兼容版）",
       "url": "https://tv.bearno1.dpdns.org/tv-lite.json",
-      "note": "最小体积，适合老旧客户端或网络较慢",
+      "note": "体积最小，启动首选；老客户端兼容最好",
       "kind": "aggregate-lite"
+    },
+    {
+      "name": "★ tv-standard（1000 站 · 兼容版）",
+      "url": "https://tv.bearno1.dpdns.org/tv-standard.json",
+      "note": "站点更多，兼容中等体积客户端",
+      "kind": "aggregate-lite"
+    },
+    {
+      "name": "tv-hub 全量聚合（4334 站 · 体积大）",
+      "url": "https://tv.bearno1.dpdns.org/tv.json",
+      "note": "全部上游合并去重；老客户端加载大文件会失败，需手动切换到此",
+      "kind": "aggregate"
     },
     {
       "name": "影视仓·单仓聚合 · 167 站",

@@ -256,18 +256,28 @@ def build_profiles(cfg: dict, per_source_sites: dict, unique_total: int = 0) -> 
     profiles: list[dict] = []
     total = unique_total or sum(per_source_sites.values())
 
-    profiles.append({"name": f"★ tv-hub 全量聚合（推荐 · {total} 站）",
+    # ⚠️ 关键约束（源码实证：FongMi/TV VodConfig.parseDepot）
+    #     parseDepot() 只执行 load(configs.get(0)) —— urls[0] 是App
+    #     唯一会自动加载的条目，其余仅作为「App 内可手动切换」的列表存在。
+    #     所以 urls[0] 必须是「一定能用且体积最小」的那一个，
+    #     否则 App 启动即解析失败（老客户端加载大文件会挂）。
+    #     实测（讴歌 6.0.9.3）：68KB 可用，136KB 以上失败。
+    #     → urls[0] 固定为轻量版；全量版排后面，仅供手动切换。
+    for tname, tcnt, tnote in (
+        ("tv-lite.json", TIER_LITE[0], "体积最小，启动首选；老客户端兼容最好"),
+        ("tv-standard.json", TIER_STD[0], "站点更多，兼容中等体积客户端"),
+    ):
+        profiles.append({
+            "name": f"★ {tname.replace('.json', '')}（{tcnt} 站 · 兼容版）",
+            "url": f"{b}/{tname}",
+            "note": tnote,
+            "kind": "aggregate-lite",
+        })
+
+    profiles.append({"name": f"tv-hub 全量聚合（{total} 站 · 体积大）",
                      "url": f"{b}/tv.json",
-                     "note": "全部上游合并去重，一份顶所有；含直播与解析器",
+                     "note": "全部上游合并去重；老客户端加载大文件会失败，需手动切换到此",
                      "kind": "aggregate"})
-    profiles.append({"name": f"tv-hub 标准版（{TIER_STD[0]} 站 · 约 430KB）",
-                     "url": f"{b}/tv-standard.json",
-                     "note": "站点精简为type=0/1纯接口，体积小、加载快，兼容性最好",
-                     "kind": "aggregate-lite"})
-    profiles.append({"name": f"tv-hub 轻量版（{TIER_LITE[0]} 站 · 约 160KB）",
-                     "url": f"{b}/tv-lite.json",
-                     "note": "最小体积，适合老旧客户端或网络较慢",
-                     "kind": "aggregate-lite"})
     # 注意：不能用 per_source_sites 的归属计数判断是否收录——
     # hebi_vod 的计数是 0（站点全被 hebi_tvbox 抢占归属），
     # 但它作为独立单仓文件完全可用（4278 站）。
@@ -312,6 +322,17 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
             out += other[: limit - len(out)]
         return out
 
+    # 键序对齐实测可用的 ysc_single_agg（sites 不在第 2 位）：
+    #   spider, wallpaper, logo, warningText, proxy, doh, hosts, rules,
+    #   sites, lives, parses, flags
+    KEY_ORDER = ("spider", "wallpaper", "logo", "warningText", "proxy", "doh",
+                 "hosts", "rules", "sites", "lives", "parses", "flags")
+
+    def ordered(o: dict) -> dict:
+        out = {k: o[k] for k in KEY_ORDER if k in o}
+        out.update({k: v for k, v in o.items() if k not in out})
+        return out
+
     tiers = [("tv-lite.json", pick(TIER_LITE[0])),
              ("tv-standard.json", pick(TIER_STD[0]))]
     for name, ss in tiers:
@@ -326,7 +347,7 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
         if flags:
             obj["flags"] = flags
         obj["lives"] = []
-        C.write_json(os.path.join(C.PUBLIC_DIR, name), obj)
+        C.write_json(os.path.join(C.PUBLIC_DIR, name), ordered(obj))
         written.append(name)
     return written
 

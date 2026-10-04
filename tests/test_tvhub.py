@@ -501,10 +501,18 @@ class TestSubscriptionAndProfiles(unittest.TestCase):
             self.assertTrue(u["url"].startswith("https://"))
 
     def test_first_entry_is_aggregate(self):
-        """第一个条目必须是全量聚合 —— 用户默认就该拿到最全的。"""
+        """urls[0] 必须是体积最小的那一档。
+
+        源码依据（FongMi/TV VodConfig.parseDepot）：
+            load(this.config = configs.get(0));
+        parseDepot 只自动加载 urls[0]，其余条目仅供 App 内手动切换。
+        若 urls[0] 是大文件，App 启动即解析失败（实测讴歌 6.0.9.3：
+        2.8MB 的 tv.json 失败，136KB 的 tv-lite 可用）。
+        """
         d = self._load("subscriptions.json")
-        self.assertTrue(d["urls"][0]["url"].endswith("/tv.json"),
-                        "首个订阅条目必须是聚合配置 tv.json")
+        first = d["urls"][0]
+        self.assertTrue(first["url"].endswith("tv-lite.json"),
+                        f"urls[0] 必须是 tv-lite.json（App 只自动加载它），实际 {first['url']}")
 
     def test_all_entries_reachable_and_valid(self):
         """订阅清单里每一条都必须真实可打开 —— 这是用户切换时会踩的地方。"""
@@ -526,6 +534,34 @@ class TestSubscriptionAndProfiles(unittest.TestCase):
             r = V.validate_tv_output(data)
             self.assertTrue(r["ok"], f"{url} 不可用: {r['errors'][:3]}")
             self.assertGreater(r["counts"]["sites"], 0)
+
+    def test_tiers_key_order_matches_known_good(self):
+        """分档配置的键序必须与实测可用的 ysc_single_agg 一致：
+        spider → wallpaper → logo → ... → sites → lives → parses → flags
+        （sites 不能排在第 2 位）。
+        """
+        ref = self._load("profiles/ysc_single_agg.json")
+        ref_keys = list(ref.keys())
+        for name in ("tv-lite.json", "tv-standard.json"):
+            p = os.path.join(ROOT, "public", name)
+            if not os.path.exists(p):
+                self.skipTest("尚未生成分档")
+            with open(p, encoding="utf-8-sig") as f:
+                d = json.load(f)
+            ks = list(d.keys())
+            # 分档没有 warningText，跳过比较缺失的键
+            common = [k for k in ref_keys if k in ks]
+            self.assertEqual([k for k in ks if k in common], common,
+                             f"{name} 键序与已知可用配置不一致：{ks}")
+
+    def test_lite_tier_smaller_than_full(self):
+        """分档必须显著小于全量，否则 urls[0] 仍会超客户端上限。"""
+        lite = os.path.join(ROOT, "public", "tv-lite.json")
+        full = os.path.join(ROOT, "public", "tv.json")
+        if not (os.path.exists(lite) and os.path.exists(full)):
+            self.skipTest("尚未构建")
+        self.assertLess(os.path.getsize(lite), os.path.getsize(full) / 3,
+                        "轻量版体积应远小于全量版")
 
     def test_profiles_dir_has_no_empty_config(self):
         """单仓配置不能是空的 —— 复用主配置的 Deduper 会导致全站被去重掉。"""
