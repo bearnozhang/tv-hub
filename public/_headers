@@ -1,13 +1,6 @@
 # Cloudflare Pages / Workers 静态资源响应头
-# 作用：强制所有配置类文件用 application/json，
-# 避免 .txt/.webp 后缀被 Cloudflare 判成 text/plain 或 image/webp，
-# 导致 App 按错误类型解析失败。
-#
-# 注意：Cloudflare Pages 会把所有命中规则的头叠加，
-# 同名头在多个命中规则里会变成重复值（如 "CT: a, a"）。
-# 因此每个响应头只在一条互不重叠的规则里设置一次：
-#   CT / Cache-Control  →  *.json 与 *.txt（扩展名互斥，不重叠）
-#   ACAO / nosniff      →  /*（只设这两项）
+# 规则：同名头只在一条规则里出现一次，路径必须互不重叠，
+# 否则 Cloudflare Pages 会把多个命中的同名头拼成 "a, a"。
 
 /*
   Access-Control-Allow-Origin: *
@@ -17,6 +10,30 @@
   Content-Type: application/json; charset=utf-8
   Cache-Control: public, max-age=300
 
-/*.txt
+# 这些 .txt 实际承载 JSON（多仓订阅/TVBox 配置），强制按 JSON 返回
+/sub.txt
   Content-Type: application/json; charset=utf-8
   Cache-Control: public, max-age=300
+
+/live-sub.txt
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300
+
+/live-mini.txt
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300
+
+/live-lite.txt
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300
+
+/live-standard.txt
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300
+
+/live-full.txt
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300
+
+# /live.txt 是真正的纯文本直播源（分组,#genre# 格式），
+# 不要在 _headers 里覆盖其 Content-Type，保留默认 text/plain

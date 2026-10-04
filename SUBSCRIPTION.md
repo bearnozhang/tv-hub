@@ -1,13 +1,41 @@
 # 订阅地址
 
-## ✅ 你要填的地址（只填这一个）
+## ✅ 你要填的地址
+
+### 1. 「点播/配置地址」——填这个（单个配置）
+
+```
+https://tv.bearno1.dpdns.org/tv.json
+```
+
+全量聚合，4334 个站点 + 直播，一次到位。**不要填 `/sub.txt`**——
+那是「多仓订阅清单」，App 的「配置地址」字段读不了，会报无法解析。
+
+### 2. 「直播地址」——填这个（纯文本直播源）
+
+```
+https://tv.bearno1.dpdns.org/live.txt
+```
+
+这是 `分组,#genre# / 频道名,URL` 的标准纯文本直播源，是直播字段该认的格式。
+`/live-sub.txt` 是 JSON 订阅清单，不是直播源；`/live-*.txt` 是 TVBox 配置 JSON，
+直播字段也不认。
+
+### 3. 「多仓订阅」入口（可选）
 
 ```
 https://tv.bearno1.dpdns.org/subscriptions.json
 ```
 
-**影视仓 / 讴歌 都填这个。** App 读取后会自动列出下面 4 个仓，你在 App 内点选切换，
-不需要再逐个手动填别的地址。
+只有当你 App 里有「多仓订阅 / 仓库」这个入口时才填它；不是配置地址。
+
+---
+
+## 排错：「无法解析」最常见的三个原因
+
+1. **填错字段**：`配置地址` 填了 `/sub.txt`（它是订阅清单 JSON，不是配置）。
+2. **Cloudflare 压缩**：客户端发 `Accept-Encoding: br, gzip` 时返回 Brotli 流，老客户端拿不到明文 → 必须在 Cloudflare 关闭 Brotli/Gzip（见 TROUBLESHOOT.md）。
+3. **直播字段填了 JSON**：`/live-sub.txt`、`/live-*.txt` 都是 JSON，直播字段要 `/live.txt`。
 
 ### App 内会看到的清单（2026-10-04 线上实测）
 

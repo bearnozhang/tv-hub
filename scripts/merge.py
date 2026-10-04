@@ -333,6 +333,38 @@ def clean_live_entries(lives: list[dict]) -> tuple[list[dict], dict]:
     return out, stats
 
 
+def render_live_txt(lives: list[dict]) -> str:
+    """把清洗后的 lives 渲染成影视仓/讴歌通用的纯文本直播源格式。
+
+    格式（与上游 tvs_live_txt 一致）：
+        分组名,#genre#
+        频道名,URL
+        频道名,URL
+    同一频道多备源 = 连续多行同名条目（上游源同样这么写）。
+    """
+    lines = []
+    for lv in lives:
+        name = str(lv.get("name") or "").strip()
+        if not name:
+            continue
+        chans = lv.get("channels") or []
+        if chans:
+            lines.append(f"{name},#genre#")
+            for c in chans:
+                cn = str(c.get("name") or "").strip()
+                urls = [u for u in (c.get("urls") or [])
+                        if isinstance(u, str) and C.is_valid_remote_url(u)]
+                for u in urls:
+                    if cn:
+                        lines.append(f"{cn},{u}")
+            continue
+        url = str(lv.get("url") or "").strip()
+        if url and C.is_valid_remote_url(url):
+            lines.append(f"{name},#genre#")
+            lines.append(f"{name},{url}")
+    return "\n".join(lines) + "\n"
+
+
 # 直播配置键序：与实测可用的点播配置保持一致（lives 不在第 2 位）
 LIVE_KEY_ORDER = ("spider", "wallpaper", "logo", "warningText", "proxy", "doh",
                   "hosts", "rules", "lives", "parses", "flags")
@@ -820,6 +852,13 @@ def merge(build: bool = False) -> dict:
         }),
         "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
     }
+    # 纯文本直播源（分组,#genre# / 频道名,URL），供 App「直播地址」入口直接填入。
+    # live-*.txt 是 TVBox 配置 JSON，讴歌的直播字段不认；真正要用这个。
+    live_txt = render_live_txt(keep_alive_lives(clean_groups + clean_refs))
+    live_txt_path = os.path.join(C.PUBLIC_DIR, "live.txt")
+    with open(live_txt_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(live_txt)
+    res["live_txt"] = live_txt_path
     # 直播订阅清单：与点播同构，urls[0] 为体积最小的档位
     live_sub = {"urls": [{"name": f"★ {t['name'].replace('.txt','')}（{t['groups']} 组 / {t['channels']} 频道）",
                           "url": f"{base_url()}/{t['name']}"} for t in live_tiers]}
