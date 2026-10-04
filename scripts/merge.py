@@ -852,6 +852,8 @@ def merge(build: bool = False) -> dict:
         }),
         "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
     }
+    # tvs.json：多仓订阅的短域名（subscriptions.json 的别名），方便记忆/填地址
+    C.write_json(os.path.join(C.PUBLIC_DIR, "tvs.json"), sub_obj)
     # 纯文本直播源（分组,#genre# / 频道名,URL），供 App「直播地址」入口直接填入。
     # live-*.txt 是 TVBox 配置 JSON，讴歌的直播字段不认；真正要用这个。
     live_txt = render_live_txt(keep_alive_lives(clean_groups + clean_refs))
