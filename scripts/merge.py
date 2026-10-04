@@ -501,11 +501,15 @@ def merge(build: bool = False) -> dict:
         }),
         "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
     }
-    # 富信息版（带 note/kind），便于人看；App 只读上面的 urls
+    # 富信息版（带note/kind），便于人看；App 只读上面的 urls
     C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.detail.json"), {
         "updated_at": C.bjnow(), "count": len(profiles),
         "base_url": base_url(), "profiles": profiles,
     })
+    # 多仓订阅的常见后缀变体：影视仓等 App 习惯用 .txt/.webp 承载多仓订阅，
+    # 填在「仓库 / 订阅地址」入口（不是「配置地址」）。内容仍是同一份 JSON。
+    for alt in ("sub.txt", "sub.webp", "sub.json"):
+        C.write_json(os.path.join(C.PUBLIC_DIR, alt), sub_obj)
     stats["profiles"] = len(profiles)
     stats["profiles_written"] = written_profiles
     stats["subscription_url"] = f"{base_url()}/subscriptions.json"

@@ -212,6 +212,12 @@ def main() -> int:
 
     C.log("\n--- 阶段 4/4：落盘 ---")
     status = build_status(cfg, state, stats)
+    # _headers 由 Cloudflare 消费，必须保留（build 只覆盖产物，不会删它，
+    # 但为防万一显式校验并告警）
+    hdr = os.path.join(C.PUBLIC_DIR, "_headers")
+    if not os.path.exists(hdr):
+        C.log("[build][WARN] public/_headers 缺失，Cloudflare 会按后缀猜 Content-Type，"
+              "可能导致 .txt/.webp 订阅被解析失败")
     C.write_json(os.path.join(C.PUBLIC_DIR, "status.json"), status)
     html = render_index(status)
     with open(os.path.join(C.PUBLIC_DIR, "index.html"), "w", encoding="utf-8", newline="\n") as f:
