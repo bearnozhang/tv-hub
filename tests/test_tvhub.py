@@ -489,8 +489,9 @@ class TestBomConsistency(unittest.TestCase):
 
     PROD_DIR = os.path.join(ROOT, "public")
 
-    def test_all_json_artifacts_have_bom(self):
-        """所有 json 产物都应带 BOM —— 这是老客户端加载的前提。"""
+    def test_all_json_artifacts_have_no_bom(self):
+        """所有 json 产物不得带 BOM —— 其实而手机端 Android org.json 会把 BOM 当非法字符，
+        解析配置直接失败。"""
         if not os.path.isdir(self.PROD_DIR):
             self.skipTest("尚未构建")
         n = 0
@@ -499,7 +500,9 @@ class TestBomConsistency(unittest.TestCase):
                 continue
             with open(os.path.join(self.PROD_DIR, fn), "rb") as f:
                 head = f.read(3)
-            self.assertEqual(head, b"\xef\xbb\xbf", f"{fn} 缺少 UTF-8 BOM")
+            self.assertNotEqual(head, b"\xef\xbb\xbf", f"{fn} 仍带 UTF-8 BOM，客户端会解析失败")
+            with open(os.path.join(self.PROD_DIR, fn), "rb") as f:
+                self.assertEqual(f.read(1), b"{", f"{fn} 不是以 JSON 对象开头")
             n += 1
         if n == 0:
             self.skipTest("无json 产物")
@@ -513,14 +516,14 @@ class TestBomConsistency(unittest.TestCase):
                 C.STATE_FILE = os.path.join(td, "_state.json")
                 C.save_state({"version": 1, "sources": {"x": {"status": "ok"}}, "runs": []})
                 with open(C.STATE_FILE, "rb") as f:
-                    self.assertEqual(f.read(3), b"\xef\xbb\xbf", "状态文件写入应带 BOM")
+                    self.assertNotEqual(f.read(3), b"\xef\xbb\xbf", "状态文件不应带 BOM")
                 st = C.load_state()          # 不得抛异常
                 self.assertIn("x", st["sources"])
             finally:
                 C.STATE_FILE = orig
 
-    def test_no_plain_utf8_reads_of_bom_artifacts(self):
-        """扫描源码：读可能带 BOM 的文件时不得用 encoding="utf-8"。"""
+    def test_no_bom_written_in_code(self):
+        """回归：产物必须不带 BOM（否则 Android org.json 解析失败）。"""
         bad: list[str] = []
         targets = ("scripts/build.py", "scripts/validate.py", "scripts/merge.py",
                    "scripts/common.py", ".github/workflows/update.yml")
@@ -528,15 +531,11 @@ class TestBomConsistency(unittest.TestCase):
             fp = os.path.join(ROOT, *rel.split("/"))
             if not os.path.exists(fp):
                 continue
-            with open(fp, encoding="utf-8-sig") as f:
+            with open(fp, encoding="utf-8") as f:
                 for i, line in enumerate(f, 1):
-                    if 'encoding="utf-8-sig"' in line or 'encoding="utf-8"' not in line:
-                        continue
-                    st = line.strip()
-                    if '"r"' in st or "json.load" in st:
-                        bad.append(f"{rel}:{i}: {st[:78]}")
-        msg = "以下位置用 utf-8 读可能带 BOM 的文件（应改 utf-8-sig）：" + chr(10) + chr(10).join(bad)
-        self.assertEqual(bad, [], msg)
+                    if "utf-8-sig" in line and "write" in line:
+                        bad.append(f"{rel}:{i}: {line.strip()[:78]}")
+        self.assertEqual(bad, [], "以下位置仍在写入出带 BOM 的文件：" + chr(10).join(bad))
 
     def _load(self, name):
         p = os.path.join(ROOT, "public", name)
@@ -732,14 +731,14 @@ class TestLiveConfig(unittest.TestCase):
                     self.assertLessEqual(len(c.get("urls") or []), cap,
                                          f"{f} 的 {c.get('name')} 备源数超上限 {cap}")
 
-    def test_live_tiers_have_bom_and_key_order(self):
-        """直播分档同样要带 BOM，且 lives 不应排在第 2 位（对齐可用配置键序）。"""
+    def test_live_tiers_have_no_bom_and_key_order(self):
+        """直播分档不带 BOM，且 lives 不应排在第 2 位（对齐可用配置键序）。"""
         for f in ("live-mini.txt", "live-lite.txt", "live-standard.txt", "live-full.txt"):
             p = os.path.join(self.PUB, f)
             if not os.path.exists(p):
                 continue
             with open(p, "rb") as fh:
-                self.assertEqual(fh.read(3), b"\xef\xbb\xbf", f"{f} 缺少 UTF-8 BOM")
+                self.assertNotEqual(fh.read(3), b"\xef\xbb\xbf", f"{f} 仍带 BOM")
             d = self._load(f)
             self.assertIn("lives", d)
             self.assertNotEqual(list(d.keys())[1] if len(d) > 1 else "", "lives",

@@ -476,8 +476,7 @@ def cache_path(src_id: str) -> str:
 def load_state() -> dict:
     if os.path.exists(STATE_FILE):
         try:
-            # utf-8-sig：状态文件带 BOM（与其他产物保持一致），不能用 utf-8 读
-            with open(STATE_FILE, "r", encoding="utf-8-sig") as f:
+            with open(STATE_FILE, "r", encoding="utf-8") as f:
                 st = json.load(f)
             if isinstance(st, dict) and "sources" in st:
                 st.setdefault("runs", [])
@@ -490,7 +489,7 @@ def load_state() -> dict:
 def save_state(st: dict) -> None:
     ensure_dirs()
     tmp = STATE_FILE + ".tmp"
-    with open(tmp, "w", encoding="utf-8-sig") as f:
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(st, f, ensure_ascii=False, indent=2)
     os.replace(tmp, STATE_FILE)
 
@@ -500,11 +499,12 @@ def sha256_of(data: bytes | str) -> str:
     return hashlib.sha256(b).hexdigest()
 
 
-def write_json(path: str, obj: Any, bom: bool = True) -> str:
+def write_json(path: str, obj: Any, bom: bool = False) -> str:
     """原子写。返回文件 sha256。
 
-    默认写 UTF-8 BOM：实测讴歌 6.0.9.3（TVBox 系）对无 BOM 的配置会一直转圈不加载，
-    而已知可用的多仓配置均带 BOM，故统一对齐。bom=False 可关闭。
+    默认不带 UTF-8 BOM：Android org.json/JSONObject 会把 BOM 当非法字符，
+    导致整份配置解析失败（症状就是 App 一直提示「解析失败」）。
+    bom=True 可显式开启供旧链路兼容（不再默认使用）。
     """
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     text = json.dumps(obj, ensure_ascii=False, indent=2) + "\n"
