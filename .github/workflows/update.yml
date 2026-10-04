@@ -36,6 +36,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: 校验 workflow 结构（防止缩进错误导致 run 秒级失败）
+        run: python scripts/workflow_lint.py
+
       - name: 单元测试（先测后跑，抓取不涉网的部分）
         run: python -m unittest discover -s tests -v
 
@@ -52,7 +55,7 @@ jobs:
       - name: 独立复核产物
         run: python scripts/validate.py --scope output
 
-- name: 汇总结果
+      - name: 汇总结果
         id: summary
         run: |
           python - <<'PY'

@@ -381,6 +381,88 @@ def _run_build() -> int:
         _s.argv = old
 
 
+class TestWorkflowLint(unittest.TestCase):
+    """workflow 结构校验 —— 防止再次出现「GitHub 接受文件但 run 秒级失败、jobs=[]」。
+
+    真实事故：`- name: 汇总结果` 被误写成顶格（0缩进），
+    GitHub 创建了 run #1（conclusion=failure）但 jobs=[]、created_at==updated_at，
+    runner 从未被分配，网页日志里看不到任何步骤输出。
+    """
+
+    WF = os.path.join(ROOT, ".github", "workflows", "update.yml")
+
+    def test_real_workflow_passes(self):
+        import workflow_lint
+        errs = workflow_lint.lint(self.WF)
+        self.assertEqual(errs, [], f"workflow 结构错误：{errs}")
+
+    def test_catches_top_level_step_name(self):
+        """真实事故的回归测试：顶格 - name 必须被抓出。"""
+        import workflow_lint
+        src = open(self.WF, encoding="utf-8").read()
+        broken = src.replace("      - name: 汇总结果", "- name: 汇总结果")
+        self.assertNotEqual(broken, src, "测试前提失效：未找到目标行")
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, "broken.yml")
+            with open(p, "w", encoding="utf-8", newline="\n") as f:
+                f.write(broken)
+            errs = workflow_lint.lint(p)
+        self.assertTrue(errs, "顶格 - name 必须被 lint 抓出")
+        self.assertTrue(any("缩进不一致" in e for e in errs), errs)
+
+    def test_catches_missing_quotes_on_on(self):
+        import workflow_lint
+        src = open(self.WF, encoding="utf-8").read()
+        broken = src.replace('"on":', "on:")
+        self.assertNotEqual(broken, src)
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, "broken.yml")
+            with open(p, "w", encoding="utf-8", newline="\n") as f:
+                f.write(broken)
+            errs = workflow_lint.lint(p)
+        self.assertTrue(any("引号" in e for e in errs), errs)
+
+    def test_catches_bad_cron(self):
+        import workflow_lint
+        src = open(self.WF, encoding="utf-8").read()
+        broken = src.replace('cron: "2 2 * * *"', 'cron: "2 2 * *"')
+        self.assertNotEqual(broken, src)
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, "broken.yml")
+            with open(p, "w", encoding="utf-8", newline="\n") as f:
+                f.write(broken)
+            errs = workflow_lint.lint(p)
+        self.assertTrue(any("cron" in e for e in errs), errs)
+
+    def test_catches_tab_indent(self):
+        import workflow_lint
+        src = open(self.WF, encoding="utf-8").read()
+        broken = src.replace("      - name: Checkout", "\t- name: Checkout")
+        self.assertNotEqual(broken, src)
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, "broken.yml")
+            with open(p, "w", encoding="utf-8", newline="\n") as f:
+                f.write(broken)
+            errs = workflow_lint.lint(p)
+        self.assertTrue(any("TAB" in e for e in errs), errs)
+
+    def test_cron_times_are_shanghai_10_and_22(self):
+        """cron 必须对应北京时间 10:00 与 22:00 = UTC 02:00与 14:00。
+        cron 五段顺序是「分 时 日 月 周」，所以 10:00→ `2 2`，22:00 → `2 14`。"""
+        import re
+        src = open(self.WF, encoding="utf-8").read()
+        crons = sorted(re.findall(r'cron:\s*"([^"]+)"', src))
+        self.assertEqual(crons, ["2 14 * * *", "2 2 * * *"],
+                         f"cron 与北京 10:00/22:00 不符：{crons}（应为 2 2与 2 14）")
+
+    def test_heredoc_terminators_aligned(self):
+        import workflow_lint
+        # lint 内部对未闭合/错位 heredoc 会报错；此处确保真实文件确实有 heredoc 且被正确识别
+        src = open(self.WF, encoding="utf-8").read()
+        self.assertIn("<<'PY'", src)
+        self.assertEqual(workflow_lint.lint(self.WF), [])
+
+
 class TestRealArtifacts(unittest.TestCase):
     """针对真实产物与真实上游结果的断言。"""
 
