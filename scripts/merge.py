@@ -224,6 +224,123 @@ def group_channels(channels: list[dict], src_id: str) -> dict[str, dict]:
 DEFAULT_BASE_URL = "https://tv.bearno1.dpdns.org"
 
 
+TIER_LIVE_CORE = ("央视", "卫视", "地方-", "港台", "其他")
+
+
+def clean_live_entries(lives: list[dict]) -> tuple[list[dict], dict]:
+    """清洗直播条目：剔除客户端无法使用的引用型。
+
+    源码依据（FongMi/TV LiveConfig.initLive）：
+      setLives(Live.objectFrom(...))
+      Collectors.toMap(Live::getName, ...)   // name 空/重复会抛异常
+    实测问题（上游脏数据）：
+      - 70 个 url 是 ./lives/xxx.txt 相对路径 → 客户端无法解析
+      - 49 个 url 指向 127.0.0.1 / localhost → 对客户端毫无意义
+      - 空 name 会让 toMap 抛 IllegalStateException
+    """
+    stats = {"relative": 0, "localhost": 0, "noname": 0, "dupname": 0}
+    seen: set[str] = set()
+    out: list[dict] = []
+    for x in lives:
+        if not isinstance(x, dict):
+            continue
+        name = str(x.get("name") or "").strip()
+        if not name:
+            stats["noname"] += 1
+            continue
+        if name in seen:
+            stats["dupname"] += 1
+            continue
+        url = str(x.get("url") or "").strip()
+        chans = x.get("channels")
+        if url and not url.startswith(("http://", "https://")):
+            stats["relative"] += 1
+            continue
+        if url.startswith(("http://127.0.0.1", "http://localhost")):
+            stats["localhost"] += 1
+            continue
+        if not url and not isinstance(chans, list):
+            continue
+        seen.add(name)
+        y = dict(x)
+        y["name"] = name
+        out.append(y)
+    return out, stats
+
+
+# 直播配置键序：与实测可用的点播配置保持一致（lives 不在第 2 位）
+LIVE_KEY_ORDER = ("spider", "wallpaper", "logo", "warningText", "proxy", "doh",
+                  "hosts", "rules", "lives", "parses", "flags")
+
+
+def write_live_tiers(live_out: list[dict], ref_lives: list[dict], spider: str,
+                     scalars: dict) -> list[dict]:
+    """产出直播分档配置。
+
+    实测（讴歌 6.0.9.3）：客户端对 >100KB 的配置会解析失败，
+    因此直播同样按体积分档，urls[0] 给最小最稳的一档。
+    """
+    written: list[dict] = []
+    grp = [x for x in live_out if x.get("channels")]
+
+    def ch_count(items: list[dict]) -> int:
+        return sum(len(x.get("channels") or []) for x in items)
+
+    # 核心台：央视 + 卫视（多备源、稳定性高）
+    core = [x for x in grp if x["name"] in ("央视", "卫视")]
+    # 地方台：按频道数降序，保证每一档都有实用价值
+    local = sorted([x for x in grp if x["name"].startswith("地方-")],
+                   key=lambda x: -ch_count([x]))
+    other = [x for x in grp if x["name"] not in ("央视", "卫视")
+             and not x["name"].startswith("地方-")]
+
+    tiers = [
+        ("live-mini.txt", core),                            # 仅央视+卫视，最小
+        ("live-lite.txt", core + local[:5]),                 # 央视+卫视+5 个地方
+        ("live-standard.txt", core + local[:20]),            # 央视+卫视+20 个地方
+        ("live-full.txt", grp),                              # 全部真实频道分组
+    ]
+    # 备源收敛：实测卫视平均 20.4 个备源/频道（52 频道就1063 个 URL），
+    # 体积与冗余都浪费。每频道保留 MAX_BACKUP 个备源即可（实测 3 个成功率已足够），
+    # 仍保留多备源机制的价值（播放失败自动换源），但不至于撑爆客户端。
+    def trim(items: list[dict], cap: int) -> list[dict]:
+        out = []
+        for g in items:
+            if not g.get("channels"):
+                out.append(g)
+                continue
+            chs = []
+            for c in g["channels"]:
+                urls = c.get("urls") or []
+                if len(urls) > cap:
+                    c = {**c, "urls": urls[:cap]}
+                chs.append(c)
+            out.append({**g, "channels": chs})
+        return out
+
+    # 备源上限：mini 档 2 个（最小体积），其余 3 个
+    caps = {"live-mini.txt": 2, "live-lite.txt": 3,
+            "live-standard.txt": 3, "live-full.txt": 3}
+
+    for name, items in tiers:
+        if not items:
+            continue
+        items = trim(items, caps.get(name, 3))
+        obj: dict = {}
+        for k in LIVE_KEY_ORDER:
+            if k == "lives":
+                obj["lives"] = items
+            elif k in ("spider",) and spider:
+                obj[k] = spider
+            elif k in scalars and scalars[k] not in (None, "", [], {}):
+                obj[k] = scalars[k]
+        C.write_json(os.path.join(C.PUBLIC_DIR, name), obj)
+        written.append({"name": name, "groups": len(items),
+                        "channels": ch_count(items),
+                        "bytes": os.path.getsize(os.path.join(C.PUBLIC_DIR, name))})
+    return written
+
+
 def base_url() -> str:
     """产物对外基址。
 
@@ -578,6 +695,11 @@ def merge(build: bool = False) -> dict:
     written_profiles = write_profiles(cfg, per_source) if build else []
     tiers_written = write_lite_tiers(sites, parses, flags, spider, scalars) if build else []
 
+    # 直播：清洗无效引用 + 体积分档（与点播同一套适配逻辑）
+    clean_groups, live_clean_stats = clean_live_entries(live_out)
+    clean_refs, ref_clean_stats = clean_live_entries(lives)
+    live_tiers = write_live_tiers(clean_groups, clean_refs, spider, scalars) if build else []
+
     # 订阅清单：一个地址，App 内可切换多个仓
     profiles = build_profiles(cfg, per_source, len(sites))
     sub_obj = {
@@ -587,15 +709,22 @@ def merge(build: bool = False) -> dict:
         "tv": C.write_json(os.path.join(C.PUBLIC_DIR, "tv.json"), tv),
         "live": C.write_json(os.path.join(C.PUBLIC_DIR, "live.json"), {
             "updated_at": C.bjnow(), "generated_at": C.iso(),
-            "groups": len(live_out), "channels": ch_total,
-            "lives": live_out + lives,
+            "groups": len(clean_groups), "channels": ch_total,
+            "lives": clean_groups + clean_refs,
         }),
         "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
     }
+    # 直播订阅清单：与点播同构，urls[0] 为体积最小的档位
+    live_sub = {"urls": [{"name": f"★ {t['name'].replace('.txt','')}（{t['groups']} 组 / {t['channels']} 频道）",
+                          "url": f"{base_url()}/{t['name']}"} for t in live_tiers]}
+    res["live_sub"] = C.write_json(os.path.join(C.PUBLIC_DIR, "live-sub.txt"), live_sub)
+    for alt in ("live-sub.json", "live-sub.webp"):
+        C.write_json(os.path.join(C.PUBLIC_DIR, alt), live_sub)
     # 富信息版（带note/kind），便于人看；App 只读上面的 urls
     C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.detail.json"), {
         "updated_at": C.bjnow(), "count": len(profiles),
         "base_url": base_url(), "profiles": profiles,
+        "live_profiles": live_tiers,
     })
     # 多仓订阅的常见后缀变体：影视仓等 App 习惯用 .txt/.webp 承载多仓订阅，
     # 填在「仓库 / 订阅地址」入口（不是「配置地址」）。内容仍是同一份 JSON。
@@ -604,6 +733,9 @@ def merge(build: bool = False) -> dict:
     stats["profiles"] = len(profiles)
     stats["profiles_written"] = written_profiles
     stats["tiers_written"] = tiers_written
+    stats["live_tiers"] = live_tiers
+    stats["live_cleaned"] = {**live_clean_stats,
+                             **{f"ref_{k}": v for k, v in ref_clean_stats.items()}}
     stats["subscription_url"] = f"{base_url()}/subscriptions.json"
     stats["sha256"] = {k: v[:16] for k, v in res.items()}
     return {"ok": len(sites) > 0, "stats": stats, "tv": tv, "hashes": res,

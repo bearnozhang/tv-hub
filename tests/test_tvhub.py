@@ -670,6 +670,98 @@ class TestBomConsistency(unittest.TestCase):
         self.assertIn("dpdns.org", M.base_url())
 
 
+class TestLiveConfig(unittest.TestCase):
+    """直播配置：与点播同一套适配逻辑（清洗 / 体积分档 / 键序 / BOM）。
+
+    源码依据（FongMi/TV LiveConfig.initLive）：
+        setLives(Live.objectFrom(e, spider).distinct()...)
+        Collectors.toMap(Live::getName, ...)   // name 空/重复 → 抛异常
+    """
+
+    PUB = os.path.join(ROOT, "public")
+
+    def _load(self, name):
+        p = os.path.join(self.PUB, name)
+        if not os.path.exists(p):
+            self.skipTest(f"尚未生成 {name}")
+        with open(p, encoding="utf-8-sig") as f:
+            return json.load(f)
+
+    def test_live_sub_urls0_is_smallest(self):
+        """直播订阅 urls[0] 必须是体积最小的一档（App 只自动加载它）。"""
+        d = self._load("live-sub.txt")
+        self.assertTrue(d["urls"])
+        first = d["urls"][0]["url"]
+        self.assertTrue(first.endswith("live-mini.txt"),
+                        f"urls[0] 应为 live-mini.txt，实际 {first}")
+
+    def test_live_mini_under_client_limit(self):
+        """最小档必须落在客户端可接受体积内（实测阈值 ~100KB）。"""
+        p = os.path.join(self.PUB, "live-mini.txt")
+        if not os.path.exists(p):
+            self.skipTest("尚未生成 live-mini.txt")
+        self.assertLess(os.path.getsize(p), 100_000,
+                        "live-mini 体积必须 < 100KB，否则老客户端仍会解析失败")
+
+    def test_no_unusable_live_urls(self):
+        """不得含相对路径或 localhost 的直播源（客户端无法使用）。"""
+        d = self._load("live.json")
+        bad_rel = [x["name"] for x in d["lives"]
+                   if x.get("url") and not str(x["url"]).startswith(("http://", "https://"))]
+        bad_local = [x["name"] for x in d["lives"]
+                     if str(x.get("url", "")).startswith(("http://127.0.0.1", "http://localhost"))]
+        self.assertEqual(bad_rel, [], f"含相对路径直播源：{bad_rel[:5]}")
+        self.assertEqual(bad_local, [], f"含 localhost 直播源：{bad_local[:5]}")
+
+    def test_live_names_unique_and_nonempty(self):
+        """Live.getName() 为空或重复会让 toMap 抛异常，整份配置加载失败。"""
+        for f in ("live.json", "live-mini.txt", "live-lite.txt",
+                  "live-standard.txt", "live-full.txt"):
+            d = self._load(f)
+            names = [str(x.get("name") or "") for x in d["lives"]]
+            self.assertTrue(all(n.strip() for n in names), f"{f} 存在空 name")
+            self.assertEqual(len(names), len(set(names)), f"{f} 存在重复 name")
+
+    def test_backup_urls_capped(self):
+        """备源必须收敛（实测卫视平均 20.4 个/频道，体积爆掉）。"""
+        for f in ("live-mini.txt", "live-lite.txt", "live-standard.txt", "live-full.txt"):
+            d = self._load(f)
+            cap = 2 if f == "live-mini.txt" else 3
+            for g in d["lives"]:
+                for c in (g.get("channels") or []):
+                    self.assertLessEqual(len(c.get("urls") or []), cap,
+                                         f"{f} 的 {c.get('name')} 备源数超上限 {cap}")
+
+    def test_live_tiers_have_bom_and_key_order(self):
+        """直播分档同样要带 BOM，且 lives 不应排在第 2 位（对齐可用配置键序）。"""
+        for f in ("live-mini.txt", "live-lite.txt", "live-standard.txt", "live-full.txt"):
+            p = os.path.join(self.PUB, f)
+            if not os.path.exists(p):
+                continue
+            with open(p, "rb") as fh:
+                self.assertEqual(fh.read(3), b"\xef\xbb\xbf", f"{f} 缺少 UTF-8 BOM")
+            d = self._load(f)
+            self.assertIn("lives", d)
+            self.assertNotEqual(list(d.keys())[1] if len(d) > 1 else "", "lives",
+                                f"{f} 的 lives 排在第 2 位")
+
+    def test_clean_live_entries_filters_bad(self):
+        import merge as M
+        bad = [
+            {"name": "相对", "url": "./lives/a.txt"},
+            {"name": "本地", "url": "http://127.0.0.1:9978/a.txt"},
+            {"name": "", "url": "http://x/a.txt"},
+            {"name": "OK", "url": "http://x/a.txt"},
+            {"name": "组", "channels": [{"name": "C1", "urls": ["http://x/1"]}]},
+        ]
+        out, st = M.clean_live_entries(bad)
+        names = [x["name"] for x in out]
+        self.assertEqual(names, ["OK", "组"], f"清洗结果不符：{names}")
+        self.assertEqual(st["relative"], 1)
+        self.assertEqual(st["localhost"], 1)
+        self.assertEqual(st["noname"], 1)
+
+
 class TestRealArtifacts(unittest.TestCase):
     """针对真实产物与真实上游结果的断言。"""
 

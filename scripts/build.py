@@ -59,9 +59,9 @@ __KPIS__
 <tbody>__ROWS__</tbody></table>
 <footer>
 订阅地址（部署 Pages 后可直接使用）：<br>
-· tv.json → <code>__BASE__/tv.json</code><br>
-· live.json → <code>__BASE__/live.json</code><br>
-· status.json → <code>__BASE__/status.json</code><br>
+· 点播配置 → <code>__BASE__/sub.txt</code><br>
+· 直播配置 → <code>__BASE__/live-sub.txt</code><br>
+· 状态文件 → <code>__BASE__/status.json</code><br>
 数据来源版权归各原始作者所有，本仓库仅做聚合与镜像。
 </footer>
 </div></body></html>
@@ -79,6 +79,7 @@ def render_index(status: dict) -> str:
         kpi("解析器 parses", s.get("unique_parses", 0)),
         kpi("直播分组", s.get("live_groups", 0)),
         kpi("直播频道", s.get("live_channels", 0)),
+        kpi("直播档位", len(s.get("live_tiers") or [])),
         kpi("成功上游", f"{s.get('ok', 0)}/{s.get('total_sources', 0)}"),
         kpi("去重掉站点", s.get("sites_deduped", 0)),
     ])
