@@ -1,6 +1,6 @@
 ﻿{
-  "updated_at": "2026-10-04 16:48:07",
-  "generated_at": "2026-10-04T08:48:07Z",
+  "updated_at": "2026-10-04 16:54:20",
+  "generated_at": "2026-10-04T08:54:20Z",
   "groups": 37,
   "channels": 3765,
   "lives": [
@@ -28189,6 +28189,15 @@
       "logo": "https://epg.112114.xyz/logo/{name}.png"
     },
     {
+      "name": "Json",
+      "type": 1,
+      "playerType": 1,
+      "url": "https://mirror.ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodSpider/main/json/live.json",
+      "epg": "http://epg.112114.xyz/?ch={name}&date={date}",
+      "logo": "https://epg.112114.xyz/logo/{name}.png",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+    },
+    {
       "name": "没4K",
       "type": 0,
       "url": "https://mpimg.cn/text.php?hash=7265d70b6834cefbddb61bcc2d9c99db",
@@ -28253,6 +28262,15 @@
       "ua": "okhttp/3.15,AptvPlayer/1.4.0",
       "playerType": 2,
       "timeout": 10
+    },
+    {
+      "name": "咪咕直播",
+      "type": 1,
+      "url": "http://www.52top.com.cn:678/downloads/migu.txt",
+      "epg": "https://gitee.com/taksssss/tv/raw/main/epg/112114.xml.gz,http://epg.51zmt.top:8000/e.xml,https://gitee.com/taksssss/tv/raw/main/epg/epgpw_tw.xml.gz",
+      "logo": "https://gitee.com/mytv-android/myTVlogo/raw/main/img/{name}.png",
+      "ua": "okhttp/3.15,AptvPlayer/1.4.1,Mozilla/5.0",
+      "playerType": 2
     },
     {
       "name": "清舒直播",
@@ -28580,9 +28598,24 @@
       "url": "https://proxy.api.030101.xyz/https://omds.zzong6599.workers.dev/live.m3u"
     },
     {
+      "name": "🔞台湾TV[直播]",
+      "type": 1,
+      "url": "https://pan.szfx.top/down.php/46a3539ac0df0c32687ea8079addec15.txt"
+    },
+    {
       "name": "☁云霄IPTV直播",
       "type": 0,
       "url": "https://iptv.445569.xyz/live.m3u"
+    },
+    {
+      "name": "☁云霄抖音直播",
+      "type": 1,
+      "url": "https://douyin.445569.xyz/live.m3u"
+    },
+    {
+      "name": "☁云霄快手直播",
+      "type": 1,
+      "url": "https://kuaishou.445569.xyz/list.m3u"
     },
     {
       "name": "☁云霄虎牙直播",
@@ -28653,6 +28686,16 @@
       "epg": "https://gitee.com/taksssss/tv/raw/main/epg/112114.xml.gz,http://epg.51zmt.top:8000/e.xml,https://gitee.com/taksssss/tv/raw/main/epg/epgpw_tw.xml.gz",
       "logo": "https://gitee.com/mytv-android/myTVlogo/raw/main/img/{name}.png",
       "ua": "okhttp/3.15,AptvPlayer/1.4.1,Mozilla/5.0"
+    },
+    {
+      "name": "央视TV直播",
+      "type": 1,
+      "url": "https://gh-proxy.org/raw.githubusercontent.com/vinkerq/iptv-api/refs/heads/master/iptv.txt"
+    },
+    {
+      "name": "咪咕TV直播",
+      "type": 1,
+      "url": "http://www.52top.com.cn:678/downloads/migu.txt"
     },
     {
       "name": "☁️风云直播☁️",
@@ -29013,11 +29056,21 @@
       "ua": "okhttp/3.15,AptvPlayer/1.4.1,Mozilla/5.0"
     },
     {
+      "name": "线路④",
+      "type": 1,
+      "url": "https://gh-proxy.org/raw.githubusercontent.com/vinkerq/iptv-api/refs/heads/master/iptv.txt"
+    },
+    {
       "name": "线路⑤",
       "url": "http://iptv.4666888.xyz/FYTV.m3u",
       "header": {
         "User-Agent": "okhttp/5.1.0"
       }
+    },
+    {
+      "name": "线路⑥",
+      "type": 1,
+      "url": "http://www.52top.com.cn:678/downloads/migu.txt"
     },
     {
       "name": "AI拾光",
@@ -29495,6 +29548,11 @@
       "type": 0,
       "ua": "okhttp/5.3.2",
       "url": "https://ghfast.top/https://raw.githubusercontent.com/Ameria22/TV/refs/heads/main/data/01%E5%9B%BD%E4%BA%A7%E7%9B%B4%E6%92%AD_20260417_024507.m3u"
+    },
+    {
+      "name": "直播源2",
+      "type": 1,
+      "url": "https://agit.ai/jyj/c120487/raw/branch/main/20230116.txt"
     },
     {
       "name": "饭太硬•综合",

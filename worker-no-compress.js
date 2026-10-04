@@ -31,7 +31,7 @@ export default {
     const upstream = new Request(request.url, request);
     upstream.headers.set("Accept-Encoding", "identity");
 
-    let response = await fetch(upcoming, {
+    let response = await fetch(upstream, {
       cf: { cacheEverything: true, cacheTtl: 300 },
     });
 

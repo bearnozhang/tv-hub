@@ -263,11 +263,11 @@ def scrub_urls(obj: Any, drop_keys: bool = True) -> Any:
                 #   - 全空
                 #   - type=1 却没 api（api 被剔除）
                 # 否则客户端 initSite 会遇到无法使用的站点而判定配置异常。
-                if isinstance(cleaned, dict):
-                    if not cleaned:
-                        continue
-                    if cleaned.get("type", 0) == 1 and not cleaned.get("api"):
-                        continue
+                # scrub_urls 只负责清URL，不做「是否该保留这个站点」的判断
+                #（那是 merge.write_profiles / merge 主流程的职责）。
+                # 若在此处丢站点，会造成站点数被静默削减。
+                if isinstance(cleaned, dict) and not cleaned:
+                    continue
                 res.append(cleaned)
                 continue
             res.append(scrub_urls(v, drop_keys))

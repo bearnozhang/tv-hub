@@ -789,17 +789,21 @@ class TestUrlScrubbing(unittest.TestCase):
                          {"key": "k2", "type": 1, "api": "https://ok.com/api"},
                          {"key": "k3", "type": 3, "api": "csp_X",
                           "jar": "https://jar.com/中文名.jar"}],
-               "lives": [{"name": "L", "url": "http://127.0.0.1/a"},
+               "lives": [{"name": "L", "url": "https://ok.com/中文台.m3u8"},
                          {"name": "L2", "url": "https://ok.com/live"}]}
         out = C.scrub_urls(src)
         # 非 ASCII 的标量 URL 字段直接丢弃
         self.assertNotIn("wallpaper", out)
         self.assertIn("logo", out)
-        # type=1 且 api 非 ASCII → 整条丢弃；api 合法的 k2 保留
-        self.assertEqual([s["key"] for s in out["sites"]], ["k2", "k3"])
-        self.assertNotIn("jar", out["sites"][1])      # 中文 jar 被剔除
-        # localhost 直播丢弃
-        self.assertEqual([l["name"] for l in out["lives"]], ["L2"])
+        # scrub_urls 只清 URL、不删站点（站点去留由 merge 层判断）：
+        #   k 的 api 被剔除但站点仍在（type=0 无需 api）；k2 的 api 合法保留；k3 正常
+        self.assertEqual([s["key"] for s in out["sites"]], ["k", "k2", "k3"])
+        self.assertNotIn("api", out["sites"][0])        # 非 ASCII api 已剔除
+        self.assertNotIn("jar", out["sites"][2])        # 中文 jar 被剔除
+        # list 里的 dict 元素：URL 字段被剔除但条目本身保留
+        #（条目去留由 merge.keep_alive_lives 负责，不在 scrub 层）
+        self.assertEqual([l["name"] for l in out["lives"]], ["L", "L2"])
+        self.assertNotIn("url", out["lives"][0])        # 中文 url 已剔除
 
     def test_no_unencodable_url_in_any_artifact(self):
         """所有产物中不得存在无法编码的 URL。"""

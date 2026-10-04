@@ -398,7 +398,8 @@ def write_live_tiers(live_out: list[dict], ref_lives: list[dict], spider: str,
             elif k in ("spider",) and spider:
                 obj[k] = spider
             elif k in scalars and scalars[k] not in (None, "", [], {}):
-                obj[k] = scalars[k]
+                # 标量同样要清洗（wallpaper 可能是中文域名）
+                obj[k] = C.scrub_urls(scalars[k])
         C.write_json(os.path.join(C.PUBLIC_DIR, name), obj)
         written.append({"name": name, "groups": len(items),
                         "channels": ch_count(items),
@@ -541,6 +542,12 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
         if flags:
             obj["flags"] = flags
         obj["lives"] = []
+        # ★ 清洗后剔除空壳站点：type=1 却没 api 的会被客户端判为配置异常。
+        #   实测 tv-lite 曾出现 sites[165](qc555) type=1 但缺 api。
+        cleaned_sites = [x for x in obj["sites"]
+                         if isinstance(x, dict) and (x.get("key") or x.get("name"))
+                         and (x.get("type", 0) != 1 or x.get("api"))]
+        obj["sites"] = cleaned_sites
         C.write_json(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(ordered(obj)))
         written.append(name)
     return written
