@@ -1,123 +1,115 @@
-# 订阅地址与部署状态
+# 订阅地址
 
-## ✅ 已上线（2026-10-04 实测）
-
-**自定义域（推荐使用，走 Cloudflare CDN）**
+## ✅ 你要填的地址（只填这一个）
 
 ```
-https://tv.bearno1.dpdns.org/tv.json          ← TVBox / 影视仓 配置地址
-https://tv.bearno1.dpdns.org/live.json        ← 直播配置
-https://tv.bearno1.dpdns.org/status.json      ← 状态
-https://tv.bearno1.dpdns.org/                 ← 状态看板
+https://tv.bearno1.dpdns.org/subscriptions.json
 ```
 
-**Worker 默认域（备用，同样实时）**
+**影视仓 / 讴歌 都填这个。** App 读取后会自动列出下面 4 个仓，你在 App 内点选切换，
+不需要再逐个手动填别的地址。
 
-```
-https://tv-hub.bearno1981.workers.dev/tv.json
-```
+### App 内会看到的清单（2026-10-04 线上实测）
 
-**GitHub raw（兜底，国内可能慢）**
-
-```
-https://raw.githubusercontent.com/bearnozhang/tv-hub/main/public/tv.json
-```
-
----
-
-## 在TVBox / 影视仓 里怎么填
-
-| 用途 | 填这个 |
-|---|---|
-| 主配置（影视仓/TVBox「配置地址」） | `https://tv.bearno1.dpdns.org/tv.json` |
-| 直播源（设置 → 直播 → 添加直播源） | `https://tv.bearno1.dpdns.org/live.json` |
-
----
-
-## 部署形态说明
-
-实际部署的是 **Cloudflare Workers**（不是 Pages）：
-
-- Worker 名：`tv-hub`
-- 默认域：`tv-hub.bearno1981.workers.dev`
-- 自定义域：`tv.bearno1.dpdns.org`
-- 绑定方式：Git 集成（仓库 `bearnozhang/tv-hub`，分支 `main`）
-
-### 已实测验证自动同步
-
-方法：往 `public/subscriptions.json` 注入探针项并 push，观察线上。
-
-结果：push 后**约 1 分钟内**自定义域返回了新内容（`urls` 从 4 变 5且含探针），
-随后探针已revert（commit `ad0a0dd`），线上恢复为 4 个 URL。
-
-**结论**：GitHub Actions 提交产物 → Cloudflare 自动重新发布，无需手工介入。
-
----
-
-## 线上实测数据（2026-10-04 13:58）
-
-| 文件 | HTTP | 大小 | 响应耗时 |
+| # | 名称 | 站点数 | 实际内容 |
 |---|---|---|---|
-| tv.json | 200 | 2,837,001 B | 2.18s |
-| live.json | 200 | 1,123,380 B | 0.98s |
-| status.json | 200 | 8,848 B | 0.35s |
-| subscriptions.json | 200 | 749 B | 0.32s |
+| 1 | ★ tv-hub 全量聚合（推荐） | **4334** | 全部上游合并去重 + 直播 + 222 解析器 |
+| 2 | hebijunge·TVBox 全量 | 4286 | 单一上游原味（已清洗） |
+| 3 | 影视仓·单仓聚合 | 167 | 轻量版，加载快 |
+| 4 | hebijunge·纯点播 | 4278 | 只有影视、没有直播 |
 
-`tv.json` 解析：sites 4334 / parses 222 / lives 609 / flags 60，key 唯一、type 全 int。
-`status.json`：8 源全 ok，sites 8837 → 4334（去重 4503），直播 37 组 / 3765 频道。
+线上逐条实测：4 个条目全部 HTTP 200 且解析正常。
 
 ---
 
-## 三条链路的关系
+## 位置
+
+| App | 位置 |
+|---|---|
+| 影视仓 | 设置 → 配置地址 → 粘贴 → 确定 |
+| 讴歌 | 设置 → 配置 / 订阅 → 粘贴 → 确定 |
+
+---
+
+## 如果你的 App 只认「单个配置」
+
+有些版本不支持多仓切换，只支持填一个直接的配置。那就填第一个（推荐项）：
 
 ```
-上游仓库 (raw)  →  GitHub Actions 抓取/校验/去重/合并  →  提交 public/ 到 main
-                                                            ↓
-                                        Cloudflare Workers 自动发布（~1 分钟）
-                                                            ↓
-                                          tv.bearno1.dpdns.org 对外提供订阅
+https://tv.bearno1.dpdns.org/tv.json
 ```
 
-三条链路互不依赖：任一环节故障，其余仍可用（可退回 raw 地址）。
+这个就是全量聚合，4334 个站点 + 直播，一次到位。
 
 ---
 
-## 可选优化
+## 直播要单独填
 
-### 让看板显示真实域名
+```
+https://tv.bearno1.dpdns.org/live.json
+```
 
-仓库 `tv-hub` → **Settings → Secrets and variables → Actions → New repository variable**
+**位置**：设置 → 直播 → 添加直播源
 
-- Name: `TVHUB_BASE_URL`
-- Value: `https://tv.bearno1.dpdns.org`
-
-下次 Actions 运行后，`index.html` 与 `status.json` 的 `base_url` 字段会变成你的域名，
-看板底部的订阅地址也会显示 `tv.bearno1.dpdns.org` 而非 raw 地址。**可后补，不影响使用。**
-
-### 若想用根域名 `bearno1.dpdns.org`（不带 `tv.` 前缀）
-
-当前绑的是 `tv.bearno1.dpdns.org`。要换成根域名，需在
-**Workers 和 Pages → tv-hub → 设置 → 域和路由 → 添加自定义域** 里
-再加 `bearno1.dpdns.org`，然后把 `TVHUB_BASE_URL` 改成根域名。
-
-注意：根域若已被其他服务占用（如平板/路由面板），需先确认无冲突。
+37 个分组 / 3765 个频道，761 个频道带多备源（播放失败自动换源）。
 
 ---
 
-## 常见问题
+## 备用地址（自定义域不通时）
 
-**Q：Worker 域返回 5208 字节，自定义域返回 6146 字节，内容不一样？**
+```
+https://tv-hub.bearno1981.workers.dev/subscriptions.json
+https://tv-hub.bearno1981.workers.dev/tv.json
 
-A：正常。差异是 Cloudflare 向自定义域注入的 JS 挑战脚本（938 B），
-产品内容完全一致。用 `diff` 对比过，除该脚本外无任何差异。
+https://raw.githubusercontent.com/bearnozhang/tv-hub/main/public/subscriptions.json
+https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json
+```
 
-**Q：数据多久更新一次？**
+---
 
-A：上游每天两次更新（北京时间 10:05 / 22:05 定时任务），
-Actions 跑完后 Cloudflare 约 1 分钟内跟上。
-若某个上游抓取失败，会沿用上一次成功的结果并在 `status.json` 标记 `stale`。
+## 全部产物
 
-**Q：为什么不用 raw 地址？**
+| 路径 | 用途 |
+|---|---|
+| `/subscriptions.json` | **订阅清单**（填这个） |
+| `/subscriptions.detail.json` | 同上 + note 说明，给人看 |
+| `/tv.json` | 全量聚合配置 |
+| `/live.json` | 直播配置 |
+| `/profiles/hebi_tvbox.json` | 单仓：hebijunge 全量 |
+| `/profiles/ysc_single_agg.json` | 单仓：影视仓聚合 |
+| `/profiles/hebi_vod.json` | 单仓：hebijunge 纯点播 |
+| `/status.json` | 各上游抓取状态 |
+| `/` | 状态看板（网页） |
 
-A：raw 是可用的，但国内直连 `raw.githubusercontent.com` 经常很慢甚至超时。
-Cloudflare CDN 国内访问通常快得多。
+---
+
+## 订阅地址是怎么生成的
+
+`scripts/merge.py` 的 `build_profiles()`：
+
+1. 第一个条目固定是 `/tv.json`（全量聚合）
+2. 其余条目是各上游经**与主配置完全相同的清洗**后独立落盘的`profiles/<id>.json`
+3. 每个 profile 都经过 `validate.py` 校验，坏的不允许发布
+
+订阅地址本身在 `validate.py::validate_subscription()` 里校验格式，
+确保每条 URL 都能打开。
+
+---
+
+## 排错
+
+**App 里刷新不出列表？**
+1. 先在浏览器打开 `https://tv.bearno1.dpdns.org/subscriptions.json` 看能否正常显示
+2. 能显示但 App 读不到 → 说明你的 App 不支持多仓订阅，改填 `/tv.json`
+3. 全都打不开 → 换 Worker 备用地址
+
+**某个仓打开是空的？**
+不太可能——构建时校验不过就不会发布。可以看 `https://tv.bearno1.dpdns.org/status.json`
+里各上游的 `status` 字段。
+
+---
+
+## 更新频率
+
+上游每天两次（北京 10:05 / 22:05）更新 → Actions 提交 → Cloudflare 约 1 分钟内跟上。
+单个上游抓取失败会沿用上次成功结果，并在 `status.json` 标记 `stale`。
