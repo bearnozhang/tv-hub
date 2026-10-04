@@ -138,11 +138,24 @@ python -m unittest discover -s tests -v
 
 - **每天北京时间 10:00 与 22:00** → cron `2 2 * * *` 与 `2 14 * * *`（Actions 用 UTC）
 - 支持 `workflow_dispatch` 手动触发，可勾选「只用缓存重建」
-- 流程：checkout → 测试 → build → 独立复核 → 写摘要 → **有变化才 commit/push** → 传 Artifact
+- 流程：lint 自检 → 测试 → build → 独立复核 → 写摘要 → **有变化才commit/push** → 传Artifact
 - 权限最小化：仅 `contents: write`
 - `concurrency` 防并发重叠
 
 配置可选变量 `TVHUB_BASE_URL`，用于让 README/看板里的订阅地址显示为你的实际域名。
+
+### ⚠️ 关于 push 触发
+
+GitHub 规则：**workflow 在默认分支上失败后，push 触发器会被抑制**（最长 60 天），
+期间仍可正常 cron 与手动触发。本项目2026-10-04 的 run#1 就是缩进错误导致的失败
+（症状：`jobs=[]`、`created_at == updated_at`、网页无任何步骤日志）。
+
+修复后：
+- run#2（`workflow_dispatch`）✅ success，9 个步骤全绿
+- 自动提交 `chore: 自动更新配置 <run_id>` 由 `github-actions[bot]` 完成
+- push 触发仍处抑制期 → 依赖 cron（北京时间 10:00 / 22:00）维持日常更新
+
+**`scripts/workflow_lint.py` 就是为此写的**：它能在提交前抓出这类静默失败。
 
 ---
 
@@ -154,9 +167,13 @@ raw_sites      8837  →  unique 4334（去重 4503，50.9%）
 parses         421   →  unique 222
 lives          595   →  unique 572  +  37 个直播分组 / 3765 频道
 flags          60
-测试           36 passed
-产物校验       tv.json / live.json / status.json 全部 OK
+测试           43 passed
+产物校验tv.json / live.json / status.json 全部 OK
 ```
+
+**GitHub Actions 实跑**：run#2 成功，9 个步骤全绿，耗时 23s，
+自动提交 `9f2994c chore: 自动更新配置 37179833144（sites=4334 去重=4503）`，
+badge = `passing`。
 
 失败回退经实测验证：把 `hebi_tvbox` 主/备地址改成不可解析域名后，
 `status` 变`stale`、`from_cache=true`、`last_success` 不变、`consecutive_failures` 0→1、
