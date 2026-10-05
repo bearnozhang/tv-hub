@@ -1,46 +1,46 @@
 {
-  "at": "2026-10-05T07:14:35Z",
-  "at_bj": "2026-10-05 15:14:35",
+  "at": "2026-10-05T07:19:06Z",
+  "at_bj": "2026-10-05 15:19:06",
   "stats": {
-    "in": 1532,
-    "kept": 1446,
-    "dropped": 86,
+    "in": 1741,
+    "kept": 1657,
+    "dropped": 84,
     "by_category": {
-      "direct": 388,
-      "js": 1062,
-      "pan": 56,
+      "direct": 606,
+      "js": 1055,
+      "pan": 54,
       "paid": 0,
       "magnet": 23,
       "broken": 3,
       "invalid": 0
     },
     "drop_reasons": {
-      "pan": 56,
+      "pan": 54,
       "magnet": 23,
       "quarantine": 4,
       "broken": 3
     },
     "policy_version": "1.0.0",
     "probe": {
-      "probed": 1440,
-      "ok": 803,
+      "probed": 1589,
+      "ok": 855,
       "paid": 4,
-      "fail": 633,
+      "fail": 730,
       "skipped_budget": 0,
-      "elapsed_s": 76.1
+      "elapsed_s": 90.6
     }
   },
   "probe": {
-    "probed": 1440,
-    "ok": 803,
+    "probed": 1589,
+    "ok": 855,
     "paid": 4,
-    "fail": 633,
+    "fail": 730,
     "skipped_budget": 0,
-    "elapsed_s": 76.1
+    "elapsed_s": 90.6
   },
   "health": {
-    "rounds": 1,
-    "entries": 1440,
+    "rounds": 2,
+    "entries": 1788,
     "quarantined": 4
   },
   "quarantined": [
@@ -48,25 +48,25 @@
       "key": "5265207397011986833",
       "api_host": "gh.halonice.com",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 1
+      "fails_streak": 2
     },
     {
       "key": "3743094571226914065",
       "api_host": "liu673cn.github.io",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 1
+      "fails_streak": 2
     },
     {
       "key": "2740222323333891006",
       "api_host": "raw.liucn.cc",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 1
+      "fails_streak": 2
     },
     {
       "key": "密云视频.py",
       "api_host": "gh-proxy.org",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 1
+      "fails_streak": 2
     }
   ],
   "dropped": [
@@ -105,12 +105,6 @@
       "name": "🔎荐片┃p2p",
       "category": "magnet",
       "reason": "磁力特征 /(?:^|[/.])jianpian/"
-    },
-    {
-      "key": "磁力熊",
-      "name": "🧲磁力熊┃磁力",
-      "category": "magnet",
-      "reason": "名称含「磁力」"
     },
     {
       "key": "JD4kss",
@@ -201,12 +195,6 @@
       "name": "迅雷|推送",
       "category": "pan",
       "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=xunlei」"
-    },
-    {
-      "key": "js_豆瓣热播",
-      "name": "🅱️追剧影院|T热播",
-      "category": "pan",
-      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
     },
     {
       "key": "裤佬MiFunP动漫",
@@ -323,20 +311,14 @@
       "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
     },
     {
-      "key": "网盘",
-      "name": "☁云霄网盘",
-      "category": "pan",
-      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
-    },
-    {
       "key": "百度-4",
       "name": "百度|推送",
       "category": "pan",
       "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=baidu」"
     },
     {
-      "key": "直播播",
-      "name": "🎦IPV6┃电视直播",
+      "key": "网盘",
+      "name": "👖网盘",
       "category": "pan",
       "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
     },
@@ -407,12 +389,6 @@
       "reason": "网盘接口特征 /alist/ 命中「alist」"
     },
     {
-      "key": "裤佬荐片JS",
-      "name": "☁云霄丨荐片丨JS",
-      "category": "magnet",
-      "reason": "名称含「荐片」"
-    },
-    {
       "key": "荐片.js",
       "name": "💥荐片2💥",
       "category": "magnet",
@@ -455,6 +431,12 @@
       "reason": "探测判定付费：响应含「付费」"
     },
     {
+      "key": "xb6v",
+      "name": "(js)磁力新6V┃🧲",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
       "key": "cilixiong",
       "name": "(js)磁力熊┃🐻",
       "category": "magnet",
@@ -471,6 +453,12 @@
       "name": "[313ms|00000] 影视-荐片2(T4)",
       "category": "magnet",
       "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "Maflya荐片JS",
+      "name": "⭐Maflya丨荐片丨JS",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
     },
     {
       "key": "优惜",
