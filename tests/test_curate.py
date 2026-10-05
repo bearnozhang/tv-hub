@@ -319,6 +319,41 @@ class TestOutputWhitelist(unittest.TestCase):
                    if str(s.get("api") or "").startswith("./")]
             self.assertFalse(rel, f"{fn} 含相对路径 api（应移入 tv-deps.json）：{rel[:5]}")
 
+    def test_spider_is_absolute_http_url(self):
+        """★ spider 必须是**绝对 http 地址** —— 相对路径会让客户端永远加载不到 jar。
+
+        源码证据（FongMi `JarLoader.parseJar`）：
+            String[] texts = jar.split(";md5;");
+            ... jar = texts[0];
+            if (!md5.isEmpty() && Crypto.equals(Path.jar(jar), md5)) load(key, Path.jar(jar));
+            else if (jar.startsWith("http"))  load(key, Download.create(jar, ...).get());
+            else if (jar.startsWith("file"))  load(key, Path.local(jar));
+        三个分支没有一个匹配 `./` —— 于是 spider 被**静默忽略**，
+        而 `VodConfig.initSite` 正是在解析站点之前就调用了 `parseJar`。
+        实测对照：用户能加载的 ysc 配置用的是绝对地址；我们写 `./spider.png` 全部失败。
+        """
+        pub = os.path.join(ROOT, "public")
+        if not os.path.isdir(pub):
+            self.skipTest("尚未构建")
+        bad = []
+        for fn in sorted(os.listdir(pub)):
+            if not fn.endswith(".json") or fn in BASELINE_SKIP:
+                continue
+            p = os.path.join(pub, fn)
+            try:
+                with open(p, encoding="utf-8-sig") as f:
+                    d = json.load(f)
+            except Exception:
+                continue
+            if not isinstance(d, dict):
+                continue
+            sp = d.get("spider")
+            if not sp:
+                continue                      # 不带 spider 的档是合法的
+            if not str(sp).startswith(("http://", "https://")):
+                bad.append((fn, str(sp)[:60]))
+        self.assertEqual(bad, [], "spider 必须是绝对 http 地址：" + json.dumps(bad, ensure_ascii=False))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,5 @@
 {
-  "spider": "./spider.png",
+  "spider": "https://img2.gelonghui.com/library/46da6-aa33493f-1c1d-4f35-9990-0be4bdbf0c64.png;md5;46da6b6a6a111d7924717db2ae790de3",
   "sites": [
     {
       "key": "catvod_月光影视",
@@ -308,6 +308,22 @@
       "group": "其他"
     },
     {
+      "key": "drpy_js_FreeOK",
+      "name": "影视 | FreeOK[js]",
+      "type": 3,
+      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
+      "ext": "./deps/auto/27-211s/dr/js/FreeOK.js",
+      "group": "其他"
+    },
+    {
+      "key": "drpy_js_HG影院[V2]",
+      "name": "影视 | HG影院[V2][js]",
+      "type": 3,
+      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
+      "ext": "./deps/auto/27-211s/dr/js/HG%E5%BD%B1%E9%99%A2[V2].js",
+      "group": "其他"
+    },
+    {
       "key": "a红牛资源",
       "name": "🐂红牛┃采集",
       "type": 1,
@@ -333,50 +349,6 @@
         "动漫电影"
       ],
       "group": "综合-采集站"
-    },
-    {
-      "key": "索尼",
-      "name": "影视 • 索尼[直连]",
-      "type": 0,
-      "api": "https://suoniapi.com/api.php/provide/vod/at/xml/",
-      "searchable": 0,
-      "categories": [
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片",
-        "国产剧",
-        "欧美剧",
-        "港剧",
-        "台剧",
-        "韩剧",
-        "日剧",
-        "泰剧",
-        "纪录片",
-        "海外剧",
-        "大陆综艺",
-        "港台综艺",
-        "日韩综艺",
-        "欧美综艺",
-        "国产动漫",
-        "日韩动漫",
-        "欧美动漫",
-        "港台动漫",
-        "海外动漫",
-        "影视解说"
-      ],
-      "group": "综合-采集站"
-    },
-    {
-      "key": "drpy_js_FreeOK",
-      "name": "影视 | FreeOK[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/FreeOK.js",
-      "group": "其他"
     },
     {
       "key": "jkunzy.com",

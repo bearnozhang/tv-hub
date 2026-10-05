@@ -779,7 +779,7 @@ def write_ok_tiers(sites: list[dict], limit: int = 40) -> list[str]:
     written = []
     for name, obj in (
         ("tv-ok1.json", {"sites": picked}),
-        ("tv-ok2.json", {"spider": "./spider.png", "sites": picked}),
+        ("tv-ok2.json", {"spider": REF_SPIDER, "sites": picked}),
     ):
         write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(obj))
         written.append(name)
@@ -808,7 +808,7 @@ def write_min_tiers(sites: list[dict]) -> list[str]:
     for name, obj in (
         ("tv-m1.json", {"sites": base}),
         # 用真实 jar（空壳 dex 会被客户端拒绝），且扩展名用 .png 绕过 CDN 白名单
-        ("tv-m2.json", {"spider": "./spider.png", "sites": base}),
+        ("tv-m2.json", {"spider": REF_SPIDER, "sites": base}),
     ):
         write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(obj))
         written.append(name)
@@ -1086,7 +1086,9 @@ def merge(build: bool = False) -> dict:
     #   （非 ASCII 域名、相对路径、localhost）。
     #   实测数据点：ysc_single_agg 有 16 处、tv.json 有 113 处。
     scalars = C.scrub_urls(scalars)
-    spider = spider if C.is_valid_remote_url(spider) else ""
+    # 上游 spider 多为相对路径（`./deps/...`），客户端 JarLoader 不认；
+    # 一律替换为「已验证可用的绝对地址 + md5」，见下方详细说明。
+    spider = REF_SPIDER
 
     # ★ spider 改为同源相对路径（实测饭太硬 `http://fty.xxooo.cf/tv` 就是
     #   `"spider": "./fty.jar"`，jar 与配置同域）。部分 TVBox 内核按
@@ -1111,7 +1113,26 @@ def merge(build: bool = False) -> dict:
         #     客户端表现就是「加载写入缓存 jar 失败」。
         #     上游（ysc / hebi）把 jar 命名成 `.png` 正是为了绕过这个限制；
         #     客户端只按内容解析，不看 Content-Type。
-        spider = "./spider.png"
+        #
+        #   ★★★ 必须绝对 http 地址（2026-10-05 决定性修复，读源码确认）★★★
+        #     FongMi `JarLoader.parseJar`：
+        #         String[] texts = jar.split(";md5;");
+        #         ... jar = texts[0];
+        #         if (!md5.isEmpty() && Crypto.equals(Path.jar(jar), md5)) load(key, Path.jar(jar));
+        #         else if (jar.startsWith("http"))  load(key, Download.create(jar, ...).get());
+        #         else if (jar.startsWith("file"))  load(key, Path.local(jar));
+        #     → 相对路径 `./spider.png` 三个分支**一个都不匹配**，被静默忽略：
+        #       spider 永不加载，而 `VodConfig.initSite` 是在解析站点**之前**
+        #       就调用 `BaseLoader.parseJar(spider, true)`。
+        #
+        #     对照实证：用户实测「能加载」的 ysc 配置，spider 就是绝对地址
+        #         https://img2.gelonghui.com/...png;md5;46da6b6a6a111d7924717db2ae790de3
+        #     而我们的 `./spider.png` 一律失败 —— 这就是分水岭。
+        #
+        #     该 md5 与本地 public/spider.png **完全一致**（同一文件），
+        #     所以用户加载 ysc 时已把 jar 缓存到本地；
+        #     用同一 URL 可命中缓存、**零下载**，对低带宽环境是最优解。
+        spider = REF_SPIDER
 
     # ★ 落盘前统一递归清洗，随后剔除因清洗而变空的壳
     #   （否则会出现「type=1 却没api」「lives 既无 channels 也无 url」的空壳，
