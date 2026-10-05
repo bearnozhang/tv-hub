@@ -744,6 +744,48 @@ def write_probe_tiers(sites: list[dict], spider: str, parses: list,
     return written
 
 
+def write_ok_tiers(sites: list[dict], limit: int = 40) -> list[str]:
+    """产出 `tv-ok1/ok2` —— **只用我实测探测通过的源**。
+
+    为什么换这个数据集：
+      此前诊断档用的是「上游自己标注 137ms」的源，但那是上游的测速快照，
+      那些源可能早已失效 —— 用户加载后「没有列表」很可能就是这个原因。
+
+      而 health 档案里的源是**本项目 CI 实际探测通过**的（记录在
+      data/source_health.json），可信度高得多；其中不少走 ghfast.top /
+      catbox.moe / ghproxy 这类国际 CDN，国内可达性也更好。
+
+    两档对照，用来区分「源的问题」和「jar 的问题」：
+      ok1 = 可达源，**不带 spider**（客户端不需要下载 jar）
+      ok2 = 可达源，**带真实 jar**（`./spider.png`）
+    """
+    health = CU.load_health()
+    entries = health.get("entries") or {}
+    good: list[tuple[int, dict]] = []
+    for s in sites:
+        e = entries.get(CU.site_fp(s)) or {}
+        if int(e.get("ok", 0)) <= 0:
+            continue
+        # 只取不需要 jar 的：api 是 http（采集站）或直接是脚本地址
+        api = str(s.get("api") or "")
+        if not api.startswith(("http://", "https://")):
+            continue
+        good.append((int(e.get("ms_ewma") or 99999), s))
+    if not good:
+        return []
+    good.sort(key=lambda x: x[0])
+    picked = [s for _, s in good[:limit]]
+
+    written = []
+    for name, obj in (
+        ("tv-ok1.json", {"sites": picked}),
+        ("tv-ok2.json", {"spider": "./spider.png", "sites": picked}),
+    ):
+        write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(obj))
+        written.append(name)
+    return written
+
+
 def write_min_tiers(sites: list[dict]) -> list[str]:
     """产出极小档 m1/m2 —— 针对**低带宽**环境（VPN / 跨境链路）验证。
 
@@ -1162,6 +1204,8 @@ def merge(build: bool = False) -> dict:
         if build else []
     # 极小档（低带宽环境验证：最小 jar 能否替代 915KB 的 jar）
     min_written = write_min_tiers(tv_sites) if build else []
+    # 「实测可达」档（用本项目 CI 探测通过的源，区分源问题 vs jar 问题）
+    ok_written = write_ok_tiers(tv_sites) if build else []
 
     # 直播：清洗无效引用 + 体积分档（与点播同一套适配逻辑）
     clean_groups, live_clean_stats = clean_live_entries(live_out)

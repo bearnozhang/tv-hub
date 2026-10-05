@@ -47,6 +47,9 @@ const ALIAS = {
   // 极小档（低带宽环境验证：最小 jar 175B vs 原 915KB）
   "/m1": "/tv-m1.json",   // 3 站，无 spider
   "/m2": "/tv-m2.json",   // 3 站 + 最小 jar
+  // 「实测可达」档：只用本项目 CI 实际探测通过的源（40 个，按速度排序）
+  "/ok1": "/tv-ok1.json",  // 不带 jar
+  "/ok2": "/tv-ok2.json",  // 带真实 jar
 };
 
 const CT = [
