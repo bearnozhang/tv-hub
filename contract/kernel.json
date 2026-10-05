@@ -1,0 +1,98 @@
+{
+  "$schema": "tv-hub-contract/1",
+  "version": "1.0.0",
+  "applies_to": "FongMi/TV 系客户端（讴歌、影视仓、TVBox 各衍生版）",
+  "verified_at": "2026-10-05",
+  "verified_against": "讴歌 6.0.9.3",
+  "evidence": {
+    "upstream_repo": "https://github.com/FongMi/TV",
+    "files": [
+      "app/src/main/java/com/fongmi/android/tv/bean/Site.java",
+      "app/src/main/java/com/fongmi/android/tv/bean/Parse.java",
+      "app/src/main/java/com/fongmi/android/tv/bean/Live.java",
+      "app/src/main/java/com/fongmi/android/tv/api/config/VodConfig.java",
+      "app/src/main/java/com/fongmi/android/tv/api/config/LiveConfig.java",
+      "app/src/main/java/com/fongmi/android/tv/utils/UrlUtil.java"
+    ],
+    "why_fatal": "Site.objectFrom 在 gson 反序列化失败时 catch 后返回 new Site()（key=null）；VodConfig.initSite 随后执行 Collectors.toMap(Site::getKey, ...) 建索引，HashMap.merge 遇到 null key 抛 NullPointerException。因此：任一站点字段类型不符 = 整份配置加载失败（客户端提示「解析配置失败」）。Live 与 Parse 同理。",
+    "measured_20261005": {
+      "/tv": {"sites": 1022, "type_conflicts": 35, "result": "解析失败"},
+      "tv-standard": {"type_conflicts": 22, "result": "解析失败"},
+      "hebi_tvbox": {"type_conflicts": 35, "result": "解析失败"},
+      "ysc_single_agg": {"sites": 167, "type_conflicts": 0, "result": "可正常加载"},
+      "tv-lite": {"sites": 60, "type_conflicts": 0, "result": "可正常加载"}
+    }
+  },
+  "site": {
+    "str": ["key", "name", "api", "ext", "jar", "click", "playUrl"],
+    "int": ["type", "hide", "indexs", "timeout", "searchable", "changeable", "quickSearch", "danmaku"],
+    "list": ["categories"],
+    "dict": ["header", "style"],
+    "bool": ["selected"],
+    "required": ["key"],
+    "key": {"field": "key", "non_empty": true, "unique": true},
+    "note_ext_must_be_string": "UrlUtil.convert(String) 要求 ext 为字符串；配置里写成对象会让 gson 抛异常。"
+  },
+  "parse": {
+    "str": ["name", "url", "ext"],
+    "int": ["type"],
+    "dict": ["header"],
+    "required": ["name", "url"],
+    "key": {"field": "name", "non_empty": true, "unique": true}
+  },
+  "live": {
+    "str": ["name", "url", "epg", "logo"],
+    "int": ["type"],
+    "list": ["channels"],
+    "required": ["name"],
+    "key": {"field": "name", "non_empty": true, "unique": true},
+    "channel": {
+      "str": ["name"],
+      "url_field": "urls",
+      "require_any": ["url", "channels"],
+      "note": "channel 必须有 name 且至少一个合法 url；否则该 channel 应被剔除。"
+    }
+  },
+  "url": {
+    "schemes": ["http", "https"],
+    "must_encode": "latin-1",
+    "forbid_prefix": ["http://127.0.0.1", "http://localhost", "http://0.0.0.0"],
+    "forbid_relative": true,
+    "why": "Android OkHttp 使用 java.net.URI 解析 URL，非 ASCII 域名（如中文域名）直接抛异常；Python 的 latin-1 编码判定可精确复现该行为，因此用它做客户端侧校验。"
+  },
+  "text": {
+    "encoding": "utf-8",
+    "bom": false,
+    "newline": "LF",
+    "json_indent": 2,
+    "trailing_newline": true,
+    "why_no_bom": "Android org.json/JSONObject 会把 UTF-8 BOM 当非法字符，导致整份配置解析失败。（曾误判为「BOM 是加载前提」，2026-10-05 已用源码与实测推翻。）"
+  },
+  "quality": {
+    "min_sites": 300,
+    "min_sites_ratio_vs_last": 0.7,
+    "min_parses": 20,
+    "min_live_channels": 50,
+    "max_artifact_bytes": {
+      "tv-full.json": 8000000,
+      "tv-standard.json": 1500000,
+      "tv-lite.json": 300000,
+      "tv-mini.json": 120000,
+      "live.txt": 1500000,
+      "live-mini.txt": 150000
+    },
+    "must_have_live_groups": ["央视"],
+    "note": "比值以「上一次成功发布」为基线。跌破即拒绝发布，线上保持旧版本。"
+  },
+  "watchdog": {
+    "max_stale_hours": 30,
+    "required_paths": ["/tv", "/live", "/spider.jar"],
+    "optional_paths": ["/lite", "/live-mini.txt"],
+    "expect_content_type": {
+      "/spider.jar": "application/java-archive",
+      "/tv": "application/json",
+      "/live": "text/plain"
+    },
+    "note": "超过 max_stale_hours 未更新 → 提示补触发构建（兜住 GitHub schedule 首次注册延迟）。"
+  }
+}

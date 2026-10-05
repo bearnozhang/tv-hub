@@ -23,7 +23,7 @@ python scripts/validate.py --scope cache   # 校验缓存
 python scripts/validate.py                 # 校验 public/ 产物
 python scripts/merge.py --stats-only       # 只看去重统计
 
-# 跑测试（36 个用例）
+# 跑测试（90 个用例，含契约/门禁/巡检的架构测试）
 python -m unittest discover -s tests -v
 ```
 
@@ -64,6 +64,37 @@ python -m unittest discover -s tests -v
 不会静默跑出错误结果。
 
 ---
+
+## 架构与质量保障
+
+完整设计见 **[ARCHITECTURE.md](ARCHITECTURE.md)**。核心是六层 + 两套自动化机制：
+
+| 层 | 文件 | 职责 |
+|---|---|---|
+| L0 契约 | `contract/kernel.json` + `scripts/kernel.py` | 客户端 DTO 契约的**唯一真源**（字段类型/必填/URL 规则） |
+| L1 摄取 | `scripts/fetch.py` | primary → fallback → 缓存回退 |
+| L2 收敛 | `scripts/merge.py` + `scripts/sanitize.py` | URL 清洗、契约对齐、去重、分档 |
+| L3 门禁 | `scripts/gate.py` | **决定能不能发布**（不达标 → 拒绝发布，线上保持旧版） |
+| L4 发布 | `scripts/rollback.py` | 产物落到 `public/`，可回滚到任一历史版本 |
+| L5 分发 | `worker-no-compress.js` | Cloudflare Worker：路径别名 + 强制 identity 编码 |
+| L6 巡检 | `scripts/watchdog.py` + `watchdog.yml` | 每 6 小时从站外验证线上，异常开 Issue，超时未更新自动补触发 |
+
+**两道自动化防线：**
+
+1. **发布前拦坏东西**（`gate.py`）：契约冲突=0、站点数未骤降、关键分组存在。
+   不通过 → CI 不提交 → 线上不受影响。
+2. **发布后盯住它**（`watchdog.py`）：从用户视角拉线上产物逐项验证。
+   异常开 GitHub Issue，内容超 30 小时未更新会自动补触发构建。
+
+**常用运维命令：**
+
+```bash
+python scripts/kernel.py --describe     # 查看当前客户端契约
+python scripts/gate.py                  # 本地跑一次质量门禁
+python scripts/watchdog.py              # 巡检线上
+python scripts/rollback.py --list       # 列出可回滚的历史版本
+python scripts/rollback.py --last-healthy --push   # 回滚到最近一个合格版本
+```
 
 ## 设计要点
 
@@ -184,8 +215,10 @@ badge = `passing`。
 
 ## 后续
 
-Cloudflare Pages 尚未接入（本阶段明确不做）。届时把 `public/` 作为构建输出目录即可，
-无需改动本项目代码。
+- Cloudflare 已通过 **Worker** 接入（自定义域 `tv.bearno1.dpdns.org`），
+  由 `deploy.yml` 在产物变更后自动部署，**不是** Pages。
+- 待办见 `ARCHITECTURE.md` 的「落地清单 · 下一批」：
+  产物矩阵收敛、`tv-mini` 档位、客户端能力表、上游变更感知。
 
 ## 数据来源与免责
 

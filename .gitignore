@@ -7,4 +7,13 @@ __pycache__/
 
 # 说明：cache/ 与 public/ 是构建产物，但**必须提交**，
 # 这样 raw.githubusercontent.com 才能直接取到，且失败回退依赖历史缓存。
-# 若只想本地调试，可用 --skip-fetch 并临时注释 workflow 的 git add 行。.wrangler/
+# 若只想本地调试，可用 --skip-fetch 并临时注释 workflow 的 git add 行。
+
+# Cloudflare wrangler 的本地状态（含 account id），绝不入库。
+# 注意：这一行曾被拼在上一条注释的行尾，导致规则实际未生效 —— 已修正为独立行。
+.wrangler/
+
+# CI / 本地临时产物
+wd.json
+wd_report.md
+.gtest/

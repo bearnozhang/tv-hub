@@ -59,14 +59,17 @@ import json
 import re
 from typing import Any
 
-# FongMi Site 类的字段 → 期望的 JSON 类型
-SITE_STR = ("key", "name", "api", "ext", "jar", "click", "playUrl")
-SITE_INT = ("type", "hide", "indexs", "timeout", "searchable",
-            "changeable", "quickSearch", "danmaku")
+# 字段类型表统一从 contract/kernel.json 读取 —— 本文件不维护第二份。
+# 客户端（FongMi 系）升级时只改契约，不改这里。
+import kernel as K
 
-# FongMi Parse 类
-PARSE_STR = ("name", "url", "ext")
-PARSE_INT = ("type",)
+def _fields(spec: str, tname: str) -> tuple[str, ...]:
+    """从契约里取某类对象的某类型字段名元组。
+
+    例：_fields("site", "str") -> ("key","name","api","ext","jar","click","playUrl")
+    字段表在 contract/kernel.json，不在本文件重复维护。
+    """
+    return tuple((K.contract().get(spec) or {}).get(tname) or [])
 
 
 def _as_int(v: Any) -> int | None:
@@ -117,16 +120,18 @@ def clean_site(site: Any) -> dict | None:
     """把一个站点对象对齐到 Site 契约。返回 None 表示该站点无法救活，应丢弃。"""
     if not isinstance(site, dict):
         return None
+    strs = _fields("site", "str")
+    ints = _fields("site", "int")
     out: dict = {}
 
     for k, v in site.items():
         if v is None:
             continue
-        if k in SITE_STR:
+        if k in strs:
             s = _as_str(v)
             if s is not None:
                 out[k] = s
-        elif k in SITE_INT:
+        elif k in ints:
             i = _as_int(v)
             if i is not None:
                 out[k] = i
@@ -165,15 +170,17 @@ def clean_site(site: Any) -> dict | None:
 def clean_parse(p: Any) -> dict | None:
     if not isinstance(p, dict):
         return None
+    strs = _fields("parse", "str")
+    ints = _fields("parse", "int")
     out: dict = {}
     for k, v in p.items():
         if v is None:
             continue
-        if k in PARSE_STR:
+        if k in strs:
             s = _as_str(v)
             if s is not None:
                 out[k] = s
-        elif k in PARSE_INT:
+        elif k in ints:
             i = _as_int(v)
             if i is not None:
                 out[k] = i
@@ -196,7 +203,7 @@ def clean_live(lv: Any) -> dict | None:
         if k == "type":
             i = _as_int(v)
             out[k] = i if i is not None else 0
-        elif k in ("name", "url", "epg", "logo"):
+        elif k in _fields("live", "str"):
             s = _as_str(v)
             if s is not None:
                 out[k] = s

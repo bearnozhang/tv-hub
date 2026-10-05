@@ -70,15 +70,24 @@ jobs:
             python scripts/build.py
           fi
 
-      - name: 独立复核产物
+      - name: 独立复核产物（格式层）
         run: python scripts/validate.py --scope output
+
+      # ★ 质量门禁：决定「值不值得发布」。
+      #   validate 只回答「格式对不对」；gate 还回答「内容够不够好」。
+      #   不通过 → 本 job 失败 → 后续提交步骤不执行 → 线上保持上一个好版本。
+      #   硬门禁：契约冲突=0 / 站点数未骤降 / 直播频道未骤降 / 关键分组存在
+      - name: 质量门禁（不达标则拒绝发布）
+        run: python scripts/gate.py
 
       - name: 汇总结果
         id: summary
         run: |
           python - <<'PY'
           import json, os, sys
-          # 用utf-8-sig：产物带 UTF-8 BOM（BOM 是老客户端加载的前提）
+          # 用 utf-8-sig 读取：对「带 BOM」和「不带 BOM」两种历史产物都健壮。
+          # 注意：**产物本身不写 BOM** —— Android org.json 会把 UTF-8 BOM
+          # 当非法字符，导致整份配置解析失败（该结论曾写反，2026-10-05 修正）。
           s = json.load(open("public/status.json", encoding="utf-8-sig"))
           su = s["summary"]
           # GITHUB_OUTPUT / GITHUB_STEP_SUMMARY 可能不存在（本地复现、第三方 CI 等），

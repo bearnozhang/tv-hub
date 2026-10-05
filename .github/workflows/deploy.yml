@@ -29,15 +29,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      # 不再 build：public/ 已经是上游原始文件（hebi_tvbox.json / live.txt）
+      # public/ 由 update.yml 构建产出（scripts/build.py → merge.write_cfg 已做契约消毒）。
       #
-      # ★ 但上游原始文件本身带字段类型冲突，必须消毒后才能部署 ——
-      #   实测（2026-10-05）：/tv 有 35 处冲突 → 客户端报「解析配置失败」。
-      #   详见下一步骤的注释与 scripts/sanitize.py。
-      - name: 内核契约消毒（消除解析失败根因）
-        run: python scripts/sanitize.py public --inplace
-
-      - name: 复核（消毒后必须无冲突）
+      # 本 workflow 只部署、不改内容 —— 这样「仓库里的产物」与「线上产物」始终一致。
+      # 从前这里用 --inplace 就地消毒，会导致仓库与线上内容不一致，已改为只校验。
+      #
+      # 契约校验不通过 = 有人绕过了 update 流程提交了脏产物 → 拒绝部署并报错，
+      # 让线上保持上一个好版本，而不是把坏东西发出去。
+      - name: 内核契约校验（不通过则拒绝部署）
         run: python scripts/sanitize.py public --check --quiet
 
       - name: Deploy to Cloudflare Wrangler

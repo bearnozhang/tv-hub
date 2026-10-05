@@ -1,0 +1,144 @@
+name: watchdog
+
+# 站外巡检：每 6 小时从「用户视角」验证线上产物是否真的可用。
+#
+# 为什么需要它：
+#   - update.yml 只保证「构建成功」，不保证「Cloudflare 部署成功」
+#   - gate.py 在发布前看本地产物，看不到线上实际状态
+#   - GitHub 的 schedule 对新仓库可能长期不触发（本项目曾连续多日 event=schedule 为 0）
+#
+# 它做三件事：
+#   1. 契约/内容/依赖项巡检（watchdog.py）
+#   2. 异常时开 Issue 告警（同一问题只维护一个 Issue）
+#   3. 超过阈值未更新时，自动补触发一次 update.yml
+
+"on":
+  schedule:
+    # 每 6 小时一次。分钟数取 23 避开整点高峰。
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  actions: write        # 用于补触发 update.yml
+
+concurrency:
+  group: tv-hub-watchdog
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 线上巡检
+        id: wd
+        run: |
+          set +e
+          python scripts/watchdog.py --json --timeout 45 > wd.json 2> wd.err
+          rc=$?
+          set -e
+          echo "巡检退出码：$rc"
+          cat wd.err || true
+          python - <<'PY'
+          import json, os
+          try:
+              d = json.load(open("wd.json", encoding="utf-8"))
+          except Exception as e:
+              d = {"healthy": False, "errors": [f"巡检脚本未产出有效结果: {e}"],
+                   "warnings": [], "checks": []}
+
+          def emit(k, v):
+              p = os.environ.get("GITHUB_OUTPUT")
+              if p:
+                  with open(p, "a", encoding="utf-8") as f:
+                      f.write(f"{k}={v}\n")
+
+          emit("healthy", "true" if d.get("healthy") else "false")
+
+          age = d.get("age_hours")
+          emit("stale", "true" if (age is not None and age > 30) else "false")
+
+          lines = ["### tv-hub 线上巡检", ""]
+          m = d.get("metrics") or {}
+          if m:
+              lines.append(
+                  f"- 站点 **{m.get('sites')}**　解析器 {m.get('parses')}　"
+                  f"直播 {m.get('live_groups')} 组 / {m.get('live_channels')} 频道")
+          if age is not None:
+              lines.append(f"- 上次更新距今 **{age} 小时**")
+          lines.append("")
+          lines.append("| 检查 | 结果 | 说明 |")
+          lines.append("| --- | --- | --- |")
+          for c in d.get("checks") or []:
+              mark = "✅" if c["ok"] else ("❌" if c.get("required") else "⚠️")
+              lines.append(f"| {c['name']} | {mark} | {c['detail']} |")
+          if d.get("errors"):
+              lines += ["", "**异常**", ""] + [f"- {x}" for x in d["errors"]]
+          if d.get("warnings"):
+              lines += ["", "**警告**", ""] + [f"- {x}" for x in d["warnings"]]
+
+          body = "\n".join(lines)
+          print(body)
+          if os.environ.get("GITHUB_STEP_SUMMARY"):
+              with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+                  f.write(body + "\n")
+          # 供后续告警步骤复用（写入文件避免转义问题）
+          open("wd_report.md", "w", encoding="utf-8").write(body)
+          PY
+
+      - name: 异常告警（开 / 更新 Issue）
+        if: steps.wd.outputs.healthy != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="[watchdog] 线上产物巡检异常"
+          BODY="$(cat wd_report.md)"
+          EXIST=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number' 2>/dev/null || true)
+          if [ -n "$EXIST" ]; then
+            echo "已有 Issue #$EXIST，追加评论"
+            printf '%s\n\n%s\n' "---" "$BODY" | gh issue comment "$EXIST" --body-file -
+          else
+            gh issue create --title "$TITLE" --body "$BODY"
+          fi
+
+      - name: 正常时关闭历史告警
+        if: steps.wd.outputs.healthy == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="[watchdog] 线上产物巡检异常"
+          EXIST=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number' 2>/dev/null || true)
+          if [ -n "$EXIST" ]; then
+            gh issue close "$EXIST" --comment "巡检已恢复正常（$(date -u +%Y-%m-%dT%H:%MZ)），自动关闭。"
+          else
+            echo "无待关闭的告警"
+          fi
+
+      - name: 长时间未更新 → 补触发构建
+        if: steps.wd.outputs.stale == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "内容超过 30 小时未更新，补触发一次 update.yml"
+          gh workflow run update.yml -f reason=watchdog-stale || \
+            echo "补触发失败（可能是并发限制或权限），请人工检查"
+
+      - name: 保存巡检报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: watchdog-report-${{ github.run_number }}
+          path: |
+            wd.json
+            wd_report.md
+          retention-days: 14
+          if-no-files-found: ignore

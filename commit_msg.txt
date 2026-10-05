@@ -1,0 +1,57 @@
+feat: 架构升级 —— 契约单一真源 + 质量门禁 + 线上巡检
+
+把「反复救火」改成「机制防火」。完整设计见 ARCHITECTURE.md。
+
+## 反思
+过去三次修复（中文域名 URL / BOM / 字段类型）都是「出了问题→只修这一个点」，
+没有留下防止同类问题再发生的机制，所以第四次同类问题出现时依然要靠人发现。
+这次把三类问题的判定规则全部固化成可执行校验，并接进发布流程。
+
+## L0 契约层（统一性的根基）
+- contract/kernel.json —— 客户端 DTO 契约的唯一定义
+  （字段名/类型/必填/URL 规则/文本编码规则/质量阈值/巡检参数）
+  含 FongMi/TV 源码文件清单与实测证据，可追溯到出处
+- scripts/kernel.py —— 契约加载与通用校验，支持 --describe / --self-test
+- scripts/sanitize.py 改为读契约，删除硬编码字段表
+  （此前字段表散落三份：sanitize / validate / tests）
+
+## L3 质量门禁（稳定性的核心）
+- scripts/gate.py —— 决定「值不值得发布」，与 validate 的「格式对不对」分离
+  硬门禁：契约冲突=0 / 站点数未骤降(基线×0.7) / 直播频道未骤降 /
+          关键分组存在(央视) / 绝对下限
+  不通过 → CI 不提交 → 线上保持上一个好版本
+  基线只在通过时更新（连续失败不会把基线一路拉低）
+  直播指标统一以 live.txt 为准（此前三个口径互不相等，曾误判为「骤降」）
+- update.yml 接入门禁
+
+## L6 巡检层（及时性的核心）
+- scripts/watchdog.py —— 从用户视角验证线上：可达性 / 契约 / 内容量 /
+  Content-Type（spider.jar 必须是 java-archive）/ 新鲜度
+- .github/workflows/watchdog.yml —— 每 6 小时巡检；
+  异常开 Issue（同类只维护一个，恢复后自动关闭）；
+  内容超 30 小时未更新 → 自动补触发 update（兜住 GitHub schedule 延迟）
+
+## L4 回滚
+- scripts/rollback.py —— 基于 git 历史回滚 public/
+  （git 历史本身就是最完整的快照，不另存一套）
+  支持 --list / --to <sha> / --last-healthy
+
+## 修复的隐患
+- .gitignore 里 .wrangler/ 被拼在注释行尾，规则实际未生效
+  → 导致 Cloudflare Account ID 泄露到公开仓库
+- update.yml 注释「产物带 UTF-8 BOM（BOM 是老客户端加载的前提）」
+  —— 该结论已被推翻，改为正确说明
+- deploy.yml 注释「不再 build：public/ 已经是上游原始文件」—— 与实际不符
+- deploy.yml 从 sanitize --inplace 改为 --check：不在 CI 里就地改内容，
+  保证「仓库产物」与「线上产物」始终一致
+
+## 测试
+90 项通过（65 → 90），新增 tests/test_architecture.py 19 项：
+- 契约单一真源（扫描代码，禁止出现第二份字段表）
+- 契约能识别历史故障样本；消毒器与契约互为闭环
+- 门禁拦截能力（契约冲突/站点骤降/频道骤降/关键分组缺失/无基线绝对下限）
+- 巡检判定（含 jar 的 Content-Type 误判这类历史坑），网络 mock 掉
+
+## 文档
+- 新增 ARCHITECTURE.md：反思 + 六层架构 + 四性落点 + 故障手册 + 落地清单
+- README 更新：架构与质量保障一节、运维命令、修正过期的「后续」内容
