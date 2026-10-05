@@ -315,6 +315,15 @@
       "group": "其他"
     },
     {
+      "key": "聚合CMS",
+      "name": "👭聚合👭",
+      "type": 1,
+      "api": "http://150.109.94.44:1112/api.php/provide/vod/",
+      "changeable": 1,
+      "group": "综合-采集站",
+      "searchable": 1
+    },
+    {
       "key": "drpy_js_HG影院[V2]",
       "name": "影视 | HG影院[V2][js]",
       "type": 3,
@@ -360,18 +369,6 @@
         "欧美综艺"
       ],
       "group": "综合-采集站"
-    },
-    {
-      "key": "csp_努努",
-      "name": "💖分享努努",
-      "type": 3,
-      "searchable": 1,
-      "changeable": 1,
-      "quickSearch": 1,
-      "api": "https://d.kstore.dev/download/4127/PY/%E5%88%86%E4%BA%AB%E5%8A%AA%E5%8A%AA.py",
-      "playerType": 2,
-      "filterable": 1,
-      "group": "其他"
     }
   ]
 }
