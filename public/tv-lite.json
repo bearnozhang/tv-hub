@@ -738,16 +738,6 @@
       "group": "综合-采集站"
     },
     {
-      "key": "a93050f8-e282-521d-9c92-cdbbf5add205",
-      "name": "色猫",
-      "type": 1,
-      "api": "https://caiji.semaozy.net/inc/apijson_vod.php",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
       "key": "索尼",
       "name": "影视 • 索尼[直连]",
       "type": 0,
@@ -784,6 +774,16 @@
       "group": "综合-采集站"
     },
     {
+      "key": "a93050f8-e282-521d-9c92-cdbbf5add205",
+      "name": "色猫",
+      "type": 1,
+      "api": "https://caiji.semaozy.net/inc/apijson_vod.php",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
       "key": "鸡坤资源",
       "name": "鸡坤资源",
       "type": 1,
@@ -803,45 +803,6 @@
       "group": "综合-采集站"
     },
     {
-      "key": "csp_xml_优质",
-      "name": "❤优质资源",
-      "type": 1,
-      "api": "https://api.1080zyku.com/inc/api_mac10.php?ac=list",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "playerType": 2,
-      "categories": [
-        "动作片",
-        "喜剧片",
-        "科幻片",
-        "恐怖片",
-        "爱情片",
-        "剧情片",
-        "战争片",
-        "记录片",
-        "动画片",
-        "国产剧",
-        "欧美剧",
-        "香港剧",
-        "韩国剧",
-        "台湾剧",
-        "日本剧",
-        "海外剧",
-        "泰国剧",
-        "国产动漫",
-        "日韩动漫",
-        "欧美动漫",
-        "港台动漫",
-        "海外动漫",
-        "大陆综艺",
-        "港台综艺",
-        "日韩综艺",
-        "欧美综艺"
-      ],
-      "group": "综合-采集站"
-    },
-    {
       "key": "lsb",
       "name": "lsb",
       "api": "https://apilsbzy1.com/api.php/provide/vod",
@@ -852,13 +813,33 @@
       "group": "综合-采集站"
     },
     {
-      "key": "聚合CMS",
-      "name": "👭聚合👭",
+      "key": "155zy.com",
+      "name": "♥155(直连)",
       "type": 1,
-      "api": "http://150.109.94.44:1112/api.php/provide/vod/",
+      "api": "https://155api.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "155资源站",
+      "name": "155 | 采集",
+      "type": 1,
+      "api": "https://155api.com/api.php/provide/vod/",
+      "quickSearch": 1,
+      "searchable": 1,
       "changeable": 1,
-      "group": "综合-采集站",
-      "searchable": 1
+      "group": "综合-采集站"
+    },
+    {
+      "key": "155",
+      "name": "155",
+      "api": "https://155api.com/api.php/provide/vod",
+      "type": 1,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
     },
     {
       "key": "极速资源",
@@ -905,60 +886,52 @@
       "group": "综合-采集站"
     },
     {
-      "key": "155zy.com",
-      "name": "♥155(直连)",
+      "key": "鸡坤",
+      "name": "鸡坤 | 采集",
       "type": 1,
-      "api": "https://155api.com/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "贵宾影院",
-      "name": "贵宾影院(聚)",
-      "type": 1,
-      "api": "http://vipdytv.com/api.php/provide/vod/",
-      "searchable": 1,
+      "api": "https://jkunzyapi.com/api.php/provide/vod/",
       "quickSearch": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "听风资源",
-      "name": "💥听风资源💥",
-      "type": 1,
-      "api": "http://154.219.117.232:9981/jacloudapi.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "155资源站",
-      "name": "155 | 采集",
-      "type": 1,
-      "api": "https://155api.com/api.php/provide/vod/",
-      "quickSearch": 1,
-      "searchable": 1,
+      "searchable": 0,
       "changeable": 1,
       "group": "综合-采集站"
     },
     {
-      "key": "金鷹网",
-      "name": "🌕金鷹jyz",
-      "type": 0,
-      "api": "https://jyzyapi.com/provide/vod/from/jinyingm3u8/at/xml/",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "155",
-      "name": "155",
-      "api": "https://155api.com/api.php/provide/vod",
+      "key": "csp_xml_优质",
+      "name": "❤优质资源",
       "type": 1,
+      "api": "https://api.1080zyku.com/inc/api_mac10.php?ac=list",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
+      "playerType": 2,
+      "categories": [
+        "动作片",
+        "喜剧片",
+        "科幻片",
+        "恐怖片",
+        "爱情片",
+        "剧情片",
+        "战争片",
+        "记录片",
+        "动画片",
+        "国产剧",
+        "欧美剧",
+        "香港剧",
+        "韩国剧",
+        "台湾剧",
+        "日本剧",
+        "海外剧",
+        "泰国剧",
+        "国产动漫",
+        "日韩动漫",
+        "欧美动漫",
+        "港台动漫",
+        "海外动漫",
+        "大陆综艺",
+        "港台综艺",
+        "日韩综艺",
+        "欧美综艺"
+      ],
       "group": "综合-采集站"
     },
     {
@@ -971,57 +944,10 @@
       "searchable": 1
     },
     {
-      "key": "官源蓝光",
-      "name": "💥官源蓝光💥",
-      "api": "http://154.219.117.232:9981/jacloudapi.php/provide/vod/from/qq/?ac=list",
-      "type": 1,
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "categories": [
-        "国产剧",
-        "港台剧",
-        "欧美剧",
-        "日韩剧",
-        "电影",
-        "动作",
-        "战争",
-        "喜剧",
-        "剧情",
-        "武侠",
-        "少儿",
-        "动漫",
-        "综艺",
-        "短剧",
-        "记录片"
-      ],
-      "group": "4K-采集站"
-    },
-    {
       "key": "huaweiba",
       "name": "华为吧|点播",
       "type": 1,
       "api": "https://hw8.live/api.php/provide/vod/",
-      "group": "综合-采集站"
-    },
-    {
-      "key": "鸡坤",
-      "name": "鸡坤 | 采集",
-      "type": 1,
-      "api": "https://jkunzyapi.com/api.php/provide/vod/",
-      "quickSearch": 1,
-      "searchable": 0,
-      "changeable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "心魔📚在线_csp_xml_新浪",
-      "name": "心魔📚在线·❤新浪资源",
-      "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod/",
-      "type": 1,
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
       "group": "综合-采集站"
     },
     {
@@ -1035,40 +961,11 @@
       "group": "综合-采集站"
     },
     {
-      "key": "猫眼资源-3",
-      "name": "影视 • 猫眼[直连]",
-      "type": 1,
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "api": "https://api.maoyanapi.top/api.php/provide/vod/at/json",
-      "group": "综合-采集站"
-    },
-    {
-      "key": "yzzyCMS",
-      "name": "👭优质资源👭",
-      "type": 1,
-      "api": "https://api.yyzy-tv.vip/inc/api_mac10_all.php",
-      "changeable": 1,
-      "group": "综合-采集站",
-      "searchable": 1
-    },
-    {
       "key": "csp_XBiuiKUNcms",
       "name": "✈iKUN(聚)",
       "type": 0,
       "api": "https://ikunzyapi.com/api.php/seaxml/vod/at/xml",
       "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "wujincc",
-      "name": "无尽CC",
-      "api": "https://api.wujinapi.cc/api.php/provide/vod",
-      "type": 1,
-      "searchable": 0,
       "quickSearch": 1,
       "filterable": 1,
       "group": "综合-采集站"
@@ -1101,6 +998,43 @@
       "group": "综合-采集站"
     },
     {
+      "key": "听风资源",
+      "name": "💥听风资源💥",
+      "type": 1,
+      "api": "http://154.219.117.232:9981/jacloudapi.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "贵宾影院",
+      "name": "贵宾影院(聚)",
+      "type": 1,
+      "api": "http://vipdytv.com/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "心魔📚在线_csp_xml_新浪",
+      "name": "心魔📚在线·❤新浪资源",
+      "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod/",
+      "type": 1,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "聚合CMS",
+      "name": "👭聚合👭",
+      "type": 1,
+      "api": "http://150.109.94.44:1112/api.php/provide/vod/",
+      "changeable": 1,
+      "group": "综合-采集站",
+      "searchable": 1
+    },
+    {
       "key": "vnzyz.com",
       "name": "💕越南(直连)",
       "type": 1,
@@ -1110,22 +1044,31 @@
       "group": "综合-采集站"
     },
     {
-      "key": "美少女资源",
-      "name": "💞美少女资源💞",
+      "key": "官源蓝光",
+      "name": "💥官源蓝光💥",
+      "api": "http://154.219.117.232:9981/jacloudapi.php/provide/vod/from/qq/?ac=list",
       "type": 1,
-      "api": "https://www.msnii.com/api/json.php",
-      "changeable": 1,
-      "group": "综合-直连点播",
-      "searchable": 1
-    },
-    {
-      "key": "*辣椒资源",
-      "name": "(vpn)辣椒资源",
-      "type": 1,
-      "api": "https://apilj.com/api.php/provide/vod/at/json/",
       "searchable": 1,
       "quickSearch": 1,
-      "group": "综合-采集站"
+      "filterable": 1,
+      "categories": [
+        "国产剧",
+        "港台剧",
+        "欧美剧",
+        "日韩剧",
+        "电影",
+        "动作",
+        "战争",
+        "喜剧",
+        "剧情",
+        "武侠",
+        "少儿",
+        "动漫",
+        "综艺",
+        "短剧",
+        "记录片"
+      ],
+      "group": "4K-采集站"
     },
     {
       "key": "jkunzy.com",
@@ -1134,6 +1077,25 @@
       "api": "https://jkunzyapi.com/api.php/provide/vod/?ac=list",
       "searchable": 1,
       "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "wujincc",
+      "name": "无尽CC",
+      "api": "https://api.wujinapi.cc/api.php/provide/vod",
+      "type": 1,
+      "searchable": 0,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "*辣椒资源",
+      "name": "(vpn)辣椒资源",
+      "type": 1,
+      "api": "https://apilj.com/api.php/provide/vod/at/json/",
+      "searchable": 1,
+      "quickSearch": 1,
       "group": "综合-采集站"
     },
     {
@@ -1245,26 +1207,6 @@
       "group": "综合-采集站"
     },
     {
-      "key": "hnzy",
-      "name": "🎥┃红牛┃资源",
-      "type": 1,
-      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
-    },
-    {
       "key": "ikun网",
       "name": "🏆ikun",
       "type": 0,
@@ -1272,91 +1214,6 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "豪华资源",
-      "name": "🎥┃豪华┃资源",
-      "type": 1,
-      "api": "https://hhzyapi.com/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "quickSearch": 1,
-      "categories": [
-        "内地剧",
-        "香港剧",
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "马泰剧",
-        "台湾剧",
-        "动画片",
-        "中国动漫",
-        "日本动漫",
-        "欧美动漫",
-        "剧情片",
-        "战争片",
-        "动作片",
-        "科幻片",
-        "记录片",
-        "爱情片",
-        "喜剧片",
-        "灾难片",
-        "悬疑片",
-        "犯罪片",
-        "大陆综艺",
-        "日韩综艺",
-        "港台综艺",
-        "欧美综艺"
-      ]
-    },
-    {
-      "key": "csp_XBiuiKUN",
-      "name": "✈iKUN(切)",
-      "type": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "ikunzy-2",
-      "name": "影视 🔰 ikun[直连]",
-      "type": 1,
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod?",
-      "group": "综合-采集站"
-    },
-    {
-      "key": "ikun-3",
-      "name": "iKun资源",
-      "type": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "categories": [
-        "短剧",
-        "国产剧",
-        "动作片",
-        "喜剧片",
-        "科幻片",
-        "爱情片",
-        "纪录片",
-        "动画片",
-        "欧美剧",
-        "香港剧"
-      ],
-      "group": "综合-采集站"
-    },
-    {
-      "key": "xfzyCMS",
-      "name": "👭幸福资源👭",
-      "type": 1,
-      "api": "https://json.xingba222.com/api.php/provide/vod/",
-      "changeable": 1,
       "group": "综合-采集站"
     },
     {
@@ -1416,6 +1273,163 @@
         "欧美剧",
         "香港剧"
       ],
+      "group": "综合-采集站"
+    },
+    {
+      "key": "ikun-3",
+      "name": "iKun资源",
+      "type": 1,
+      "api": "https://ikunzyapi.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "categories": [
+        "短剧",
+        "国产剧",
+        "动作片",
+        "喜剧片",
+        "科幻片",
+        "爱情片",
+        "纪录片",
+        "动画片",
+        "欧美剧",
+        "香港剧"
+      ],
+      "group": "综合-采集站"
+    },
+    {
+      "key": "ikunzy-2",
+      "name": "影视 🔰 ikun[直连]",
+      "type": 1,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "api": "https://ikunzyapi.com/api.php/provide/vod?",
+      "group": "综合-采集站"
+    },
+    {
+      "key": "csp_XBiuiKUN",
+      "name": "✈iKUN(切)",
+      "type": 1,
+      "api": "https://ikunzyapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "snzy",
+      "name": "🎥┃索尼┃资源",
+      "type": 1,
+      "api": "https://suoniapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
+      "key": "金鷹网",
+      "name": "🌕金鷹jyz",
+      "type": 0,
+      "api": "https://jyzyapi.com/provide/vod/from/jinyingm3u8/at/xml/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "豪华资源",
+      "name": "🎥┃豪华┃资源",
+      "type": 1,
+      "api": "https://hhzyapi.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "categories": [
+        "内地剧",
+        "香港剧",
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "马泰剧",
+        "台湾剧",
+        "动画片",
+        "中国动漫",
+        "日本动漫",
+        "欧美动漫",
+        "剧情片",
+        "战争片",
+        "动作片",
+        "科幻片",
+        "记录片",
+        "爱情片",
+        "喜剧片",
+        "灾难片",
+        "悬疑片",
+        "犯罪片",
+        "大陆综艺",
+        "日韩综艺",
+        "港台综艺",
+        "欧美综艺"
+      ]
+    },
+    {
+      "key": "hnzy",
+      "name": "🎥┃红牛┃资源",
+      "type": 1,
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
+      "key": "CK采集网",
+      "name": "😰CK采集网",
+      "type": 1,
+      "api": "https://ckzy.me/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "name": "ckzyCK资源",
+      "key": "11CK2",
+      "type": 1,
+      "api": "https://ckzy.me/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "红牛",
+      "name": "🏆红牛hn",
+      "type": 0,
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/at/xml/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
       "group": "综合-采集站"
     }
   ],
