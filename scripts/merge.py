@@ -725,8 +725,40 @@ def write_main_tier(spider: str) -> list[str]:
     out["sites"] = sites
     written = []
     name = "tv-main.json"
-    write_cfg(os.path.join(C.PUBLIC_DIR, name), out)
+    path = os.path.join(C.PUBLIC_DIR, name)
+
+    # ── 变更日志：对比上一版，记录「加了哪些源 / 去了哪些源」──
+    #    目的：以后能回答「昨天还好好的，今天为什么不一样了」。
+    old_keys: set = set()
+    if os.path.exists(path):
+        try:
+            with open(path, encoding="utf-8-sig") as f:
+                _old = json.load(f)
+            old_keys = {str(x.get("key") or "") for x in (_old.get("sites") or [])
+                        if x.get("key")}
+        except Exception:
+            old_keys = set()
+    new_keys = {str(x.get("key") or "") for x in sites if x.get("key")}
+    added = sorted(new_keys - old_keys)
+    removed = sorted(old_keys - new_keys)
+
+    write_cfg(path, out)
     written.append(name)
+
+    if old_keys and (added or removed):
+        cl_path = os.path.join(C.PUBLIC_DIR, "changelog.json")
+        entries = []
+        if os.path.exists(cl_path):
+            try:
+                with open(cl_path, encoding="utf-8-sig") as f:
+                    entries = (json.load(f) or {}).get("entries") or []
+            except Exception:
+                entries = []
+        entries.insert(0, {"at": C.iso(), "total": len(sites),
+                           "added": added, "removed": removed})
+        C.write_json(cl_path, {"updated": C.iso(), "entries": entries[:60]})
+        C.log(f"  [changelog] +{len(added)} / -{len(removed)}  "
+              f"add={'、'.join(added[:4]) or '—'}  del={'、'.join(removed[:4]) or '—'}")
     return written
 
 
@@ -792,6 +824,77 @@ def write_fast_tier(sites: list[dict], parses: list[dict], flags: list,
 REF_SPIDER = ("https://img2.gelonghui.com/library/"
               "46da6-aa33493f-1c1d-4f35-9990-0be4bdbf0c64.png;md5;"
               "46da6b6a6a111d7924717db2ae790de3")
+
+
+def _local_jar_md5() -> str:
+    """本地 jar 的 md5（客户端用它校验缓存、决定要不要下载）。"""
+    import hashlib
+    for n in ("spider.png", "spider.jar"):
+        p = os.path.join(C.PUBLIC_DIR, n)
+        if os.path.exists(p):
+            try:
+                with open(p, "rb") as f:
+                    return hashlib.md5(f.read()).hexdigest()
+            except Exception:
+                pass
+    return ""
+
+
+def _jar_head_ok(url: str, timeout: float = 10.0):
+    """探测某个 jar 地址是否还活着。
+
+    返回 True（200，可用）/ False（403/404/410，文件被删）/ None（网络不可判定）
+    三态是刻意的 —— 见 pick_spider() 里「网络抖动不触发切换」的说明。
+    """
+    import urllib.error
+    import urllib.request
+    try:
+        req = urllib.request.Request(url, method="HEAD",
+                                     headers={"User-Agent": "okhttp/3.12.0"})
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.status == 200
+    except urllib.error.HTTPError as e:
+        return False if e.code in (403, 404, 410) else None
+    except Exception:
+        return None
+
+
+def pick_spider() -> tuple[str, str]:
+    """选 jar 地址（三级回落）—— 本项目唯一的「硬单点」，必须有备胎。
+
+    ## 为什么策略要保守
+    客户端把 jar 缓存到本地，**缓存键是 URL 的 md5**
+    （`JarLoader` 里 `Path.jar(jar)` 用 `Crypto.md5(jar)` 命名文件）。
+    所以 **换 URL = 用户重新下载 915KB**。
+
+    于是：
+      1. 优先 gelonghui 那条 —— 用户已缓存，**零流量**
+      2. 只在它**明确 403/404/410**（文件真被删了）才回落到我们自己的域名
+      3. 再不行用 jsDelivr
+      4. 网络抖动（超时 / DNS 失败）**不触发切换** ——
+         否则 CI 机房的一次网络问题，会让所有用户白白重下 915KB
+
+    返回 (spider 字段值, 人类可读的来源说明)。
+    """
+    md5 = _local_jar_md5()
+    base = base_url().rstrip("/")
+    same_jar = bool(md5) and md5 == REF_SPIDER.split(";md5;")[-1]
+    cands = [
+        (REF_SPIDER, "主：gelonghui（已缓存，零流量）"),
+        (f"{base}/spider.png;md5;{md5}", "回落①：本仓库 Worker"),
+        (f"https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/spider.png;md5;{md5}",
+         "回落②：jsDelivr"),
+    ]
+    for i, (cand, label) in enumerate(cands):
+        if i > 0 and not same_jar:
+            break                      # 本地 jar 与主地址不是同一个 → 不敢乱指
+        state = _jar_head_ok(cand.split(";md5;")[0])
+        if state is None and i == 0:
+            return cand, label + "｜网络不可判定，按原样保留"
+        if state:
+            return cand, label
+    return cands[0][0], "全部不可达 → 保持主地址，等下轮再试"
+
 
 
 def write_probe_tiers(sites: list[dict], spider: str, parses: list,
@@ -1173,9 +1276,12 @@ def merge(build: bool = False) -> dict:
     #   （非 ASCII 域名、相对路径、localhost）。
     #   实测数据点：ysc_single_agg 有 16 处、tv.json 有 113 处。
     scalars = C.scrub_urls(scalars)
-    # 上游 spider 多为相对路径（`./deps/...`），客户端 JarLoader 不认；
-    # 一律替换为「已验证可用的绝对地址 + md5」，见下方详细说明。
-    spider = REF_SPIDER
+    # spider = jar 地址。上游给的多是相对路径（`./deps/...`），客户端 JarLoader 不认；
+    # 这里做**三级回落**：gelonghui（已缓存，零流量）→ 本仓库 → jsDelivr。
+    # 只在「文件被删」时才换，网络抖动不换（换 URL 会让用户重下 915KB）。
+    spider, SPIDER_SRC = pick_spider()
+    C.log(f"  [spider] {SPIDER_SRC}")
+    C.log(f"           {spider[:96]}")
 
     # ★ spider 改为同源相对路径（实测饭太硬 `http://fty.xxooo.cf/tv` 就是
     #   `"spider": "./fty.jar"`，jar 与配置同域）。部分 TVBox 内核按
@@ -1219,7 +1325,8 @@ def merge(build: bool = False) -> dict:
         #     该 md5 与本地 public/spider.png **完全一致**（同一文件），
         #     所以用户加载 ysc 时已把 jar 缓存到本地；
         #     用同一 URL 可命中缓存、**零下载**，对低带宽环境是最优解。
-        spider = REF_SPIDER
+        # spider 的值已由上面的 pick_spider() 决定（含三级回落），此处不再改动。
+        pass
 
     # ★ 落盘前统一递归清洗，随后剔除因清洗而变空的壳
     #   （否则会出现「type=1 却没api」「lives 既无 channels 也无 url」的空壳，
