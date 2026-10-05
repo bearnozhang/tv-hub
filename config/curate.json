@@ -41,6 +41,14 @@
     "probe_concurrency": 32,
     "probe_max_total_s": 180,
     "min_probe_success_rate": 0.15,
+    "probe_deny_patterns": [
+      "7moor", "kefu", "yunxin", "53kf", "customer",
+      "t\\.cn/", "dwz\\.", "url\\.cn", "suo\\.im", "rrd\\.me",
+      "weixin\\.qq\\.com", "work\\.weixin", "mp\\.weixin",
+      "pan\\.baidu\\.com", "aliyundrive\\.com", "quark\\.cn",
+      "taobao\\.com", "alipay\\.com", "weibo\\.com", "douyin\\.com",
+      "localhost", "127\\.0\\.0\\.1", "10\\.", "192\\.168\\.", "172\\.16\\."
+    ],
     "paid_keywords": [
       "请充值", "购买会员", "开通会员", "无权限", "请登录",
       "会员专享", "收费", "付费", "not authorized", "unauthorized"

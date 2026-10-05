@@ -60,8 +60,9 @@ import re
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import urllib.request
 from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+from urllib.request import Request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import common as C  # noqa: E402
@@ -136,6 +137,20 @@ DEFAULT_POLICY: dict = {
         "probe_concurrency": 32,
         "probe_max_total_s": 180,      # 总时长兜底，超时后放弃剩余探测
         "min_probe_success_rate": 0.15,  # 低于此成功率 → 判为环境问题，本轮作废
+        # ── 探测黑名单（安全边界）──────────────────────────────────
+        # 这些域名下的地址**一律不发请求**。理由：探测会对目标发真实 HTTP
+        # 请求，而一个影视聚合工具不该去戳客服系统 / 短链 / 社交 / 网盘的域名 ——
+        # 既探不出影视源的可用性，又会被安全软件按「可疑行为」拦截。
+        # 实测事故：上游有源把脚本托管在七陌客服文件服务器
+        # （fs-im-kefu.7moor-fs1.com），探测它触发火绒「木马盗号」告警。
+        "probe_deny_patterns": [
+            "7moor", "kefu", "yunxin", "53kf", "customer",
+            "t\\.cn/", "dwz\\.", "url\\.cn", "suo\\.im", "rrd\\.me",
+            "weixin\\.qq\\.com", "work\\.weixin", "mp\\.weixin",
+            "pan\\.baidu\\.com", "aliyundrive\\.com", "quark\\.cn",
+            "taobao\\.com", "alipay\\.com", "weibo\\.com", "douyin\\.com",
+            "localhost", "127\\.0\\.0\\.1", "10\\.", "192\\.168\\.", "172\\.16\\.",
+        ],
         "paid_keywords": [
             "请充值", "购买会员", "开通会员", "无权限", "请登录",
             "会员专享", "收费", "付费", "not authorized", "unauthorized",
@@ -330,6 +345,67 @@ def name_speed_ms(s: dict) -> int | None:
 # ──────────────────────────────────────────────────────────────────────
 # L2 主动探测
 # ──────────────────────────────────────────────────────────────────────
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """探测**不跟随重定向**。
+
+    实测事故（2026-10-05）：上游不少源把 jar 托管在七陌客服的文件服务器上
+    （`fs-im-kefu.7moor-fs1.com`，伪装成 .png/.txt 对抗 CDN 类型检查），
+    某些采集接口会 302 跳到那里。`urllib` 默认**自动跟随重定向** ——
+    于是我们的探测请求打到了客服系统域名，被火绒按可疑行为报「木马盗号」。
+
+    探测只需要看第一次响应：不跟随既更安全（不会跳到第三方域名），
+    也更准确（3xx 本身就说明这个接口不是标准采集端点）。
+    """
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+_PROBE_OPENER = urllib.request.build_opener(_NoRedirect)
+
+
+# ── 探测目标的准入判定（安全边界，2026-10-05 收紧）──────────────────
+#
+# 为什么必须收紧：探测会对每个目标发**真实 HTTP 请求**。上游源的 api
+# 字段五花八门，实测有把脚本托管在第三方**客服系统文件服务器**上的
+# （`fs-im-kefu.7moor-fs1.com`）—— 探测它会被安全软件按「可疑行为」拦截，
+# 火绒直接报「木马盗号」。虽然是误报，但一个影视聚合工具不该去戳
+# 客服系统、短链、社交平台的域名。
+#
+# 而且这类「脚本类 api」本来也探测不出可用性（返回的是 JS 源码，
+# 不是数据接口），去掉它既更安全、也更准确。
+_NON_PROBE_SUFFIX = re.compile(
+    r"\.(?:js|mjs|py|json|txt|css|html?|xml|jpg|jpeg|png|gif|webp|"
+    r"mp4|m3u8|ts|zip|rar|apk|jar)(?:\?|$)", re.I)
+_COLLECT_API_HINT = re.compile(
+    r"(?:provide/vod|/api\.php|/vod\.php|[\?&]ac=(?:list|detail|videolist)|"
+    r"/vod/|/api/|/provide/)", re.I)
+
+
+def is_probeable(api: str, policy: dict = None) -> bool:
+    """这个地址该不该被主动探测。
+
+    三重门（全部通过才探测）：
+      1. 必须是 http(s) 绝对地址
+      2. **不是**脚本/静态文件后缀（.js/.py/.json/...）
+      3. **像**采集接口（含 provide/vod、api.php、ac= 等特征）
+      4. 不命中策略里的 `probe_deny_patterns`（客服/短链/社交等第三方域名）
+    """
+    a = (api or "").strip()
+    if not a.startswith(("http://", "https://")):
+        return False
+    if _NON_PROBE_SUFFIX.search(a):
+        return False                      # 脚本或静态文件，不是接口
+    deny = ((policy or {}).get("speed") or {}).get("probe_deny_patterns") or []
+    for pat in deny:
+        try:
+            if re.search(pat, a, re.I):
+                return False
+        except re.error:
+            continue
+    return bool(_COLLECT_API_HINT.search(a))
+
+
 def _probe_url(api: str) -> str:
     """把采集接口补上 `ac=list`（列分类），这是最轻量的存活探测请求。"""
     a = api.strip()
@@ -345,6 +421,10 @@ def probe_one(s: dict, policy: dict) -> dict:
     sp = policy.get("speed") or {}
     timeout = float(sp.get("probe_timeout_s", 6))
     api = str(s.get("api") or "")
+    if not is_probeable(api, policy):
+        # 双保险：不在准入范围内的地址一律不发请求
+        return {"ok": False, "ms": None, "code": None, "paid": False,
+                "err": "skip:非采集接口"}
     url = _probe_url(api)
     if not url:
         return {"ok": False, "ms": None, "code": None, "paid": False, "err": "非 http 接口"}
@@ -356,7 +436,8 @@ def probe_one(s: dict, policy: dict) -> dict:
             "User-Agent": "okhttp/3.12.0",
             "Accept-Encoding": "identity",
         })
-        with urlopen(req, timeout=timeout) as r:
+        # 用不跟随重定向的 opener（见 _NoRedirect 的说明）
+        with _PROBE_OPENER.open(req, timeout=timeout) as r:
             body = r.read(4096)
             code = r.status
         ms = int((time.time() - t0) * 1000)
@@ -587,9 +668,10 @@ def apply(sites: list, stats: dict = None, policy: dict = None,
     probe_results: dict = {}
     pstats: dict = {}
     if do_probe and sites:
-        # 只探测 direct 类（http 采集接口）——JS 源与网盘源的 api 不是可探测的采集端点
-        targets = [s for s in sites
-                   if str(s.get("api") or "").startswith(("http://", "https://"))]
+        # 只探测「真正的采集接口」（is_probeable 三重门）：
+        # 脚本类/静态文件类 api 不发请求 —— 既探不出可用性，
+        # 又会因访问第三方域名触发安全软件的误报。
+        targets = [s for s in sites if is_probeable(str(s.get("api") or ""), policy)]
         C.log(f"[curate] 开始探测 {len(targets)} 个 http 接口 ...")
         probe_results, pstats = probe_many(targets, policy)
         C.log(f"[curate] 探测完成：ok={pstats.get('ok')} paid={pstats.get('paid')} "
@@ -697,7 +779,7 @@ def main() -> int:
 
     health = load_health()
     if a.probe:
-        targets = [s for s in sites if str(s.get("api") or "").startswith(("http://", "https://"))]
+        targets = [s for s in sites if is_probeable(str(s.get("api") or ""), policy)]
         C.log(f"[curate] 探测 {len(targets)} 个 http 接口 ...")
         pr, ps = probe_many(targets, policy)
         C.log(f"[curate] ok={ps.get('ok')} paid={ps.get('paid')} fail={ps.get('fail')} "

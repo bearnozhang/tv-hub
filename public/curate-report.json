@@ -1,10 +1,10 @@
 {
-  "at": "2026-10-05T07:19:06Z",
-  "at_bj": "2026-10-05 15:19:06",
+  "at": "2026-10-05T07:29:47Z",
+  "at_bj": "2026-10-05 15:29:47",
   "stats": {
     "in": 1741,
-    "kept": 1657,
-    "dropped": 84,
+    "kept": 1544,
+    "dropped": 197,
     "by_category": {
       "direct": 606,
       "js": 1055,
@@ -15,35 +15,737 @@
       "invalid": 0
     },
     "drop_reasons": {
+      "quarantine": 117,
       "pan": 54,
       "magnet": 23,
-      "quarantine": 4,
       "broken": 3
     },
     "policy_version": "1.0.0",
     "probe": {
-      "probed": 1589,
-      "ok": 855,
-      "paid": 4,
-      "fail": 730,
+      "probed": 466,
+      "ok": 132,
+      "paid": 0,
+      "fail": 334,
       "skipped_budget": 0,
-      "elapsed_s": 90.6
+      "elapsed_s": 46.1
     }
   },
   "probe": {
-    "probed": 1589,
-    "ok": 855,
-    "paid": 4,
-    "fail": 730,
+    "probed": 466,
+    "ok": 132,
+    "paid": 0,
+    "fail": 334,
     "skipped_budget": 0,
-    "elapsed_s": 90.6
+    "elapsed_s": 46.1
   },
   "health": {
-    "rounds": 2,
+    "rounds": 4,
     "entries": 1788,
-    "quarantined": 4
+    "quarantined": 131
   },
   "quarantined": [
+    {
+      "key": "小胡",
+      "api_host": "xh1.xn--yetu07f.icu",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "熊掌",
+      "api_host": "xzcjz.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "ikunzy",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "hnzy",
+      "api_host": "www.hongniuzy2.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "电影天堂-4",
+      "api_host": "caiji.dyttzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "黑料-2",
+      "api_host": "www.heiliaozyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "新浪",
+      "api_host": "api.xinlangapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "site_1787074438064",
+      "api_host": "api.xinlangapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "maotaizy",
+      "api_host": "caiji.maotaizy.cc",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "色戒",
+      "api_host": "apilsbzy1.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "CK",
+      "api_host": "www.ckzy1.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "CK资源采集接口",
+      "api_host": "ckzy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "S猫资源网采集接口",
+      "api_host": "caiji.semaozy.net",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "pocket_d0d25fc89f6477bd",
+      "api_host": "caiji.dyttzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "semaozy",
+      "api_host": "caiji.semaozy.net",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "老色逼资源站采集接口",
+      "api_host": "apilsbzy1.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "百度云资源",
+      "api_host": "bdzy.tv",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "apilsbzy1",
+      "api_host": "apilsbzy1.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "ffc08730-71ad-56b8-a153-e2e563e6d64c",
+      "api_host": "Naixxzy.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "西瓜🍉",
+      "api_host": "caiji.xgzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "爱坤联盟资源网采集接口",
+      "api_host": "www.jkunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "hhzy2",
+      "api_host": "pz.v88.qzz.io",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "jkunzyapi",
+      "api_host": "www.jkunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "hongniuzy2",
+      "api_host": "hongniuzy2.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "湿乐园",
+      "api_host": "xxavs.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "杏吧资源",
+      "api_host": "xingba111.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "乐园",
+      "api_host": "xxavs.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "xingba222",
+      "api_host": "xingba222.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "奶香香资源站采集接口",
+      "api_host": "Naixxzy.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "155资源站采集接口",
+      "api_host": "155api.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "2286c2fd-8e65-52d2-9a7a-f21ec0cae006",
+      "api_host": "api.11bat.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "番茄资源采集接口",
+      "api_host": "fqzy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "桃花资源采集网采集接口",
+      "api_host": "thzy1.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "ruyi_2",
+      "api_host": "pz.v88.qzz.io",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "pocket_f0ca5356c3d6e280",
+      "api_host": "caiji.maotaizy.cc",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "Wwzy",
+      "api_host": "cj.rycjapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "如意资源网采集接口",
+      "api_host": "cj.rycjapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "fbfa5eed414e1f6137f2496a68005ef5",
+      "api_host": "hong.hgyx.vip",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "茅台资源站采集接口",
+      "api_host": "caiji.maotaizy.cc",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "public_20",
+      "api_host": "vnzyz.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "155",
+      "api_host": "155api.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "155资源站",
+      "api_host": "155api.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "IK",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "19",
+      "api_host": "19q.cc",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "小鸡",
+      "api_host": "api.xjzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "杏吧",
+      "api_host": "xingba222.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "极品",
+      "api_host": "jipinvip.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "桃花",
+      "api_host": "thzy1.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "番茄-2",
+      "api_host": "fqzy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "精品",
+      "api_host": "www.jingpinx.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "蝙蝠",
+      "api_host": "api.11bat.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "鸡坤-2",
+      "api_host": "jkunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "iKun资源",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "柚子影视",
+      "api_host": "api.yzzy-api.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "11辣椒资源",
+      "api_host": "apilj.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "11CK2",
+      "api_host": "ckzy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "ikun-3",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "jingpinx.com",
+      "api_host": "www.jingpinx.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "155zy.com",
+      "api_host": "155api.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "csp_XBiuiKUN",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "csp_XBiuiKUNcms",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "csp_xml_ikun",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "奶香香",
+      "api_host": "naixxzy.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "site_1787074897988",
+      "api_host": "cj.rycjapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "如意采集资源",
+      "api_host": "cj.rycjapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "U酷资源風",
+      "api_host": "api.ukuapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "蛋蛋魔法",
+      "api_host": "ddmf.net",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "ikunzy-2",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "zuidame",
+      "api_host": "zuidazy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "沙鱼",
+      "api_host": "shayuapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "site_1787074851217",
+      "api_host": "www.hongniuzy2.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "辣椒",
+      "api_host": "apilj.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "lajiaozy.com",
+      "api_host": "apilj.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "moduzy",
+      "api_host": "www.moduzy.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "柚子资源",
+      "api_host": "api.yzzy-api.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "U酷網",
+      "api_host": "api.ukuapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "ikun网",
+      "api_host": "ikunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "红牛",
+      "api_host": "www.hongniuzy2.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "a红牛资源",
+      "api_host": "www.hongniuzy2.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "jkunzy.com",
+      "api_host": "jkunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "laosebizy.com",
+      "api_host": "apilsbzy1.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "fqzy资源",
+      "api_host": "fqzy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "優質网",
+      "api_host": "api.1080zyku.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "CK采集网",
+      "api_host": "ckzy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "奶香",
+      "api_host": "naixxzy.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "夜貓_飞马影视",
+      "api_host": "rise.eu.org",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "csp_非凡资源",
+      "api_host": "ffzy1.tv",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "*鲨鱼",
+      "api_host": "shayuapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "7e324c0872c13fd329e818c33a659046",
+      "api_host": "cj.rycjapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "0be92695deec6ee83ef66a6fca1e88e4",
+      "api_host": "caiji.moduapi.cc",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "041c843aea19129a4716a6db4ab444ff",
+      "api_host": "91av.cyou",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "6e31126e4b7e6db33dcde3d30e309463",
+      "api_host": "zuidazy.me",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "b954276569fe5d54ca57cf5cd6358465",
+      "api_host": "rise.eu.org",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "精品资源站",
+      "api_host": "www.jingpinx.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "xfzyCMS",
+      "api_host": "json.xingba222.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "播剧影视",
+      "api_host": "www.ysxq.cc",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "jpwwCMS",
+      "api_host": "jipinvip1.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "蛋蛋影视",
+      "api_host": "ddmf.net",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "鲨鱼影视",
+      "api_host": "shayuzy5.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "鲨鱼资源",
+      "api_host": "shayuzy1.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "0a80243b21a08dc935258557df03cf34",
+      "api_host": "apilj.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "鸡坤",
+      "api_host": "jkunzyapi.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "小湿妹",
+      "api_host": "www.afasu.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "天翼推送",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "夸克推送",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "百度推送",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "迅雷",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "阿里推送",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "天翼-2",
+      "api_host": "38.76.197.172:15151",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "夸克推送-2",
+      "api_host": "38.76.197.172:15151",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "xunlei-2",
+      "api_host": "38.76.197.172:15151",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "123推送",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "UC推送",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "移动推送",
+      "api_host": "so.yinpai.xyz",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "百度-4",
+      "api_host": "38.76.197.172:15151",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "test",
+      "api_host": "huaren.live",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "AcFuns",
+      "api_host": "www.acfuns.net",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
     {
       "key": "5265207397011986833",
       "api_host": "gh.halonice.com",
@@ -63,13 +765,79 @@
       "fails_streak": 2
     },
     {
+      "key": "量子资源新",
+      "api_host": "www.lzizy6.com",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "2070335664787820544",
+      "api_host": "banyeomni.780420.xyz:17777",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
       "key": "密云视频.py",
       "api_host": "gh-proxy.org",
       "reason": "探测判定付费：响应含「付费」",
       "fails_streak": 2
+    },
+    {
+      "key": "123-3",
+      "api_host": "38.76.197.172:15151",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "优惜",
+      "api_host": "38.76.197.172:15151",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "55影视",
+      "api_host": "192.129.140.23:5757",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "可视PHP",
+      "api_host": "192.129.140.23:5757",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "新浪PHP",
+      "api_host": "192.129.140.23:5757",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "新韩剧网PHP",
+      "api_host": "192.129.140.23:5757",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "枫林影视PHP",
+      "api_host": "192.129.140.23:5757",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
+    },
+    {
+      "key": "泥视频PHP",
+      "api_host": "192.129.140.23:5757",
+      "reason": "连续 4 轮探测失败",
+      "fails_streak": 4
     }
   ],
   "dropped": [
+    {
+      "key": "小胡",
+      "name": "🔥┃小胡┃4K",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
     {
       "key": " 在线┃直播2",
       "name": "📺┃网红┃直播",
@@ -81,6 +849,618 @@
       "name": "🧲┃荐片┃磁力",
       "category": "magnet",
       "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "熊掌",
+      "name": "🐻┃熊掌┃高清",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "ikunzy",
+      "name": "🐓┃爱坤┃资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "hnzy",
+      "name": "🎥┃红牛┃资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "电影天堂-4",
+      "name": "🧞无广┃[采集]",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "黑料-2",
+      "name": "[137ms|zy] 🍊黑料",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "新浪",
+      "name": "🌕新浪xl",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "site_1787074438064",
+      "name": "新浪云",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "maotaizy",
+      "name": "茅台资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "色戒",
+      "name": "色戒(18)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "CK",
+      "name": "CK",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "CK资源采集接口",
+      "name": "CK资源采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "S猫资源网采集接口",
+      "name": "S猫资源网采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "pocket_d0d25fc89f6477bd",
+      "name": "🍀｜天堂｜采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "semaozy",
+      "name": "【9kg】色猫资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "老色逼资源站采集接口",
+      "name": "老色逼资源站采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "百度云资源",
+      "name": "百度🌀采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "apilsbzy1",
+      "name": "【9kg】老色逼资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "ffc08730-71ad-56b8-a153-e2e563e6d64c",
+      "name": "奶香",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "西瓜🍉",
+      "name": "西瓜🍉",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "爱坤联盟资源网采集接口",
+      "name": "爱坤联盟资源网采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "hhzy2",
+      "name": "豪华资源(代理)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "jkunzyapi",
+      "name": "【9kg】jkun资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "hongniuzy2",
+      "name": "⚡红牛┃11万部",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "湿乐园",
+      "name": "湿乐园",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "杏吧资源",
+      "name": "杏吧资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "乐园",
+      "name": "乐园(18)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "xingba222",
+      "name": "【9kg】杏吧资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "奶香香资源站采集接口",
+      "name": "奶香香资源站采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "155资源站采集接口",
+      "name": "155资源站采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "2286c2fd-8e65-52d2-9a7a-f21ec0cae006",
+      "name": "辣椒2",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "番茄资源采集接口",
+      "name": "番茄资源采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "桃花资源采集网采集接口",
+      "name": "桃花资源采集网采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "ruyi_2",
+      "name": "如意资源(代理)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "pocket_f0ca5356c3d6e280",
+      "name": "[193ms|apple] 茅台资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "Wwzy",
+      "name": "如意┃资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "如意资源网采集接口",
+      "name": "如意资源网采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "fbfa5eed414e1f6137f2496a68005ef5",
+      "name": "43-HG",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "茅台资源站采集接口",
+      "name": "茅台资源站采集接口",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "public_20",
+      "name": "💕越南(直连)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "155",
+      "name": "155",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "155资源站",
+      "name": "155 | 采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "IK",
+      "name": "IK",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "19",
+      "name": "[137ms|zy] 🍊19",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "小鸡",
+      "name": "[137ms|zy] 🍊小鸡",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "杏吧",
+      "name": "[137ms|zy] 🍊杏吧",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "极品",
+      "name": "[137ms|zy] 🍊极品",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "桃花",
+      "name": "[137ms|zy] 🍊桃花",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "番茄-2",
+      "name": "[137ms|zy] 🍊番茄🪜",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "精品",
+      "name": "[137ms|zy] 🍊精品🪜",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "蝙蝠",
+      "name": "[137ms|zy] 🍊蝙蝠",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "鸡坤-2",
+      "name": "[137ms|zy] 🍊鸡坤",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "iKun资源",
+      "name": "[590ms|5] iKun资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "柚子影视",
+      "name": "[590ms|5] 柚子影视",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "11辣椒资源",
+      "name": "apilj辣椒资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "11CK2",
+      "name": "ckzyCK资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "ikun-3",
+      "name": "iKun资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "jingpinx.com",
+      "name": "★精品下(直连)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "155zy.com",
+      "name": "♥155(直连)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "csp_XBiuiKUN",
+      "name": "✈iKUN(切)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "csp_XBiuiKUNcms",
+      "name": "✈iKUN(聚)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "csp_xml_ikun",
+      "name": "❤ikun资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "奶香香",
+      "name": "奶香 | 采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "site_1787074897988",
+      "name": "如意云",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "如意采集资源",
+      "name": "如意｜采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "U酷资源風",
+      "name": "影视 • 尤酷[直连]",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "蛋蛋魔法",
+      "name": "影视 • 蛋蛋魔法[直连]",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "ikunzy-2",
+      "name": "影视 🔰 ikun[直连]",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "zuidame",
+      "name": "最大点播",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "沙鱼",
+      "name": "沙鱼 | 采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "site_1787074851217",
+      "name": "红牛云",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "辣椒",
+      "name": "辣椒 | 采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "lajiaozy.com",
+      "name": "辣椒(FQ)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "moduzy",
+      "name": "魔都影视",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "柚子资源",
+      "name": "🍊柚子资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "U酷網",
+      "name": "🏆U酷",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "ikun网",
+      "name": "🏆ikun",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "红牛",
+      "name": "🏆红牛hn",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "a红牛资源",
+      "name": "🐂红牛┃采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "jkunzy.com",
+      "name": "💕jkun(直连)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "laosebizy.com",
+      "name": "💕老色逼(直连)",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "fqzy资源",
+      "name": "💞国产资源💞",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "優質网",
+      "name": "🔥優質zyk",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "CK采集网",
+      "name": "😰CK采集网",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "奶香",
+      "name": "🚀奶香",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "夜貓_飞马影视",
+      "name": "🛫if101影视",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "csp_非凡资源",
+      "name": "🥗┃非凡┃资源",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "*鲨鱼",
+      "name": "*鲨鱼",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "7e324c0872c13fd329e818c33a659046",
+      "name": "10-如意",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "0be92695deec6ee83ef66a6fca1e88e4",
+      "name": "34-魔都",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "041c843aea19129a4716a6db4ab444ff",
+      "name": "45-91视频",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "6e31126e4b7e6db33dcde3d30e309463",
+      "name": "55-最大",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "b954276569fe5d54ca57cf5cd6358465",
+      "name": "57-飞马",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "精品资源站",
+      "name": "精品 | 采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "xfzyCMS",
+      "name": "👭幸福资源👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "播剧影视",
+      "name": "👭播剧影视👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "jpwwCMS",
+      "name": "👭极品资源👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "蛋蛋影视",
+      "name": "💞蛋蛋影视💞",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "鲨鱼影视",
+      "name": "💞鲨鱼影视💞",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "鲨鱼资源",
+      "name": "💞鲨鱼资源💞",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "0a80243b21a08dc935258557df03cf34",
+      "name": "75-辣椒资源*",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "鸡坤",
+      "name": "鸡坤 | 采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "小湿妹",
+      "name": "湿妹 | 采集",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
     },
     {
       "key": "cat_荐片app",
@@ -401,6 +1781,18 @@
       "reason": "网盘接口特征 /ali_token|aliyundrive_to/ 命中「ali_token」"
     },
     {
+      "key": "test",
+      "name": "DUB1",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "AcFuns",
+      "name": "[322ms|我的] AcFuns",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
       "key": "5265207397011986833",
       "name": "liu673cn-box [快]",
       "category": "quarantine",
@@ -423,6 +1815,18 @@
       "name": "码上👓玉-👽荐片",
       "category": "magnet",
       "reason": "名称含「荐片」"
+    },
+    {
+      "key": "量子资源新",
+      "name": "量子资源新",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "2070335664787820544",
+      "name": "💝分享热播",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
     },
     {
       "key": "密云视频.py",
@@ -483,6 +1887,42 @@
       "name": "磁力-哔嘀(T4)",
       "category": "magnet",
       "reason": "名称含「磁力」"
+    },
+    {
+      "key": "55影视",
+      "name": "👭55影视👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "可视PHP",
+      "name": "👭可视👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "新浪PHP",
+      "name": "👭新浪👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "新韩剧网PHP",
+      "name": "👭新韩剧网👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "枫林影视PHP",
+      "name": "👭枫林影视👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
+    },
+    {
+      "key": "泥视频PHP",
+      "name": "👭泥视频👭",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
     },
     {
       "key": "荐片33333",
