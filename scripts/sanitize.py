@@ -343,11 +343,16 @@ def sanitize_config(data: dict) -> tuple[dict, dict]:
     return data, stats
 
 
+# 原样发布的第三方基线：**故意不消毒**。
+# 它的用途是「对照组」—— 消毒会改变它，就失去对照意义（见 merge.write_baseline）。
+BASELINE_SKIP = {"tv-ysc.json"}
+
+
 def _iter_json_targets(paths: list[str]) -> list[str]:
     """展开目录，只保留「TVBox 配置」形态的 JSON（含 sites 字段）。
 
     status.json / subscriptions.json / sub.json 等结构文件会被自动跳过 ——
-    它们不是配置，没有 sites 字段。
+    它们不是配置，没有 sites 字段。BASELINE_SKIP 里的文件也跳过（原样基线）。
     """
     import os
     out: list[str] = []
@@ -355,7 +360,7 @@ def _iter_json_targets(paths: list[str]) -> list[str]:
         if os.path.isdir(p):
             for dp, _, fs in os.walk(p):
                 for fn in sorted(fs):
-                    if fn.endswith(".json"):
+                    if fn.endswith(".json") and fn not in BASELINE_SKIP:
                         out.append(os.path.join(dp, fn))
         else:
             out.append(p)
