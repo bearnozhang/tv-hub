@@ -225,5 +225,64 @@ class TestWatchdogLogic(unittest.TestCase):
         self.assertFalse(rep["healthy"], "站点数低于下限未被发现")
 
 
+class TestDistributionChannels(unittest.TestCase):
+    """分发通道：必须来自契约，且有明确的主备层次。
+
+    社区经验：「永久可用」是伪命题（数据源生命周期 3-12 个月），
+    正确做法是「固定主通道 + 明确的备用清单 + 主通道能用就不换」。
+    这组测试保证：主通道始终排第一、始终存在备用、地址始终 ASCII 可达。
+    """
+
+    def test_channels_defined_in_contract(self):
+        ch = K.contract().get("channels") or {}
+        self.assertTrue(ch.get("config"), "契约缺少 channels.config")
+        self.assertTrue(ch.get("live"), "契约缺少 channels.live")
+        self.assertTrue(ch.get("selection_rule"), "缺少「怎么选通道」的说明")
+        self.assertTrue(ch.get("known_pitfalls"), "缺少已知坑位清单")
+
+    def test_first_config_channel_is_primary(self):
+        items = sorted(K.contract()["channels"]["config"], key=lambda x: x["order"])
+        self.assertEqual(items[0]["role"], "primary", "点播主通道必须排第一且为 primary")
+
+    def test_orders_and_urls_unique(self):
+        ch = K.contract()["channels"]
+        for kind in ("config", "live"):
+            items = ch[kind]
+            orders = [x["order"] for x in items]
+            urls = [x["url"] for x in items]
+            self.assertEqual(orders, sorted(orders), kind + " 顺序号必须递增")
+            self.assertEqual(len(orders), len(set(orders)), kind + " 顺序号必须唯一")
+            self.assertEqual(len(urls), len(set(urls)), kind + " 地址不可重复")
+
+    def test_backup_channel_exists(self):
+        """只有一个通道等于没有冗余 —— 必须有备用。"""
+        roles = {x["role"] for x in K.contract()["channels"]["config"]}
+        self.assertTrue(roles & {"backup", "fallback"}, "点播至少要有一个备用通道")
+
+    def test_channel_urls_are_ascii_encodable(self):
+        """通道地址需 ASCII 可达：中文域名要 punycode，而部分客户端不做转换。"""
+        ch = K.contract()["channels"]
+        for kind in ("config", "live"):
+            for item in ch[kind]:
+                self.assertTrue(K.url_encodable(item["url"]),
+                                kind + " 通道含非 ASCII 字符：" + item["url"])
+
+    def test_each_channel_has_reason(self):
+        """每个通道都要写清「为什么用它」—— 否则日后没人敢删。"""
+        ch = K.contract()["channels"]
+        for item in ch["config"]:
+            if item["role"] != "primary":
+                self.assertTrue(item.get("why"), item["name"] + " 缺少 why 说明")
+
+    def test_control_panel_renders_channels(self):
+        """看板必须渲染出通道列表（用户要能直接看到备用地址）。"""
+        import build as B
+        html = B.render_channels_html()
+        self.assertIn("主通道", html)
+        self.assertIn("http", html)
+        self.assertNotIn("__CHANNELS__", html, "占位符未被替换")
+        self.assertIn("role", html)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

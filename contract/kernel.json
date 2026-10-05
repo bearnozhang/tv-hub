@@ -94,5 +94,47 @@
       "/live": "text/plain"
     },
     "note": "超过 max_stale_hours 未更新 → 提示补触发构建（兜住 GitHub schedule 首次注册延迟）。"
+  },
+  "channels": {
+    "note": "分发通道清单。这是从 TVBox 社区经验里学到的核心做法：所谓「永久可用」是伪命题（数据源生命周期通常 3-12 个月），正确策略是「固定主通道 + 明确的备用清单 + 主通道能用就不换」。",
+    "selection_rule": "同一时刻只用一条。主通道能开就不要换 —— 社区反复验证过的坑：频繁追新源反而更不稳定。只有主通道确实打不开时才依次往下试。",
+    "config": [
+      {
+        "order": 1, "role": "primary", "name": "主通道（Cloudflare）",
+        "url": "http://tv.bearno1.dpdns.org/tv",
+        "why": "自建 Worker，Content-Type 正确、内容实时、可自行修复"
+      },
+      {
+        "order": 2, "role": "backup", "name": "备用一（jsDelivr fastly）",
+        "url": "https://fastly.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json",
+        "why": "实测 CT 正确、内容最新、国内节点较快；是首选备用"
+      },
+      {
+        "order": 3, "role": "backup", "name": "备用二（jsDelivr cloudflare）",
+        "url": "https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json",
+        "why": "CT 正确；但 CDN 有缓存延迟（实测可能滞后一版），作兜底"
+      },
+      {
+        "order": 4, "role": "fallback", "name": "备用三（gh-proxy 镜像）",
+        "url": "https://gh-proxy.com/https://raw.githubusercontent.com/bearnozhang/tv-hub/main/public/tv.json",
+        "why": "内容最新，但 Content-Type 是 text/plain —— 仅对不校验 CT 的客户端有效"
+      }
+    ],
+    "live": [
+      {
+        "order": 1, "role": "primary", "name": "主通道（Cloudflare）",
+        "url": "http://tv.bearno1.dpdns.org/live"
+      },
+      {
+        "order": 2, "role": "backup", "name": "备用一（jsDelivr fastly）",
+        "url": "https://fastly.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/live.txt"
+      }
+    ],
+    "known_pitfalls": [
+      "复制地址时带入换行/空格等隐藏字符 → 客户端提示加载失败（社区第一高频坑）",
+      "第三方镜像常返回 text/plain，校验 Content-Type 的客户端会直接拒绝",
+      "CDN 有缓存延迟，刚更新完可能拿到上一版（属正常，等数小时即可）",
+      "中文域名需要客户端做 punycode 转换，部分客户端不做 → 优先用 ASCII 域名"
+    ]
   }
 }

@@ -31,6 +31,14 @@ INDEX_HTML = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>tv-hub · 配置状态</title>
 <style>
+  ol.ch{margin:.4em 0 0;padding-left:1.4em;line-height:1.55}
+  ol.ch li{margin:.35em 0}
+  ol.ch li.prim{font-weight:600}
+  ol.ch .role{display:inline-block;min-width:1.5em;text-align:center;border:1px solid currentColor;
+    border-radius:3px;padding:0 .25em;font-size:.82em;vertical-align:1px}
+  ol.ch .why{opacity:.62;font-size:.9em}
+  ol.ch li.rule{border-top:1px dashed currentColor;padding-top:.4em;margin-top:.5em;
+    opacity:.75;font-size:.92em;list-style:none;margin-left:-1.4em}
 :root{color-scheme:dark}
 body{margin:0;padding:32px 20px;background:#0d1117;color:#e6edf3;
  font:14px/1.6 -apple-system,"Segoe UI",Microsoft YaHei,sans-serif}
@@ -58,10 +66,9 @@ __KPIS__
 <table><thead><tr><th>上游</th><th>类型</th><th>状态</th><th>数量</th><th>使用地址</th><th>最后成功</th><th>连续失败</th></tr></thead>
 <tbody>__ROWS__</tbody></table>
 <footer>
-订阅地址（部署 Pages 后可直接使用）：<br>
-· 点播配置 → <code>__BASE__/sub.txt</code><br>
-· 直播配置 → <code>__BASE__/live-sub.txt</code><br>
-· 状态文件 → <code>__BASE__/status.json</code><br>
+<h2>订阅地址</h2>
+<p class="sub">按顺序用：上面那条能开就不要换 —— 社区经验反复验证，频繁追新源反而更不稳定。</p>
+<ol class="ch">__CHANNELS__</ol>
 数据来源版权归各原始作者所有，本仓库仅做聚合与镜像。
 </footer>
 </div></body></html>
@@ -70,6 +77,32 @@ __KPIS__
 
 def kpi(label: str, value: object) -> str:
     return f'<div class="kpi"><b>{value}</b><span>{label}</span></div>'
+
+
+def render_channels_html() -> str:
+    """生成「订阅地址」列表 —— 读 contract/kernel.json 的 channels 段，地址不写死在这里。
+
+    放到看板上的理由：社区里最常见的求助就是「接口又失效了，求新地址」。
+    把主+备+选择规则直接摆在用户面前，比让他到处找省事。
+    """
+    try:
+        import kernel as K
+        ch = K.contract().get("channels") or {}
+    except Exception:  # noqa: BLE001
+        return "<li>（契约未加载）</li>"
+    items = []
+    for it in ch.get("config") or []:
+        role = "主" if it.get("role") == "primary" else "备"
+        cls = ' class="prim"' if it.get("role") == "primary" else ""
+        items.append(
+            '<li' + cls + '><span class="role">' + role + '</span> <b>'
+            + str(it.get("name", "")) + '</b><br><code>'
+            + str(it.get("url", "")) + '</code><br><span class="why">'
+            + str(it.get("why", "")) + '</span></li>')
+    rule = ch.get("selection_rule") or ""
+    if rule:
+        items.append('<li class="rule">' + rule + '</li>')
+    return "".join(items)
 
 
 def render_index(status: dict) -> str:
@@ -98,6 +131,7 @@ def render_index(status: dict) -> str:
     base = status.get("base_url") or "https://<你的域名>/"
     return (INDEX_HTML.replace("__KPIS__", kpis)
             .replace("__ROWS__", "\n".join(rows))
+            .replace("__CHANNELS__", render_channels_html())
             .replace("__UPDATED__", status["generated_at_bj"])
             .replace("__BASE__", base))
 

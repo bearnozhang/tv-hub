@@ -190,12 +190,115 @@ def check(base: str, timeout: int = 60) -> dict:
     return report
 
 
+def check_channels(timeout: int = 45) -> dict:
+    """逐个探测契约里定义的所有分发通道。
+
+    为什么要单独做这一件事：
+    TVBox 社区的经验里，「接口失效」的第一大原因是**通道问题**而非内容问题
+    （域名被墙、CDN 抽风、第三方镜像挂了）。与其让用户挨个试，
+    不如直接给出「现在哪条活着、哪条内容最新」的实测结果。
+
+    同时校验两件事 —— 光「能下载」不够：
+      1. 内容能否解析成合法配置
+      2. Content-Type 是否规范（社区反馈：校验 CT 的客户端会拒绝 text/plain）
+    """
+    ch = K.contract().get("channels") or {}
+    out: dict = {
+        "checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "selection_rule": ch.get("selection_rule", ""),
+        "config": [],
+        "live": [],
+    }
+
+    for kind in ("config", "live"):
+        for item in ch.get(kind) or []:
+            url = item["url"]
+            body, headers, err = fetch(url, timeout=timeout)
+            ct = headers.get("Content-Type")
+            rec: dict = {
+                "order": item.get("order"),
+                "role": item.get("role"),
+                "name": item.get("name"),
+                "url": url,
+                "why": item.get("why", ""),
+                "ok": body is not None,
+                "bytes": len(body) if body else 0,
+                "content_type": ct,
+            }
+            # Content-Type 是否规范，要按通道类型分别判断：
+            #   点播配置 → 必须是 application/json
+            #   直播源   → text/plain（txt 形态）或 application/json（lives 数组）都合法
+            if kind == "config":
+                rec["ct_standard"] = bool(ct) and "json" in ct.lower()
+            else:
+                low = (ct or "").lower()
+                rec["ct_standard"] = bool(ct) and ("text/plain" in low or "json" in low)
+            if body is None:
+                rec["error"] = err
+            elif kind == "config":
+                try:
+                    data = json.loads(body.decode("utf-8-sig"))
+                    rec["sites"] = len(data.get("sites") or [])
+                    rec["json_ok"] = True
+                except Exception as e:  # noqa: BLE001
+                    rec["json_ok"] = False
+                    rec["ok"] = False
+                    rec["error"] = "JSON 解析失败: " + str(e)[:60]
+            else:
+                text = body.decode("utf-8-sig", errors="replace")
+                rec["lines"] = len(text.splitlines())
+                rec["groups"] = sum(1 for x in text.splitlines() if "#genre#" in x)
+            out[kind].append(rec)
+    return out
+
+
+def render_channels(rep: dict) -> str:
+    lines = ["分发通道实测（内容 + Content-Type 双重校验）", "=" * 74]
+    for kind, label in (("config", "点播配置"), ("live", "直播源")):
+        rows = rep.get(kind) or []
+        if not rows:
+            continue
+        lines.append("")
+        lines.append("【" + label + "】")
+        for r in rows:
+            if not r["ok"]:
+                mark = "❌"
+                detail = r.get("error", "不可达")
+            else:
+                if kind == "config":
+                    detail = (str(r.get("sites")) + " 站  "
+                              + ("" if r.get("json_ok") else "JSON异常  "))
+                else:
+                    detail = str(r.get("groups")) + " 组 / " + str(r.get("lines")) + " 行"
+                mark = "✅" if r.get("ct_standard", True) else "⚠️"
+                if not r.get("ct_standard", True):
+                    detail += "  ← Content-Type 为 " + str(r.get("content_type")) + "（部分客户端会拒绝）"
+                detail += "  " + str(round(r["bytes"] / 1024)) + "KB"
+            lines.append("  " + mark + " [" + str(r.get("order")) + "] "
+                         + str(r.get("name")) + "  " + detail)
+            lines.append("        " + r["url"])
+    lines.append("")
+    lines.append("选择规则：" + (rep.get("selection_rule") or ""))
+    return chr(10).join(lines)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="tv-hub 线上巡检")
     ap.add_argument("--base", default=DEFAULT_BASE, help="线上基址")
     ap.add_argument("--timeout", type=int, default=60)
     ap.add_argument("--json", action="store_true", help="输出 JSON（CI 用）")
+    ap.add_argument("--channels", action="store_true",
+                    help="检查契约里定义的所有分发通道")
     a = ap.parse_args()
+
+    if a.channels:
+        rep = check_channels(a.timeout)
+        if a.json:
+            print(json.dumps(rep, ensure_ascii=False, indent=2))
+        else:
+            print(render_channels(rep))
+        bad = [r for kind in ("config", "live") for r in rep[kind] if not r["ok"]]
+        return 0 if len(bad) < 2 else 1
 
     rep = check(a.base.rstrip("/"), a.timeout)
 

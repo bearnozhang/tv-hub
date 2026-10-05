@@ -23,7 +23,7 @@ python scripts/validate.py --scope cache   # 校验缓存
 python scripts/validate.py                 # 校验 public/ 产物
 python scripts/merge.py --stats-only       # 只看去重统计
 
-# 跑测试（90 个用例，含契约/门禁/巡检的架构测试）
+# 跑测试（97 个用例，含契约/门禁/巡检/分发通道的架构测试）
 python -m unittest discover -s tests -v
 ```
 
@@ -64,6 +64,20 @@ python -m unittest discover -s tests -v
 不会静默跑出错误结果。
 
 ---
+
+## 相关文档
+
+| 文档 | 给谁看 | 内容 |
+|---|---|---|
+| **[ADDRESSES.md](ADDRESSES.md)** | **用户** | 订阅地址清单：主+备、何时该换/不该换、常见问题速查 |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | 维护者 | 六层架构、四性落点、故障手册 |
+| [LESSONS.md](LESSONS.md) | 维护者 | 社区经验笔记：前人踩过的坑与我们的取舍 |
+| [TROUBLESHOOT.md](TROUBLESHOOT.md) | 维护者 | 历史故障的完整排查记录 |
+| [SUBSCRIPTION.md](SUBSCRIPTION.md) | 维护者 | 订阅产物说明 |
+
+**一句话原则**（来自社区经验）：**「永久可用」是伪命题** ——
+数据源生命周期通常只有 3-12 个月。所以不追一个永不失效的链接，
+而是「固定主通道 + 备好备份 + 主通道能用就不换」。
 
 ## 架构与质量保障
 
