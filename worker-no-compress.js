@@ -38,6 +38,12 @@ const ALIAS = {
   // 用于二分定位「配置解析失败」到底出在哪一层。
   "/safe": "/tv-safe.json",
   "/test": "/tv-safe.json",
+  // 对照诊断档：每档只比 /safe 多一个变量，逐档试可锁定出错字段
+  "/t1": "/tv-t1.json",   // + 我们的 spider
+  "/t2": "/tv-t2.json",   // + 参照 spider（ysc 用的，已验证可用）
+  "/t3": "/tv-t3.json",   // + lives
+  "/t4": "/tv-t4.json",   // + parses
+  "/t5": "/tv-t5.json",   // + flags
 };
 
 const CT = [

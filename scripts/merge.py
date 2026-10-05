@@ -700,6 +700,50 @@ def write_fast_tier(sites: list[dict], parses: list[dict], flags: list,
     return ["tv-fast.json"]
 
 
+# 参照 spider：来自用户实测**能加载**的 ysc 配置（伪装成 .png 的 jar）。
+# 用作对照——若「我们的 spider」失败而「参照 spider」成功，即锁定为 jar 问题。
+REF_SPIDER = ("https://img2.gelonghui.com/library/"
+              "46da6-aa33493f-1c1d-4f35-9990-0be4bdbf0c64.png;md5;"
+              "46da6b6a6a111d7924717db2ae790de3")
+
+
+def write_probe_tiers(sites: list[dict], spider: str, parses: list,
+                      flags: list, lives: list) -> list[str]:
+    """生成一组**对照诊断档**，用于二分定位「配置解析错误」。
+
+    每档只比上一档多**一个变量**——这样用户依次试，第一个失败的档
+    就直接指出是哪个字段的问题：
+
+      /t1 = 12 站 + 我们的 spider          （测 spider / jar）
+      /t2 = 12 站 + 参照 spider（ysc 的）  （对照：spider 机制本身是否有问题）
+      /t3 = 12 站 + 我们的 spider + lives  （测直播）
+      /t4 = 12 站 + 我们的 spider + parses （测解析器）
+      /t5 = 12 站 + 我们的 spider + flags  （测 flags）
+
+    ⚠ 这些只在 build 时产出，且**体积都很小**（几 KB），不影响主档。
+    """
+    base = [s for s in sites
+            if s.get("type") == 1
+            and str(s.get("api") or "").startswith(("http://", "https://"))][:12]
+    if not base:
+        return []
+    written: list[str] = []
+    variants = [
+        ("tv-t1.json", {"spider": spider}),
+        ("tv-t2.json", {"spider": REF_SPIDER}),
+        ("tv-t3.json", {"spider": spider, "lives": lives}),
+        ("tv-t4.json", {"spider": spider, "parses": parses[:60]}),
+        ("tv-t5.json", {"spider": spider, "flags": flags}),
+    ]
+    for name, extra in variants:
+        obj = {**extra, "sites": base}
+        # 去掉空值，避免引入无意义的变量
+        obj = {k: v for k, v in obj.items() if v not in (None, "", [], {})}
+        write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(obj))
+        written.append(name)
+    return written
+
+
 def write_safe_tier(sites: list[dict], spider: str = "") -> list[str]:
     """产出 tv-safe.json（订阅别名 /safe）—— **极简诊断档**。
 
@@ -1071,6 +1115,9 @@ def merge(build: bool = False) -> dict:
         if build else []
     # 极简诊断档（无 spider / lives / parses / flags），用于二分定位「解析失败」
     safe_written = write_safe_tier(tv_sites) if build else []
+    # 对照诊断档：每档只比 /safe 多一个变量，逐档试即可锁定出错字段
+    probe_written = write_probe_tiers(tv_sites, spider, tv_parses, flags, tv_lives) \
+        if build else []
 
     # 直播：清洗无效引用 + 体积分档（与点播同一套适配逻辑）
     clean_groups, live_clean_stats = clean_live_entries(live_out)
