@@ -744,6 +744,35 @@ def write_probe_tiers(sites: list[dict], spider: str, parses: list,
     return written
 
 
+def write_min_tiers(sites: list[dict]) -> list[str]:
+    """产出极小档 m1/m2 —— 针对**低带宽**环境（VPN / 跨境链路）验证。
+
+    背景：用户网络带宽很小，915KB 的 `spider.jar` 必然下载超时，
+    表现为「拉取配置失败」。已手工构造 175 字节的 `spider-min.jar`
+    （合法 dex、不含任何类）。这两档用来确认：
+
+      /m1 = 3 站，**无 spider**       → 客户端是否真的要求 spider 字段
+      /m2 = 3 站 + **最小 jar(175B)** → 最小 jar 能否满足客户端
+
+    若 m2 能正常显示列表，则把全部档位的 spider 换成最小 jar，
+    低带宽环境即可正常加载。
+    """
+    base = [s for s in sites
+            if s.get("type") == 1
+            and str(s.get("api") or "").startswith(("http://", "https://"))][:3]
+    if not base:
+        return []
+    written = []
+    for name, obj in (
+        ("tv-m1.json", {"sites": base}),
+        ("tv-m2.json", {"spider": base_url().rstrip("/") + "/spider-min.jar",
+                        "sites": base}),
+    ):
+        write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(obj))
+        written.append(name)
+    return written
+
+
 def write_safe_tier(sites: list[dict], spider: str = "") -> list[str]:
     """产出 tv-safe.json（订阅别名 /safe）—— **极简诊断档**。
 
@@ -1118,6 +1147,8 @@ def merge(build: bool = False) -> dict:
     # 对照诊断档：每档只比 /safe 多一个变量，逐档试即可锁定出错字段
     probe_written = write_probe_tiers(tv_sites, spider, tv_parses, flags, tv_lives) \
         if build else []
+    # 极小档（低带宽环境验证：最小 jar 能否替代 915KB 的 jar）
+    min_written = write_min_tiers(tv_sites) if build else []
 
     # 直播：清洗无效引用 + 体积分档（与点播同一套适配逻辑）
     clean_groups, live_clean_stats = clean_live_entries(live_out)
