@@ -695,6 +695,10 @@ def write_main_tier(spider: str) -> list[str]:
         return []
 
     sites: list[dict] = []
+    # 网盘搜索/聚合类：搜到的结果要登录网盘（夸克/UC/天翼）会员才能播，
+    # 用户明确说过「只要免费且高速的，不要挂网盘的」→ 主档不带。
+    _PAN_CLASSES = {"MiSou", "PanSearch", "PanSou", "WangPan",
+                    "AliYunPan", "PanWebShare", "AList"}
     for s in (y.get("sites") or []):
         if not isinstance(s, dict):
             continue
@@ -702,6 +706,8 @@ def write_main_tier(spider: str) -> list[str]:
         if not api.startswith("csp_"):
             continue
         if api[4:] not in classes:      # 类不在我们 jar 里 → 用不了
+            continue
+        if api[4:] in _PAN_CLASSES:     # 网盘类 → 不要
             continue
         if s.get("jar"):                # 要额外下别人的 jar → 排除
             continue

@@ -1326,20 +1326,6 @@
       "changeable": 0
     },
     {
-      "key": "米搜",
-      "name": "🌖┃米搜┃网盘",
-      "type": 3,
-      "api": "csp_MiSou",
-      "ext": "http://127.0.0.1:9978/file/fatcat/kk.txt"
-    },
-    {
-      "key": "csp_PanSearch",
-      "name": "🚃┃盘搜┃网盘",
-      "type": 3,
-      "api": "csp_PanSearch",
-      "ext": "http://127.0.0.1:9978/file/fatcat/token.txt"
-    },
-    {
       "key": "csp_少儿",
       "name": "📚┃少儿┃教育",
       "type": 3,
@@ -1480,16 +1466,6 @@
       "searchable": 0,
       "quickSearch": 0,
       "ext": "http://tt.iitvba.com/js/戏曲.json"
-    },
-    {
-      "key": "PanSearch",
-      "name": "🙀┃盘Se┃搜索",
-      "type": 3,
-      "api": "csp_PanSearch",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 0,
-      "ext": "http://127.0.0.1:9978/file/tvfan/token.txt+4k|auto|fhd"
     }
   ]
 }
