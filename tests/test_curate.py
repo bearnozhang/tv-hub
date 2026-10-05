@@ -20,6 +20,10 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import common as C      # noqa: E402
 import curate as CU     # noqa: E402
 
+# 原样发布的第三方基线（public/tv-ysc.json）不做任何加工，
+# 用途是与我们自己的产物做对照 —— 产物守卫测试必须跳过它。
+BASELINE_SKIP = {"tv-ysc.json"}
+
 
 def _site(**kw) -> dict:
     """默认构造一个「标准采集站」；要测脚本源请显式传 type=3。"""
@@ -244,7 +248,7 @@ class TestOutputWhitelist(unittest.TestCase):
         self.assertTrue(allow, "契约未加载到字段白名单")
         bad: dict = {}
         for fn in sorted(os.listdir(pub)):
-            if not fn.endswith(".json"):
+            if not fn.endswith(".json") or fn in BASELINE_SKIP:
                 continue
             try:
                 with open(os.path.join(pub, fn), encoding="utf-8-sig") as f:
@@ -278,7 +282,7 @@ class TestOutputWhitelist(unittest.TestCase):
             self.skipTest("尚未构建")
         bad = {}
         for fn in sorted(os.listdir(pub)):
-            if not fn.endswith(".json"):
+            if not fn.endswith(".json") or fn in BASELINE_SKIP:
                 continue
             try:
                 with open(os.path.join(pub, fn), encoding="utf-8-sig") as f:

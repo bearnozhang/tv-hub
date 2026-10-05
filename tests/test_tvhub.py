@@ -30,6 +30,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 sys.path.insert(0, ROOT)
 
+# 原样发布的第三方基线（public/tv-ysc.json）**故意不做任何加工** ——
+# 它的用途是与我们自己的产物做对照。产物守卫类测试要跳过它，
+# 否则会拿「对照组」去要求「符合我们的规范」，逻辑上不成立。
+BASELINE_SKIP = {"tv-ysc.json"}
+
 import common as C  # noqa: E402
 import merge as M  # noqa: E402
 import build as B  # noqa: E402
@@ -864,7 +869,7 @@ class TestUrlScrubbing(unittest.TestCase):
 
         for dirpath, _, files in os.walk(pub):
             for fn in files:
-                if not fn.endswith((".json", ".txt", ".webp")):
+                if not fn.endswith((".json", ".txt", ".webp")) or fn in BASELINE_SKIP:
                     continue
                 p = os.path.join(dirpath, fn)
                 try:
@@ -1019,7 +1024,7 @@ class TestKernelContract(unittest.TestCase):
         """遍历 public/ 下所有「含 sites 的 JSON」配置。"""
         for dp, _, fs in os.walk(self.PROD):
             for fn in sorted(fs):
-                if not fn.endswith(".json"):
+                if not fn.endswith(".json") or fn in BASELINE_SKIP:
                     continue
                 p = os.path.join(dp, fn)
                 try:
