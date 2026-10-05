@@ -812,7 +812,7 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
                          and str(x.get("url") or "").startswith(("http://", "https://"))]
         if isinstance(out.get("lives"), list):
             out["lives"] = [{"name": x["name"], "type": 0,
-                             "url": "./live.txt", "epg": ""}
+                             "url": base_url().rstrip("/") + "/live.txt", "epg": ""}
                             for x in keep_alive_lives(out["lives"]) if x.get("name")]
 
         # 直播引用壳（sites=0）落盘后是「空配置」，客户端会直接报解析失败，
@@ -952,7 +952,12 @@ def merge(build: bool = False) -> dict:
     #   同源相对路径加载 jar；跨域绝对地址会被判为「解析配置失败」。
     #   jar 已随 public/spider.jar 一同发布。
     if spider:
-        spider = "./spider.jar"
+        # ★ 用**绝对地址**（2026-10-05 修正）
+        #   此前写 `./spider.jar`（相对路径）。实测对照：用户验证过能加载的
+        #   ysc 配置，spider 是**绝对 https 地址**（伪装成 .png 的 jar）。
+        #   相对路径只有部分 FongMi 系内核认；**主流 TVBox 官方版要求绝对 URL**
+        #   —— 而 spider 在顶层，一旦解析不了就是整份「解析配置失败」。
+        spider = base_url().rstrip("/") + "/spider.jar"
 
     # ★ 落盘前统一递归清洗，随后剔除因清洗而变空的壳
     #   （否则会出现「type=1 却没api」「lives 既无 channels 也无 url」的空壳，
@@ -969,7 +974,9 @@ def merge(build: bool = False) -> dict:
     #   之前误用了 group/channels 结构（无 url），内核取不到 url 直接抛异常。
     tv_lives = [x for x in keep_alive_lives(lives + live_out)
                 if _is_tv_group(str(x.get("name") or "").strip())]
-    tv_lives = [{"name": "直播", "type": 0, "url": "./live.txt", "epg": ""}]
+    #   同理用绝对地址（相对路径在备用通道下还会指错地方）。
+    tv_lives = [{"name": "直播", "type": 0,
+                 "url": base_url().rstrip("/") + "/live.txt", "epg": ""}]
 
     # ★ parses 必须有 url，否则 Parse.objectFrom 取不到地址会抛异常。
     tv_parses = [x for x in C.scrub_urls(parses)

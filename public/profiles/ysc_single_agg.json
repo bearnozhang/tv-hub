@@ -555,13 +555,6 @@
   ],
   "sites": [
     {
-      "key": "drpy_js_豆瓣",
-      "name": "🔥聚玩盒子4K",
-      "type": 3,
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
-    },
-    {
       "key": "hnzy",
       "name": "🎥┃红牛┃资源",
       "type": 1,
@@ -582,27 +575,11 @@
       ]
     },
     {
-      "key": "lzzy",
-      "name": "🎥┃量子┃资源",
-      "type": 1,
-      "api": "https://cj.lziapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "国产动漫",
-        "日韩动漫",
-        "大陆剧",
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
+      "key": "drpy_js_豆瓣",
+      "name": "🔥聚玩盒子4K",
+      "type": 3,
+      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
+      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
     },
     {
       "key": "豪华资源",
@@ -640,13 +617,16 @@
       ]
     },
     {
-      "key": "ikunzy",
-      "name": "🐓┃爱坤┃资源",
+      "key": "lzzy",
+      "name": "🎥┃量子┃资源",
       "type": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod ",
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
       "searchable": 1,
       "filterable": 0,
       "categories": [
+        "国产动漫",
+        "日韩动漫",
+        "大陆剧",
         "欧美剧",
         "韩剧",
         "日剧",
@@ -664,6 +644,26 @@
       "name": "🎥┃索尼┃资源",
       "type": 1,
       "api": "https://suoniapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
+      "key": "ikunzy",
+      "name": "🐓┃爱坤┃资源",
+      "type": 1,
+      "api": "https://ikunzyapi.com/api.php/provide/vod ",
       "searchable": 1,
       "filterable": 0,
       "categories": [
