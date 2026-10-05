@@ -1,0 +1,590 @@
+{
+  "at": "2026-10-05T07:14:35Z",
+  "at_bj": "2026-10-05 15:14:35",
+  "stats": {
+    "in": 1532,
+    "kept": 1446,
+    "dropped": 86,
+    "by_category": {
+      "direct": 388,
+      "js": 1062,
+      "pan": 56,
+      "paid": 0,
+      "magnet": 23,
+      "broken": 3,
+      "invalid": 0
+    },
+    "drop_reasons": {
+      "pan": 56,
+      "magnet": 23,
+      "quarantine": 4,
+      "broken": 3
+    },
+    "policy_version": "1.0.0",
+    "probe": {
+      "probed": 1440,
+      "ok": 803,
+      "paid": 4,
+      "fail": 633,
+      "skipped_budget": 0,
+      "elapsed_s": 76.1
+    }
+  },
+  "probe": {
+    "probed": 1440,
+    "ok": 803,
+    "paid": 4,
+    "fail": 633,
+    "skipped_budget": 0,
+    "elapsed_s": 76.1
+  },
+  "health": {
+    "rounds": 1,
+    "entries": 1440,
+    "quarantined": 4
+  },
+  "quarantined": [
+    {
+      "key": "5265207397011986833",
+      "api_host": "gh.halonice.com",
+      "reason": "探测判定付费：响应含「付费」",
+      "fails_streak": 1
+    },
+    {
+      "key": "3743094571226914065",
+      "api_host": "liu673cn.github.io",
+      "reason": "探测判定付费：响应含「付费」",
+      "fails_streak": 1
+    },
+    {
+      "key": "2740222323333891006",
+      "api_host": "raw.liucn.cc",
+      "reason": "探测判定付费：响应含「付费」",
+      "fails_streak": 1
+    },
+    {
+      "key": "密云视频.py",
+      "api_host": "gh-proxy.org",
+      "reason": "探测判定付费：响应含「付费」",
+      "fails_streak": 1
+    }
+  ],
+  "dropped": [
+    {
+      "key": " 在线┃直播2",
+      "name": "📺┃网红┃直播",
+      "category": "pan",
+      "reason": "网盘接口特征 /alist/ 命中「alist」"
+    },
+    {
+      "key": "4k_荐片",
+      "name": "🧲┃荐片┃磁力",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "cat_荐片app",
+      "name": "☀荐片🔹蓝光",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "drpy_js_4KHDR[磁]",
+      "name": "磁力 | 4KHDR[磁][js]",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "Cat_荐片",
+      "name": "☀鉴片🔹极速",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "荐片影院",
+      "name": "🔎荐片┃p2p",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "磁力熊",
+      "name": "🧲磁力熊┃磁力",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "JD4kss",
+      "name": "💥采集网盘💥",
+      "category": "pan",
+      "reason": "分组「4K-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "听了么",
+      "name": "☁云霄丨听了么丨音乐",
+      "category": "pan",
+      "reason": "分组「4K-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "drpy_js_Alist-3",
+      "name": " 🎑Alist[DRPY]",
+      "category": "pan",
+      "reason": "网盘接口特征 /alist/ 命中「alist」"
+    },
+    {
+      "key": "夸克影院.js",
+      "name": "💥夸克影院💥",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "雷子",
+      "name": "[367ms|直播] ️​雷子",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "天翼推送",
+      "name": "[4727ms|2] 天翼┃网盘推送",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=tianyi」"
+    },
+    {
+      "key": "夸克推送",
+      "name": "[4727ms|2] 夸克┃网盘搜索",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=quark」"
+    },
+    {
+      "key": "百度推送",
+      "name": "[4727ms|2] 百度┃网盘搜索",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=baidu」"
+    },
+    {
+      "key": "迅雷",
+      "name": "[4727ms|2] 迅雷┃网盘搜索",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=xunlei」"
+    },
+    {
+      "key": "阿里推送",
+      "name": "[4727ms|2] 阿里┃网盘搜索",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=aliyun」"
+    },
+    {
+      "key": "天翼-2",
+      "name": "天翼|推送",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=tianyi」"
+    },
+    {
+      "key": "夸克推送-2",
+      "name": "夸克|推送",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=quark」"
+    },
+    {
+      "key": "pansou",
+      "name": "盘搜|集合",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=quark」"
+    },
+    {
+      "key": "sharenice_open",
+      "name": "短视频[cat]",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "xunlei-2",
+      "name": "迅雷|推送",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=xunlei」"
+    },
+    {
+      "key": "js_豆瓣热播",
+      "name": "🅱️追剧影院|T热播",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬MiFunP动漫",
+      "name": "☁云霄丨MiFunP丨动漫",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬文才影视",
+      "name": "☁云霄丨文才丨影视",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬枫叶音乐",
+      "name": "☁云霄丨枫叶丨音乐",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬茶杯狐PY",
+      "name": "☁云霄丨茶杯狐丨PY",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "小纸条_cli",
+      "name": "小纸条[俊.T4]",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "分享",
+      "name": "枫叶",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "Pandalive.py",
+      "name": "💥Pandalive💥",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "皮皮虾",
+      "name": "[367ms|直播] ♨️皮虾｜皮皮",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "爱看剧",
+      "name": "[367ms|直播] 还行吧",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "123推送",
+      "name": "[4727ms|2] 123┃网盘搜索",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=123」"
+    },
+    {
+      "key": "UC推送",
+      "name": "[4727ms|2] UC┃网盘搜索",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=uc」"
+    },
+    {
+      "key": "移动推送",
+      "name": "[4727ms|2] 移动┃网盘搜索",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=mobile」"
+    },
+    {
+      "key": "裤佬V5影视",
+      "name": "☁云霄丨V5丨影视",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬嘶哩动漫",
+      "name": "☁云霄丨嘶哩丨动漫",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬多瑙影视",
+      "name": "☁云霄丨多瑙丨影视",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬太乙影视",
+      "name": "☁云霄丨太乙丨影视",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬枝枝影视",
+      "name": "☁云霄丨枝枝丨影视",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "爱听音乐-3",
+      "name": "☁云霄丨爱听丨音乐",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬酷我音乐",
+      "name": "☁云霄丨酷我丨音乐",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "网盘",
+      "name": "☁云霄网盘",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "百度-4",
+      "name": "百度|推送",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=baidu」"
+    },
+    {
+      "key": "直播播",
+      "name": "🎦IPV6┃电视直播",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "t4public-2",
+      "name": "🔍T4公共",
+      "category": "pan",
+      "reason": "网盘接口特征 /ali_token|aliyundrive_to/ 命中「ali_token」"
+    },
+    {
+      "key": "t4AnLao",
+      "name": "🔍T4搜索",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "四叶草",
+      "name": "[367ms|直播] 四叶草",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "采之王",
+      "name": "[367ms|直播] 采集｜合集",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "裤佬独播JS",
+      "name": "☁云霄丨独播丨JS",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "一个影视",
+      "name": "一个影视",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "动漫堂",
+      "name": "漫堂",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "模拟器",
+      "name": "羊佬壳游戏",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "花子动漫",
+      "name": "花子｜动漫",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": "cat_夸克影院",
+      "name": "💝分享夸克",
+      "category": "pan",
+      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
+    },
+    {
+      "key": " 短剧┃网",
+      "name": "码上👓豆-短剧",
+      "category": "pan",
+      "reason": "网盘接口特征 /alist/ 命中「alist」"
+    },
+    {
+      "key": "裤佬荐片JS",
+      "name": "☁云霄丨荐片丨JS",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "荐片.js",
+      "name": "💥荐片2💥",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "T4a",
+      "name": " 🎑T4聚合",
+      "category": "pan",
+      "reason": "网盘接口特征 /ali_token|aliyundrive_to/ 命中「ali_token」"
+    },
+    {
+      "key": "5265207397011986833",
+      "name": "liu673cn-box [快]",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「付费」"
+    },
+    {
+      "key": "3743094571226914065",
+      "name": "liu673cn.github.io [快]",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「付费」"
+    },
+    {
+      "key": "2740222323333891006",
+      "name": "raw.liucn.cc [快]",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「付费」"
+    },
+    {
+      "key": "T4_荐片",
+      "name": "码上👓玉-👽荐片",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "密云视频.py",
+      "name": "💥密云视频💥",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「付费」"
+    },
+    {
+      "key": "cilixiong",
+      "name": "(js)磁力熊┃🐻",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])cilixiong/"
+    },
+    {
+      "key": "123-3",
+      "name": "123|推送",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=123」"
+    },
+    {
+      "key": "T4-jianpian2",
+      "name": "[313ms|00000] 影视-荐片2(T4)",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "优惜",
+      "name": "优惜|推送",
+      "category": "pan",
+      "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=uc」"
+    },
+    {
+      "key": "T4-jp",
+      "name": "影视-荐片(T4)",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "T4-6v",
+      "name": "磁力-6V(T4)",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "T4-哔嘀",
+      "name": "磁力-哔嘀(T4)",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "荐片33333",
+      "name": "👭荐片33333👭",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "新荐片.py",
+      "name": "💥新荐片💥",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "douban-2",
+      "name": "🅱豆瓣荐片",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "T4聚合",
+      "name": "🔍T4聚合",
+      "category": "pan",
+      "reason": "网盘接口特征 /ali_token|aliyundrive_to/ 命中「ali_token」"
+    },
+    {
+      "key": "t4_公共",
+      "name": "🔍公共(T4)",
+      "category": "pan",
+      "reason": "网盘接口特征 /ali_token|aliyundrive_to/ 命中「ali_token」"
+    },
+    {
+      "key": "T4a-2",
+      "name": "🔍聚合(T4)",
+      "category": "pan",
+      "reason": "网盘接口特征 /ali_token|aliyundrive_to/ 命中「ali_token」"
+    },
+    {
+      "key": "裤佬人人影视",
+      "name": "☁云霄丨人人丨影视",
+      "category": "broken",
+      "reason": "drpy 引擎「drpy2.min.js」缺 ext，无法工作"
+    },
+    {
+      "key": "荐片-2",
+      "name": "荐片P2P",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "catvod_荐片",
+      "name": "💥荐片💥",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "dr_荐片-2",
+      "name": "🧲荐片",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "宝片[V2]",
+      "name": "宝片[V2]🏆种子",
+      "category": "magnet",
+      "reason": "名称含「种子」"
+    },
+    {
+      "key": "drpy_js_种子音乐",
+      "name": "音频 | 种子音乐[js]",
+      "category": "magnet",
+      "reason": "名称含「种子」"
+    },
+    {
+      "key": "荐片采集",
+      "name": "💝分享荐片",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "夜貓_drpy_ol",
+      "name": "🛫欧乐影视(墙外)",
+      "category": "broken",
+      "reason": "drpy 引擎「drpy2.min.js」缺 ext，无法工作"
+    },
+    {
+      "key": "夜貓_dr_美视网",
+      "name": "🛫美视网(飞)",
+      "category": "broken",
+      "reason": "drpy 引擎「drpy2.min.js」缺 ext，无法工作"
+    }
+  ]
+}

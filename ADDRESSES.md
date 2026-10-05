@@ -20,14 +20,40 @@ http://tv.bearno1.dpdns.org/live
 
 ---
 
+## 一·B、嫌源太多、只想要「确定快」的？（可选）
+
+```
+http://tv.bearno1.dpdns.org/fast
+```
+
+这是**高速精选**档：只保留「有实测速度证据且够快」的源（≤1.2 秒），上限 240 个，
+按快慢排序。适合不想在几百个源里翻的人。
+
+与主档的区别：
+
+| | `/tv`（主档） | `/fast`（高速精选） |
+|---|---|---|
+| 内容 | 全部免费源（已筛掉网盘/付费/磁力） | 其中**确认快**的那部分 |
+| 数量 | 1400+ | ≤ 240 |
+| 适合 | 想慢慢挑、要最大覆盖面 | 想直接看、讨厌等 |
+
+两个都用同一套筛选：**网盘类（要夸克/UC/天翼会员的）、付费类、磁力类、
+以及配置残缺的空壳源，都已经剔除。**
+
+---
+
 ## 二、打不开了再往下换（按顺序）
 
 | 顺序 | 地址 | 实测 |
 |---|---|---|
-| 1 | `http://tv.bearno1.dpdns.org/tv` | ✅ 1167 站 |
-| 2 | `https://fastly.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json` | ✅ 1167 站 |
+| 1 | `http://tv.bearno1.dpdns.org/tv` | ✅ 1421 站（已筛网盘/付费/磁力） |
+| 1·B | `http://tv.bearno1.dpdns.org/fast` | ✅ 240 站（高速精选） |
+| 2 | `https://fastly.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json` | ✅ 1421 站 |
 | 3 | `https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json` | ✅ 内容可能滞后一版 |
 | 4 | `https://gh-proxy.com/https://raw.githubusercontent.com/bearnozhang/tv-hub/main/public/tv.json` | ⚠️ 内容正确，但部分客户端会拒绝（响应头不规范） |
+
+> 注意：备用通道（jsDelivr / gh-proxy）下，部分源的脚本依赖走不了 `/deps/*` 反代
+> （那只在我们自己的域名上生效），所以**主通道能用就用主通道**。
 
 **直播备用：**
 

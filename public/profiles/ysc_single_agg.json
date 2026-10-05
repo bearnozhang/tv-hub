@@ -555,91 +555,6 @@
   ],
   "sites": [
     {
-      "key": "py_douban",
-      "name": "📢接口软件永远免费",
-      "type": 3,
-      "api": "https://cdn.jsdmirror.com/gh/ouhaibo1980/tvbox@main/py/py_douban.py",
-      "searchable": 0,
-      "filterable": 0,
-      "changeable": 0
-    },
-    {
-      "key": "drpy_js_豆瓣",
-      "name": "🔥聚玩盒子4K",
-      "type": 3,
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
-    },
-    {
-      "key": "小胡",
-      "name": "🔥┃小胡┃4K",
-      "type": 1,
-      "playerType": 1,
-      "api": "http://xh1.xn--yetu07f.icu/api.php/provide/vod/",
-      "jar": "http://xiaohu.xzam.cn/jar/1.jar"
-    },
-    {
-      "key": "在线┃直播2",
-      "name": "📺┃网红┃直播",
-      "type": 3,
-      "api": "http://alist.xn--z7x900a.live/ddrpy2.m.js",
-      "ext": "http://alist.xn--z7x900a.live/JustLive.js",
-      "gridview": "0-0-H",
-      "style": {
-        "type": "rect",
-        "ratio": 1.68
-      }
-    },
-    {
-      "key": "drpy_js_360影视",
-      "name": "🧡┃360┃官源",
-      "type": 3,
-      "api": "https://jihulab.com/yw88075/tvbox/-/raw/main/dr/lib/drpy2.min.js",
-      "ext": "https://jihulab.com/yw88075/tvbox/-/raw/main/dr/js/360%E5%BD%B1%E8%A7%86.js"
-    },
-    {
-      "key": "初恋资源",
-      "name": "🧡┃初恋┃官源",
-      "type": 1,
-      "api": "https://video.adminqt.cn/api.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1
-    },
-    {
-      "key": "4k_荐片",
-      "name": "🧲┃荐片┃磁力",
-      "type": 3,
-      "api": "http://rihou.vip:55/lib/drpy2.min.js",
-      "ext": "http://rihou.vip:55/lib/jianpian.js"
-    },
-    {
-      "key": "熊掌",
-      "name": "🐻┃熊掌┃高清",
-      "type": 1,
-      "api": "https://xzcjz.com/api.php/provide/vod",
-      "jar": "https://tvbox.cainisi.cf/jar/fty0101.jar;md5;fd784008ab71d81a178564841059756d"
-    },
-    {
-      "key": "ikunzy",
-      "name": "🐓┃爱坤┃资源",
-      "type": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod ",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
-    },
-    {
       "key": "豪华资源",
       "name": "🎥┃豪华┃资源",
       "type": 1,
@@ -675,44 +590,11 @@
       ]
     },
     {
-      "key": "hnzy",
-      "name": "🎥┃红牛┃资源",
-      "type": 1,
-      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
-    },
-    {
-      "key": "gszy",
-      "name": "🎥┃光速┃资源",
-      "type": 1,
-      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
+      "key": "drpy_js_豆瓣",
+      "name": "🔥聚玩盒子4K",
+      "type": 3,
+      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
+      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
     },
     {
       "key": "lzzy",
@@ -758,6 +640,119 @@
       ]
     },
     {
+      "key": "儿童",
+      "name": "📚┃儿童┃启蒙",
+      "type": 3,
+      "api": "./api/drpy2.min.js",
+      "searchable": 0,
+      "quickSearch": 0,
+      "changeable": 0,
+      "style": {
+        "type": "rect",
+        "ratio": 1.597
+      },
+      "ext": "./js/%E5%85%94%E5%B0%8F%E8%B4%9D.js"
+    },
+    {
+      "key": "py_douban",
+      "name": "📢接口软件永远免费",
+      "type": 3,
+      "api": "https://cdn.jsdmirror.com/gh/ouhaibo1980/tvbox@main/py/py_douban.py",
+      "searchable": 0,
+      "filterable": 0,
+      "changeable": 0
+    },
+    {
+      "key": "小胡",
+      "name": "🔥┃小胡┃4K",
+      "type": 1,
+      "playerType": 1,
+      "api": "http://xh1.xn--yetu07f.icu/api.php/provide/vod/",
+      "jar": "http://xiaohu.xzam.cn/jar/1.jar"
+    },
+    {
+      "key": "drpy_js_360影视",
+      "name": "🧡┃360┃官源",
+      "type": 3,
+      "api": "https://jihulab.com/yw88075/tvbox/-/raw/main/dr/lib/drpy2.min.js",
+      "ext": "https://jihulab.com/yw88075/tvbox/-/raw/main/dr/js/360%E5%BD%B1%E8%A7%86.js"
+    },
+    {
+      "key": "初恋资源",
+      "name": "🧡┃初恋┃官源",
+      "type": 1,
+      "api": "https://video.adminqt.cn/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1
+    },
+    {
+      "key": "熊掌",
+      "name": "🐻┃熊掌┃高清",
+      "type": 1,
+      "api": "https://xzcjz.com/api.php/provide/vod",
+      "jar": "https://tvbox.cainisi.cf/jar/fty0101.jar;md5;fd784008ab71d81a178564841059756d"
+    },
+    {
+      "key": "ikunzy",
+      "name": "🐓┃爱坤┃资源",
+      "type": 1,
+      "api": "https://ikunzyapi.com/api.php/provide/vod ",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
+      "key": "hnzy",
+      "name": "🎥┃红牛┃资源",
+      "type": 1,
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
+      "key": "gszy",
+      "name": "🎥┃光速┃资源",
+      "type": 1,
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
       "key": "drpy_js_310直播",
       "name": "⚽310直播",
       "type": 3,
@@ -766,7 +761,8 @@
       "style": {
         "type": "rect",
         "ratio": 1
-      }
+      },
+      "ext": "https://github.moeyy.xyz/raw.githubusercontent.com/gaotianliuyun/gao/master/js/310%E7%9B%B4%E6%92%AD.js"
     }
   ],
   "lives": [],

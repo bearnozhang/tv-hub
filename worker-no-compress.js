@@ -26,6 +26,10 @@ const ALIAS = {
   "/tvs": "/tvs.json",
   "/minimal": "/minimal.json",
   "/lite": "/tv-lite.json",
+  // 高速精选：只含「有速度证据且够快」的源（见 scripts/curate.py）
+  "/fast": "/tv-fast.json",
+  "/tv-fast": "/tv-fast.json",
+  "/quick": "/tv-fast.json",
 };
 
 const CT = [
@@ -36,9 +40,69 @@ const CT = [
   [/\.xml$/i, "application/xml; charset=utf-8"],
 ];
 
+// ── /deps/* 同源代理 ──────────────────────────────────────────────────
+//
+// 为什么需要：
+//   上游 hebijunge 整套配置建立在 `./deps/...` **相对路径**上 —— 它的
+//   spider 就是 `./deps/feishu-sync/一木源/JAR/XB包jar/LIBVIO.jar;md5;...`，
+//   站点 ext 也大量写作 `./deps/auto/.../xxx.js`。客户端以「配置所在目录」
+//   为基准拼接，因此在同源部署下这些路径是可用的。
+//
+//   我们保留这些相对路径以救活那批源（此前一刀切删除，导致 307 个源变空壳），
+//   但仓库里并没有 deps 目录（上游 deps 有 1.1GB / 1.2 万文件，全量镜像不现实）。
+//   因此由 Worker 反代到上游镜像仓库 —— **零存储、零 CI 成本**。
+//
+// 安全：只放行 /deps/ 前缀，拒绝 `..`，防目录逃逸/SSRF。
+const DEPS_PREFIX = "/deps/";
+const DEPS_UPSTREAMS = [
+  "https://raw.githubusercontent.com/hebijunge/tvbox-config/main",
+  "https://cdn.jsdelivr.net/gh/hebijunge/tvbox-config@main",
+];
+
+function depsContentType(p) {
+  if (/\.jar$/i.test(p)) return "application/java-archive";
+  if (/\.js$/i.test(p)) return "application/javascript; charset=utf-8";
+  if (/\.json$/i.test(p)) return "application/json; charset=utf-8";
+  if (/\.txt$/i.test(p)) return "text/plain; charset=utf-8";
+  if (/\.html?$/i.test(p)) return "text/html; charset=utf-8";
+  return "application/octet-stream";
+}
+
+async function proxyDeps(url) {
+  const rel = url.pathname.slice(1); // "deps/xxx/yyy.js"
+  if (rel.includes("..") || rel.includes("\\")) {
+    return new Response("bad path", { status: 400 });
+  }
+  for (const base of DEPS_UPSTREAMS) {
+    try {
+      const r = await fetch(`${base}/${rel}`, {
+        headers: { "User-Agent": "tv-hub-worker/1.0", "Accept-Encoding": "identity" },
+        cf: { cacheTtl: 86400, cacheEverything: true },
+      });
+      if (!r.ok) continue;
+      const h = new Headers(r.headers);
+      h.delete("Content-Encoding");
+      h.delete("Content-Length");
+      h.delete("Vary");
+      h.set("Content-Type", depsContentType(rel));
+      h.set("Cache-Control", "public, max-age=86400");
+      h.set("Access-Control-Allow-Origin", "*");
+      return new Response(r.body, { status: 200, headers: h });
+    } catch (e) {
+      // 换下一个上游
+    }
+  }
+  return new Response("deps not found", { status: 404 });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    // 上游依赖（deps）同源反代
+    if (url.pathname.startsWith(DEPS_PREFIX)) {
+      return proxyDeps(url);
+    }
 
     // 无扩展名别名 → 实际资产
     const alias = ALIAS[url.pathname];

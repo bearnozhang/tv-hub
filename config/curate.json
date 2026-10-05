@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "note": [
+    "源策展策略 —— 决定「留什么源、剔什么源、怎么排序」。改这里即可调整，无需动代码。",
+    "字段说明见 scripts/curate.py 的 DEFAULT_POLICY（缺省项会自动补齐）。"
+  ],
+
+  "drop": ["pan", "paid", "magnet", "broken", "invalid"],
+  "keep": ["direct", "js"],
+
+  "pan_patterns": [
+    "[?&]type=(?:quark|uc|ali|aliyun|aliyundrive|115|baidu|tianyi|189|xunlei|123|mobile|mobil|cloud|pan)\\b",
+    "(?:wanpan|pansou|pan\\.php|/pansou/)",
+    "alist",
+    "ali_token|aliyundrive_token",
+    "(?:quark|uc|aliyun|aliyundrive|115|baidu|tianyi|pansou|alipan|cloud189|189pan)\\.js(?:$|\\?)"
+  ],
+  "pan_names": [
+    "夸克", "网盘", "盘搜", "天翼云盘", "阿里云盘", "百度网盘",
+    "迅雷云盘", "115网盘", "123云盘", "UC网盘", "移动云盘", "城通网盘",
+    "云盘搜索", "网盘搜索", "盘他", "阿里云盘搜索"
+  ],
+  "pan_groups": ["网盘"],
+
+  "paid_patterns": [
+    "puqu",
+    "[?&]paid=1",
+    "\"paid\"\\s*:\\s*true",
+    "\"(?:vip_only|need_pay|require_vip)\"\\s*:\\s*true"
+  ],
+  "paid_names": ["付费专区", "会员专享", "vip专享", "充值专享", "付费点播"],
+
+  "magnet_patterns": ["magnet", "(?:^|[/.])cilixiong", "(?:^|[/.])jianpian"],
+  "magnet_names": ["磁力", "荐片", "种子"],
+
+  "drpy_engines": ["(?:^|/)(?:d?drpy2?|drpy)\\.(?:min\\.)?m?js$"],
+
+  "speed": {
+    "probe_enabled": true,
+    "probe_timeout_s": 6,
+    "probe_concurrency": 32,
+    "probe_max_total_s": 180,
+    "min_probe_success_rate": 0.15,
+    "paid_keywords": [
+      "请充值", "购买会员", "开通会员", "无权限", "请登录",
+      "会员专享", "收费", "付费", "not authorized", "unauthorized"
+    ],
+    "alive_markers": ["\"list\"", "\"class\"", "\"data\"", "\"result\"", "\"code\""]
+  },
+
+  "fast": {
+    "note": "高速精选档 tv-fast.json（订阅别名 /fast）的门槛。只收「有速度证据且够快」的源。",
+    "threshold_ms": 1200,
+    "max_sites": 240
+  },
+
+  "health": {
+    "note": "自我优化：健康档案 data/source_health.json 的演化参数。",
+    "ewma_alpha": 0.4,
+    "quarantine_after_fails": 4
+  },
+
+  "quarantine": {
+    "note": "已隔离源按 fingerprint 索引，可人工解除（删掉对应条目即可）。",
+    "manual_release": []
+  }
+}

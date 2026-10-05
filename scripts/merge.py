@@ -29,6 +29,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import common as C  # noqa: E402
 
+import curate as CU  # noqa: E402  策展层（筛免费高速源）
+
 URL_SPLIT = re.compile(r"[,，]")
 
 
@@ -134,24 +136,37 @@ def normalize_site(s: dict) -> dict:
         out["type"] = int(t)
     elif not isinstance(t, int):
         out["type"] = 0
-    # ★ 剔除客户端无法解析的 URL（非 ASCII 域名 / 相对路径 / localhost）。
-    #   实测：ysc_single_agg 里有 16 处这类 URL（中文域名如「央视大全.json」、
-    #   「欧歌」），Android 的 URI 解析会抛异常，导致整份配置加载失败或无限重试。
+    # ★ 剔除客户端无法解析的 URL（非 ASCII 域名 / localhost），但**放行 `./` 同源相对路径**。
+    #   实测：ysc_single_agg 里有 16 处中文域名 URL（「央视大全.json」「欧歌」），
+    #   Android 的 URI 解析会抛异常，导致整份配置加载失败或无限重试 —— 这些必须删。
+    #   但上游 hebi 的 ext/jar 大量使用 `./deps/...` 相对路径（同源部署下可用），
+    #   此前一刀切删除导致 307 个源变成空壳，改为 is_usable_url 区分对待。
+    # 先规范化 URL（非 ASCII 路径 → percent-encoding）。顺序不能反：
+    # 未编码的中文路径会被 is_usable_url 判为非法而丢掉 —— 实测这正是
+    # 201 个源 ext 丢失的原因（`http://101.34.67.237/js/秋霞.js`）。
     for f in ("api", "jar", "ext"):
         v = out.get(f)
-        if isinstance(v, str) and v and not C.is_valid_remote_url(v):
+        if isinstance(v, str) and v:
+            out[f] = C.norm_url(v)
+    for f in ("api", "jar", "ext"):
+        v = out.get(f)
+        if isinstance(v, str) and v and not C.is_usable_url(v):
             out.pop(f, None)
     # ext 可能是 dict（{分组名: url}），也要逐个清洗
     if isinstance(out.get("ext"), dict):
-        conv = {k: v for k, v in out["ext"].items()
-                if isinstance(v, str) and C.is_valid_remote_url(v)}
+        conv = {}
+        for k, v in out["ext"].items():
+            if isinstance(v, str):
+                v2 = C.norm_url(v)
+                if C.is_usable_url(v2):
+                    conv[k] = v2
         out["ext"] = conv if conv else ""
         if not conv:
             out.pop("ext", None)
     # 仍有合法 url 数组的情况（如 api: [a, b]）
     if isinstance(out.get("api"), list):
         out["api"] = [x for x in out["api"]
-                      if isinstance(x, str) and C.is_valid_remote_url(x)]
+                      if isinstance(x, str) and C.is_usable_url(x)]
         if not out["api"]:
             out["api"] = ""
     # api 为空串时视为缺失，避免下游误判为有效接口
@@ -615,6 +630,66 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
     return written
 
 
+TIER_FAST_MAX = 240
+
+
+def write_fast_tier(sites: list[dict], parses: list[dict], flags: list,
+                    spider: str, scalars: dict) -> list[str]:
+    """产出「高速精选」档 tv-fast.json（订阅别名 /fast）。
+
+    与 tv-lite / tv-standard 的区别：
+      - lite/standard 是**体积分档** —— 解决老客户端的加载上限
+      - fast 是**质量分档** —— 只保留「有速度证据且够快」的源
+
+    入档条件（满足其一）：
+      1. 上游名字里带 `[NNNms]` 标注且 ≤ 阈值（上游自己测过速）
+      2. 健康档案里该源的 EWMA 实测速度 ≤ 阈值（我们探测积累的）
+
+    **没有速度证据的源不进这一档**：这一档的定位就是「确定性快」，
+    宁缺勿滥。想「都留着慢慢挑」就用主档 /tv。
+    """
+    pol = CU.load_policy()
+    health = CU.load_health()
+    fast_cfg = pol.get("fast") or {}
+    thr = int(fast_cfg.get("threshold_ms", 1200))
+    cap = int(fast_cfg.get("max_sites", TIER_FAST_MAX))
+    entries = health.get("entries") or {}
+
+    picked: list[dict] = []
+    for s in sites:                      # sites 已按速度升序排好
+        if len(picked) >= cap:
+            break
+        ms = CU.name_speed_ms(s)
+        if ms is not None:
+            if ms <= thr:
+                picked.append(s)
+            continue
+        e = entries.get(CU.site_fp(s)) or {}
+        ew = e.get("ms_ewma")
+        if isinstance(ew, int) and 0 < ew <= thr:
+            picked.append(s)
+
+    KEY_ORDER = ("spider", "wallpaper", "logo", "warningText", "proxy", "doh",
+                 "hosts", "rules", "sites", "lives", "parses", "flags")
+    obj: dict = {"sites": picked}
+    if spider:
+        obj = {"spider": spider, **obj}
+    for k in ("wallpaper", "logo", "proxy", "doh", "hosts", "rules"):
+        if scalars.get(k) not in (None, "", [], {}):
+            obj[k] = scalars[k]
+    if parses:
+        obj["parses"] = [p for p in parses[:60]
+                         if str(p.get("url") or "").startswith(("http://", "https://"))]
+    if flags:
+        obj["flags"] = flags
+    obj["lives"] = []
+    obj["sites"] = [x for x in obj["sites"] if x.get("api")]
+    ordered = {k: obj[k] for k in KEY_ORDER if k in obj}
+    ordered.update({k: v for k, v in obj.items() if k not in ordered})
+    write_cfg(os.path.join(C.PUBLIC_DIR, "tv-fast.json"), C.scrub_urls(ordered))
+    return ["tv-fast.json"]
+
+
 def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
     """把每个上游的原始内容重新落盘为 profiles/<id>.json，供订阅清单分发。
 
@@ -681,6 +756,9 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
         #     若先过滤后 scrub，会留下「本来有 url、scrub 后变没 url」的残骸。
         out = C.scrub_urls(out)
         out["sites"] = [x for x in out["sites"] if x.get("api")]
+        # 单仓档同样过一遍策展（只做静态判定，不探测），
+        # 保证用户切到单仓时也不会撞上网盘/付费/残缺源。
+        out["sites"] = CU.apply(out["sites"], None, build=False)
         out["parses"] = [x for x in out["parses"]
                          if x.get("name")
                          and str(x.get("url") or "").startswith(("http://", "https://"))]
@@ -850,6 +928,16 @@ def merge(build: bool = False) -> dict:
                  if isinstance(x, dict) and x.get("name")
                  and str(x.get("url") or "").startswith(("http://", "https://"))]
 
+    # ★★★ 策展层（curate）：从「能加载」到「能用」★★★
+    #   筛掉网盘类（需夸克/UC/天翼等会员才能高速看）、付费类、磁力类，
+    #   以及残缺源（drpy 引擎缺 ext 的空壳）—— 这些正是用户反馈
+    #   「很多源点进去不能用」的来源。
+    #   同时按速度排序（上游 ms 标注 → 健康档案 EWMA）。
+    #   策略见 config/curate.json；实现见 scripts/curate.py。
+    _pre_curate = len(tv_sites)
+    tv_sites = CU.apply(tv_sites, stats, build=build)
+    stats["sites_curated_out"] = _pre_curate - len(tv_sites)
+
     stats["scrubbed_empty_sites"] = len(sites) - len(tv_sites)
     stats["scrubbed_empty_lives"] = len(lives) + len(live_out) - len(tv_lives)
 
@@ -883,7 +971,8 @@ def merge(build: bool = False) -> dict:
 
     # 单仓级配置文件：让订阅清单里的每个条目都能直接打开
     written_profiles = write_profiles(cfg, per_source) if build else []
-    tiers_written = write_lite_tiers(sites, parses, flags, spider, scalars) if build else []
+    tiers_written = write_lite_tiers(tv_sites, parses, flags, spider, scalars) if build else []
+    fast_written = write_fast_tier(tv_sites, parses, flags, spider, scalars) if build else []
 
     # 直播：清洗无效引用 + 体积分档（与点播同一套适配逻辑）
     clean_groups, live_clean_stats = clean_live_entries(live_out)
@@ -891,7 +980,7 @@ def merge(build: bool = False) -> dict:
     live_tiers = write_live_tiers(clean_groups, clean_refs, spider, scalars) if build else []
 
     # 订阅清单：一个地址，App 内可切换多个仓
-    profiles = build_profiles(cfg, per_source, len(sites))
+    profiles = build_profiles(cfg, per_source, len(tv_sites))
     sub_obj = {
         "urls": [{"name": p["name"], "url": p["url"]} for p in profiles],
     }

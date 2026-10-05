@@ -181,6 +181,8 @@ def build_status(cfg: dict, state: dict, stats: dict) -> dict:
             "sources_skipped": stats.get("sources_skipped", []),
             "per_source_sites": stats.get("per_source_sites", {}),
             "hashes": stats.get("sha256", {}),
+            # 策展统计（筛掉了什么、探测结果）—— 让看板能显示「源质量」
+            "curate": {k: v for k, v in stats.items() if k.startswith("curate_")},
         },
         "sources": rows,
     }

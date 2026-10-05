@@ -806,12 +806,40 @@ class TestUrlScrubbing(unittest.TestCase):
         # scrub_urls 只清 URL、不删站点（站点去留由 merge 层判断）：
         #   k 的 api 被剔除但站点仍在（type=0 无需 api）；k2 的 api 合法保留；k3 正常
         self.assertEqual([s["key"] for s in out["sites"]], ["k", "k2", "k3"])
-        self.assertNotIn("api", out["sites"][0])        # 非 ASCII api 已剔除
-        self.assertNotIn("jar", out["sites"][2])        # 中文 jar 被剔除
-        # list 里的 dict 元素：URL 字段被剔除但条目本身保留
-        #（条目去留由 merge.keep_alive_lives 负责，不在 scrub 层）
+        # ★ 行为变更（2026-10-05，见 LESSONS.md）：
+        #   「ASCII 域名 + 未编码中文路径」不再删除，而是自动 percent-encode 保留。
+        #   原因：上游 200+ 个源的 ext 写作 `http://101.34.67.237/js/秋霞.js`，
+        #   一刀切删除让它们全变空壳（用户误以为「要会员」）。
+        #   编码后是标准 URL 可被客户端解析；不编码则整份配置加载失败。
+        #   **中文域名仍然必须剔除**（见上面 wallpaper 的断言）。
+        self.assertEqual(out["sites"][0]["api"], "http://iyiwang.com/%E8%8A%B1%E5%A7%90")
+        self.assertTrue(C.url_encodable(out["sites"][0]["api"]))
+        self.assertIn("jar", out["sites"][2])           # 中文 jar 现在保留（已编码）
+        self.assertTrue(C.url_encodable(out["sites"][2]["jar"]))
+        # list 里的 dict 元素同理
         self.assertEqual([l["name"] for l in out["lives"]], ["L", "L2"])
-        self.assertNotIn("url", out["lives"][0])        # 中文 url 已剔除
+        self.assertEqual(out["lives"][0]["url"], "https://ok.com/%E4%B8%AD%E6%96%87%E5%8F%B0.m3u8")
+        self.assertTrue(C.url_encodable(out["lives"][0]["url"]))
+
+    def test_chinese_hostname_still_rejected(self):
+        """中文**域名**必须仍然被剔除 —— percent 编码路径救不了它，
+        编码域名等于换了个域名，且部分客户端不做 punycode 转换。"""
+        self.assertFalse(C.is_usable_url("https://深色壁纸.xxooo.cf/tv"))
+        self.assertFalse(C.is_valid_remote_url(C.norm_url("https://深色壁纸.xxooo.cf/tv")))
+        # 而「ASCII 域名 + 中文路径」编码后必须可用
+        self.assertTrue(C.is_usable_url(C.norm_url("https://ok.com/中文台.m3u8")))
+
+    def test_relative_path_allowed(self):
+        """`./` 同源相对路径必须放行 —— 上游 hebi 的 spider/ext 全靠它，
+        一刀切删除曾是 307 个源变空壳的根因。"""
+        self.assertTrue(C.is_usable_url("./deps/localized/abc.js"))
+        self.assertTrue(C.is_usable_url("./spider.jar"))
+        self.assertTrue(C.is_usable_url(C.norm_url("./deps/auto/x/EMO蓝光[V2].js")))
+        # 防目录逃逸 / 反斜杠
+        self.assertFalse(C.is_usable_url("./../etc/passwd"))
+        self.assertFalse(C.is_usable_url("./deps\\evil.js"))
+        # 单纯相对路径不是远程地址（旧函数语义保持不变）
+        self.assertFalse(C.is_valid_remote_url("./lives/a.txt"))
 
     def test_no_unencodable_url_in_any_artifact(self):
         """所有产物中不得存在无法编码的 URL。"""

@@ -57,8 +57,58 @@
     "schemes": ["http", "https"],
     "must_encode": "latin-1",
     "forbid_prefix": ["http://127.0.0.1", "http://localhost", "http://0.0.0.0"],
-    "forbid_relative": true,
-    "why": "Android OkHttp 使用 java.net.URI 解析 URL，非 ASCII 域名（如中文域名）直接抛异常；Python 的 latin-1 编码判定可精确复现该行为，因此用它做客户端侧校验。"
+    "allow_relative": true,
+    "relative_prefix": "./",
+    "relative_constraints": "纯 ASCII、无 `..`（防目录逃逸）、无反斜杠",
+    "auto_percent_encode": true,
+    "why": [
+      "Android OkHttp 使用 java.net.URI 解析 URL，非 ASCII 直接抛异常；",
+      "Python 的 latin-1 编码判定可精确复现该行为，因此用它做客户端侧校验。",
+      "★ 2026-10-05 重要修正：",
+      "  1) `./` 同源相对路径必须放行。上游 hebijunge 的 spider 就是",
+      "     `./deps/feishu-sync/.../LIBVIO.jar;md5;...`，站点 ext 也大量写作",
+      "     `./deps/.../xxx.js`；饭太硬的 spider 同样是 `./fty.jar`。",
+      "     此前一刀切删除，导致 307 个源 ext 被清空、变成点了没反应的「空壳」，",
+      "     用户误以为是「要会员」。",
+      "  2) 「ASCII 域名 + 未编码中文路径」不再删除，而是自动 percent-encode 后保留。",
+      "     例如 `http://101.34.67.237/js/秋霞.js` → `.../js/%E7%A7%8B%E9%9C%9E.js`。",
+      "     不编码 = 整份配置解析失败；编码 = 最坏单源 404。两害相权取其轻。",
+      "  3) 中文**域名**仍然必须剔除（编码域名等于换域名，且部分客户端不做 punycode）。"
+    ],
+    "deps_proxy": {
+      "path_prefix": "/deps/",
+      "note": "相对路径 ./deps/... 由 Worker 反代到上游镜像仓库（零存储）。deploy 后 /deps/* 可直接访问。",
+      "upstreams": [
+        "https://raw.githubusercontent.com/hebijunge/tvbox-config/main",
+        "https://cdn.jsdelivr.net/gh/hebijunge/tvbox-config@main"
+      ]
+    }
+  },
+  "curate": {
+    "note": "策展层契约：从「能加载」到「能用」。实现 scripts/curate.py，策略 config/curate.json。",
+    "categories": {
+      "direct": "type=0/1 的 http 采集接口（主力，保留）",
+      "js": "type=3 或 api 指向 .js/.mjs/.py 的脚本源（保留）",
+      "pan": "网盘类：需夸克/UC/阿里/天翼/115/百度等会员才有速度（剔除）",
+      "paid": "付费类（剔除）",
+      "magnet": "磁力/P2P 类，速度取决于种子（剔除）",
+      "broken": "drpy 引擎缺 ext 的空壳，点了没反应（剔除）",
+      "invalid": "缺 api（剔除）"
+    },
+    "benign_exemptions": [
+      "group/名称含「网盘」但 api 是标准 /provide/api 采集站 → 保留（上游会误标，如 mb资源）",
+      "脚本托管在网盘域名（pan.xxx/down.php/*.js）≠ 资源依赖网盘会员 → 不据此判 pan"
+    ],
+    "self_optimization": {
+      "health_file": "data/source_health.json",
+      "mechanism": "每轮探测结果以 EWMA 折进健康档案；连续 4 轮失败或探测判定付费 → 隔离；任一成功 → 立即恢复。",
+      "circuit_breaker": "本轮探测成功率 < 15% → 判为机房网络环境问题，结果整体作废、不写档案（防误杀国内可用源）。",
+      "blocklist": "config/blocklist.json：用户反馈黑名单，优先级最高。"
+    },
+    "tiers": {
+      "tv.json": "主档：策展后的全部免费源（按速度排序）",
+      "tv-fast.json": "高速精选：只含上游标注 ms ≤ 1200 或健康档案 EWMA ≤ 1200 的源，上限 240"
+    }
   },
   "text": {
     "encoding": "utf-8",

@@ -19,6 +19,7 @@ import time
 import urllib.error
 import urllib.request
 from typing import Any
+from urllib.parse import quote, urlsplit, urlunsplit
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_DIR = os.path.join(ROOT, "config")
@@ -220,6 +221,87 @@ def url_encodable(u: str) -> bool:
         return False
 
 
+# 同源相对路径：只允许干净的 ASCII 路径（可含 URL 编码 %xx）。
+# 铁律：不允许 `..`（防目录逃逸）、不允许反斜杠、不允许空格。
+_REL_PATH_RE = re.compile(r"^\./[A-Za-z0-9_\-./%\[\]()@+~,;=!$&']+$")
+
+# 相对路径里需要保留原样的字符（URI 保留字 + 路径分隔符）。
+_REL_SAFE = "/:@-_.~[]()!$&'+,;="
+
+
+def norm_url(u: str) -> str:
+    """把 URL 里的非 ASCII 部分转成 percent-encoding（能救则救，不能救原样返回）。
+
+    为什么需要：上游大量 URL 的**路径**含中文而未编码，例如
+      - `http://101.34.67.237/js/秋霞.js`      （201 个源的 ext 长这样）
+      - `./deps/auto/24-243s/lib/EMO蓝光[V2].js`
+    这些地址本身是有效的，只是没做 percent 编码。Android 的 `java.net.URI`
+    拒绝非 ASCII，于是它们被清洗规则当「非法 URL」删掉 —— 源因此变成空壳。
+    统一编码后，既保住这批源，又不引入真正不可解析的地址。
+
+    边界（**不救**，返回原值交由 is_usable_url 判非法剔除）：
+      - 非 ASCII 的 **host**（中文域名）。编码域名等于换了个域名，
+        且部分客户端不做 punycode 转换，放过反而制造新的加载失败。
+    """
+    if not isinstance(u, str) or not u:
+        return u
+    try:
+        u.encode("ascii")
+        return u                      # 纯 ASCII，原样返回
+    except UnicodeEncodeError:
+        pass
+
+    if u.startswith("./"):
+        return quote(u, safe=_REL_SAFE)
+
+    if not u.startswith(("http://", "https://")):
+        return u
+    try:
+        sp = urlsplit(u)
+    except ValueError:
+        return u
+    try:
+        (sp.hostname or "").encode("ascii")
+    except UnicodeEncodeError:
+        return u                      # 中文域名：救不了
+    path = quote(sp.path, safe="/:@-_.~[]()!$&'+,;=")
+    query = quote(sp.query, safe="=&?/:@-_.~[]()!$&'+,;%")
+    return urlunsplit((sp.scheme, sp.netloc, path, query, sp.fragment))
+
+
+def norm_rel_path(p: str) -> str:
+    """兼容旧调用名：只处理 `./` 相对路径（内部转调 norm_url）。"""
+    return norm_url(p)
+
+
+def is_usable_url(u: str) -> bool:
+    """客户端能否使用这个地址。
+
+    - **http(s) 绝对地址**：走 `is_valid_remote_url`（严格，中文域名等一律拒）
+    - **`./` 开头的同源相对路径**：**允许**。
+
+    为什么必须放行相对路径（2026-10-05 修正）：
+      上游 hebijunge 整套体系都建立在相对路径上 —— 它的 `spider` 就是
+      `./deps/feishu-sync/一木源/JAR/XB包jar/LIBVIO.jar;md5;...`，
+      站点 ext 也大量写作 `./deps/.../xxx.js`。饭太硬的 spider 同样是
+      `./fty.jar`。客户端会以「配置所在目录」为基准拼接这些地址，
+      因此它们在同源部署下是可用的。
+
+      此前把相对路径一律当「非法 URL」删除，导致 307 个源的 ext 被清空、
+      变成点了没反应的空壳（用户误以为是「要会员」）。这是本项目的
+      一个重要教训，已记入 LESSONS.md。
+
+    安全约束：相对路径必须是纯 ASCII、URL 编码安全、且不含 `..`。
+    """
+    if not isinstance(u, str) or not u:
+        return False
+    if u.startswith("./"):
+        if ".." in u or "\\" in u:
+            return False
+        return url_encodable(u) and bool(_REL_PATH_RE.match(u))
+    return is_valid_remote_url(u)
+
+
 def is_valid_remote_url(u: str) -> bool:
     """能否被客户端使用：http(s) + 非本地地址 + 可编码。"""
     if not url_encodable(u):
@@ -242,10 +324,14 @@ def scrub_urls(obj: Any, drop_keys: bool = True) -> Any:
     if isinstance(obj, dict):
         out = {}
         for k, v in obj.items():
-            if isinstance(v, str) and v.startswith(("http://", "https://"))                     and not is_valid_remote_url(v):
-                if drop_keys:
-                    continue          # 整个字段丢掉
-                out[k] = ""
+            if isinstance(v, str) and v.startswith(("http://", "https://")):
+                v2 = norm_url(v)          # 先补 percent-encoding，再判非法
+                if not is_valid_remote_url(v2):
+                    if drop_keys:
+                        continue      # 整个字段丢掉
+                    out[k] = ""
+                    continue
+                out[k] = v2
                 continue
             out[k] = scrub_urls(v, drop_keys)
         return out
@@ -253,7 +339,11 @@ def scrub_urls(obj: Any, drop_keys: bool = True) -> Any:
         res = []
         for v in obj:
             if isinstance(v, str):
-                if v.startswith(("http://", "https://")) and not is_valid_remote_url(v):
+                if v.startswith(("http://", "https://")):
+                    v2 = norm_url(v)
+                    if not is_valid_remote_url(v2):
+                        continue
+                    res.append(v2)
                     continue
                 res.append(v)
                 continue

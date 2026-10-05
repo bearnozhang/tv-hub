@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-05 14:48:28",
+  "updated_at": "2026-10-05 15:14:36",
   "count": 6,
   "base_url": "https://tv.bearno1.dpdns.org",
   "profiles": [
@@ -16,25 +16,25 @@
       "kind": "aggregate-lite"
     },
     {
-      "name": "tv-hub 全量聚合（4334 站 · 体积大）",
+      "name": "tv-hub 全量聚合（1446 站 · 体积大）",
       "url": "https://tv.bearno1.dpdns.org/tv.json",
       "note": "全部上游合并去重；老客户端加载大文件会失败，需手动切换到此",
       "kind": "aggregate"
     },
     {
-      "name": "影视仓·单仓聚合 · 15 站",
+      "name": "影视仓·单仓聚合 · 14 站",
       "url": "https://tv.bearno1.dpdns.org/profiles/ysc_single_agg.json",
       "note": "实测 2026-10-04：dict 结构，含 sites(167)/lives(7)/parses(33)/flags(61)/rules(33)。默认分支 ",
       "kind": "single"
     },
     {
-      "name": "hebijunge·TVBox 全量 · 1013 站",
+      "name": "hebijunge·TVBox 全量 · 1436 站",
       "url": "https://tv.bearno1.dpdns.org/profiles/hebi_tvbox.json",
       "note": "实测 2026-10-04：dict，含 sites(4331)/lives(586)/parses(194)/spider，约 1.6MB。仓库 has_pa",
       "kind": "single"
     },
     {
-      "name": "hebijunge·纯点播 · 1011 站",
+      "name": "hebijunge·纯点播 · 1431 站",
       "url": "https://tv.bearno1.dpdns.org/profiles/hebi_vod.json",
       "note": "与 hebi_tvbox 同源同结构（无 lives），保留作为补链备用；去重后增量有限。",
       "kind": "single"
