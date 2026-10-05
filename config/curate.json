@@ -2,7 +2,9 @@
   "version": "1.0.0",
   "note": [
     "源策展策略 —— 决定「留什么源、剔什么源、怎么排序」。改这里即可调整，无需动代码。",
-    "字段说明见 scripts/curate.py 的 DEFAULT_POLICY（缺省项会自动补齐）。"
+    "字段说明见 scripts/curate.py 的 DEFAULT_POLICY（缺省项会自动补齐）。",
+    "探测安全：probe_deny_patterns 里的域名一律不发请求；且探测不跟随重定向",
+    "（urllib 默认跟随会把请求带到第三方域名 —— 曾触发火绒「木马盗号」告警）。"
   ],
 
   "drop": ["pan", "paid", "magnet", "broken", "invalid"],
