@@ -29,8 +29,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: 轻构建（产物校验用）
-        run: python scripts/build.py --skip-fetch
+      # 不再 build：public/ 已经是上游原始文件（hebi_tvbox.json / live.txt）
+      #
+      # ★ 但上游原始文件本身带字段类型冲突，必须消毒后才能部署 ——
+      #   实测（2026-10-05）：/tv 有 35 处冲突 → 客户端报「解析配置失败」。
+      #   详见下一步骤的注释与 scripts/sanitize.py。
+      - name: 内核契约消毒（消除解析失败根因）
+        run: python scripts/sanitize.py public --inplace
+
+      - name: 复核（消毒后必须无冲突）
+        run: python scripts/sanitize.py public --check --quiet
 
       - name: Deploy to Cloudflare Wrangler
         run: |

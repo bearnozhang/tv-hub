@@ -930,5 +930,139 @@ class TestRealArtifacts(unittest.TestCase):
             self.skipTest("无缓存")
 
 
+class TestKernelContract(unittest.TestCase):
+    """锁住 TVBox 内核（FongMi）的字段类型契约。
+
+    为什么这项测试至关重要 —— 源码实证：
+
+        // Site.java
+        public static Site objectFrom(JsonElement el, String spider) {
+            try {
+                Site site = App.gson().fromJson(el, Site.class);
+                ...
+            } catch (Exception e) {
+                return new Site();          // ← 静默返回空对象，key = null
+            }
+        }
+
+        // VodConfig.initSite
+        Map<String, Site> items = Site.findAll().stream()
+            .collect(Collectors.toMap(Site::getKey, Function.identity()));
+            // ↑ HashMap.merge(null, v, fn) 抛 NullPointerException
+
+    即：配置里只要有 **1 个** 站点的字段类型不符合 Site 的 gson 契约，
+    就会产生 null key，`Collectors.toMap` 直接抛 NPE，
+    **整份配置加载失败** —— 客户端提示「解析配置失败」。
+
+    实测（2026-10-05，讴歌 6.0.9.3）：
+        /tv            类型冲突 35  → 解析失败
+        tv-standard    类型冲突 22  → 解析失败
+        ysc_single_agg 类型冲突  0  → 正常加载
+    """
+
+    PROD = os.path.join(ROOT, "public")
+
+    SITE_TYPES = {
+        "key": str, "name": str, "api": str, "ext": str, "jar": str,
+        "click": str, "playUrl": str,
+        "type": int, "hide": int, "indexs": int, "timeout": int,
+        "searchable": int, "changeable": int, "quickSearch": int, "danmaku": int,
+        "categories": list, "header": dict, "style": dict, "selected": bool,
+    }
+
+    @staticmethod
+    def _jt(v):
+        if isinstance(v, bool):
+            return "bool"
+        if isinstance(v, int):
+            return "int"
+        if isinstance(v, str):
+            return "str"
+        if isinstance(v, list):
+            return "list"
+        if isinstance(v, dict):
+            return "dict"
+        return type(v).__name__
+
+    def _configs(self):
+        """遍历 public/ 下所有「含 sites 的 JSON」配置。"""
+        for dp, _, fs in os.walk(self.PROD):
+            for fn in sorted(fs):
+                if not fn.endswith(".json"):
+                    continue
+                p = os.path.join(dp, fn)
+                try:
+                    with open(p, encoding="utf-8-sig") as f:
+                        d = json.load(f)
+                except Exception:  # noqa: BLE001
+                    continue
+                if isinstance(d, dict) and isinstance(d.get("sites"), list):
+                    yield os.path.relpath(p, ROOT), d
+
+    def test_no_site_field_type_conflict(self):
+        """任何站点字段类型不符 → 客户端整份配置加载失败。"""
+        bad = []
+        for name, d in self._configs():
+            for s in d["sites"]:
+                if not isinstance(s, dict):
+                    bad.append(f"{name}: 站点不是对象")
+                    continue
+                for k, v in s.items():
+                    if v is None:
+                        continue
+                    want = self.SITE_TYPES.get(k)
+                    if want is None:
+                        continue          # 未知字段 gson 会忽略
+                    got = self._jt(v)
+                    ok = ((want is str and got == "str")
+                          or (want is int and got == "int")
+                          or (want is list and got == "list")
+                          or (want is dict and got == "dict")
+                          or (want is bool and got in ("bool", "int")))
+                    if not ok:
+                        bad.append(f"{name}: {s.get('key')} 的 {k} "
+                                   f"期望{want.__name__} 实际{got}")
+        self.assertEqual(bad[:20], [],
+                         "以下字段类型冲突会让客户端整份配置加载失败：" + chr(10)
+                         + chr(10).join(bad[:20]))
+
+    def test_keys_non_empty_and_unique(self):
+        """空 key 会让 toMap 抛 NPE，重复 key 抛 IllegalStateException。"""
+        for name, d in self._configs():
+            keys = [str(s.get("key") or "") for s in d["sites"] if isinstance(s, dict)]
+            self.assertNotIn("", keys, f"{name} 存在空 key 的站点")
+            dups = {k for k in keys if keys.count(k) > 1}
+            self.assertEqual(dups, set(), f"{name} 存在重复 key: {list(dups)[:5]}")
+
+    def test_sanitizer_idempotent(self):
+        """消毒器必须幂等：干净配置再过一遍不应有任何改动。"""
+        import sanitize as S
+        for name, d in self._configs():
+            _fixed, st = S.sanitize_config(d)
+            dirty = st["sites_fixed"] + st["sites_dropped"] + st["sites_dedup"]
+            self.assertEqual(
+                dirty, 0,
+                f"{name} 未消毒干净：{st}（应在构建/部署前跑 scripts/sanitize.py）")
+
+    def test_sanitizer_repairs_known_dirty_shapes(self):
+        """回归：曾导致 /tv 解析失败的两类脏数据必须被修好。"""
+        import sanitize as S
+        dirty = {
+            "sites": [
+                # categories 是字符串（应为数组）—— 实测 22 处
+                {"key": "a", "name": "A", "type": 0, "categories": "电影,电视剧"},
+                # ext 是对象（应为字符串）—— 实测 13 处
+                {"key": "b", "name": "B", "type": 3, "api": "http://x/y.js",
+                 "ext": {"host": "http://h:1"}},
+            ]
+        }
+        fixed, st = S.sanitize_config(dirty)
+        self.assertEqual(st["sites_dropped"], 0)
+        self.assertIsInstance(fixed["sites"][0]["categories"], list)
+        self.assertEqual(fixed["sites"][0]["categories"], ["电影", "电视剧"])
+        self.assertIsInstance(fixed["sites"][1]["ext"], str)
+        self.assertTrue(fixed["sites"][1]["ext"].startswith("{"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

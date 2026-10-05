@@ -443,11 +443,31 @@ def write_live_tiers(live_out: list[dict], ref_lives: list[dict], spider: str,
             elif k in scalars and scalars[k] not in (None, "", [], {}):
                 # 标量同样要清洗（wallpaper 可能是中文域名）
                 obj[k] = C.scrub_urls(scalars[k])
-        C.write_json(os.path.join(C.PUBLIC_DIR, name), obj)
+        write_cfg(os.path.join(C.PUBLIC_DIR, name), obj)
         written.append({"name": name, "groups": len(items),
                         "channels": ch_count(items),
                         "bytes": os.path.getsize(os.path.join(C.PUBLIC_DIR, name))})
     return written
+
+
+def write_cfg(path: str, obj) -> str:
+    """写 JSON 产物。落盘前做「内核契约消毒」。
+
+    FongMi 系客户端（讴歌/影视仓）的 Site.objectFrom 用 gson 反序列化：
+    字段类型不符时抛异常并**静默返回空 Site**（key=null），
+    随后 initSite 的 `Collectors.toMap(Site::getKey, ...)` 因 null key 抛 NPE，
+    整份配置加载失败 —— 表现就是「解析配置失败」。
+
+    实测（2026-10-05）：/tv 有 35 处冲突必然失败；
+    ysc_single_agg（0 处冲突）正常加载。详见 scripts/sanitize.py。
+    """
+    if isinstance(obj, dict) and "sites" in obj:
+        try:
+            from sanitize import sanitize_config
+            obj, _stat = sanitize_config(obj)
+        except Exception:  # noqa: BLE001
+            pass
+    return C.write_json(path, obj)
 
 
 def base_url() -> str:
@@ -590,7 +610,7 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
         #   实测 tv-lite 曾出现 sites[165](qc555) type=1 缺 api、
         #   sites[249](豆瓣) type=3 缺 api，两者都会让内核抛异常 → 「解析配置失败」。
         obj["sites"] = [x for x in obj["sites"] if x.get("api")]
-        C.write_json(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(ordered(obj)))
+        write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(ordered(obj)))
         written.append(name)
     return written
 
@@ -623,7 +643,7 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
             # 多仓订阅原样转发（它本身就是给 App 切换用的清单）
             urls = data.get("urls")
             if isinstance(urls, list) and urls:
-                C.write_json(os.path.join(out_dir, f"{sid}.json"),
+                write_cfg(os.path.join(out_dir, f"{sid}.json"),
                              {"urls": [u for u in urls if isinstance(u, dict) and u.get("url")]})
                 written.append(sid)
             continue
@@ -674,7 +694,7 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
         if not out["sites"]:
             continue
 
-        C.write_json(os.path.join(out_dir, f"{sid}.json"), out)
+        write_cfg(os.path.join(out_dir, f"{sid}.json"), out)
         written.append(sid)
     return written
 
@@ -876,16 +896,16 @@ def merge(build: bool = False) -> dict:
         "urls": [{"name": p["name"], "url": p["url"]} for p in profiles],
     }
     res = {
-        "tv": C.write_json(os.path.join(C.PUBLIC_DIR, "tv.json"), tv),
-        "live": C.write_json(os.path.join(C.PUBLIC_DIR, "live.json"), {
+        "tv": write_cfg(os.path.join(C.PUBLIC_DIR, "tv.json"), tv),
+        "live": write_cfg(os.path.join(C.PUBLIC_DIR, "live.json"), {
             "updated_at": C.bjnow(), "generated_at": C.iso(),
             "groups": len(clean_groups), "channels": ch_total,
             "lives": C.scrub_urls(keep_alive_lives(clean_groups + clean_refs)),
         }),
-        "subscriptions": C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
+        "subscriptions": write_cfg(os.path.join(C.PUBLIC_DIR, "subscriptions.json"), sub_obj),
     }
     # tvs.json：多仓订阅的短域名（subscriptions.json 的别名），方便记忆/填地址
-    C.write_json(os.path.join(C.PUBLIC_DIR, "tvs.json"), sub_obj)
+    write_cfg(os.path.join(C.PUBLIC_DIR, "tvs.json"), sub_obj)
     # 纯文本直播源（分组,#genre# / 频道名,URL），供 App「直播地址」入口直接填入。
     # live-*.txt 是 TVBox 配置 JSON，讴歌的直播字段不认；真正要用这个。
     live_txt = render_live_txt(keep_alive_lives(clean_groups + clean_refs))
@@ -896,11 +916,11 @@ def merge(build: bool = False) -> dict:
     # 直播订阅清单：与点播同构，urls[0] 为体积最小的档位
     live_sub = {"urls": [{"name": f"★ {t['name'].replace('.txt','')}（{t['groups']} 组 / {t['channels']} 频道）",
                           "url": f"{base_url()}/{t['name']}"} for t in live_tiers]}
-    res["live_sub"] = C.write_json(os.path.join(C.PUBLIC_DIR, "live-sub.txt"), live_sub)
+    res["live_sub"] = write_cfg(os.path.join(C.PUBLIC_DIR, "live-sub.txt"), live_sub)
     for alt in ("live-sub.json", "live-sub.webp"):
-        C.write_json(os.path.join(C.PUBLIC_DIR, alt), live_sub)
+        write_cfg(os.path.join(C.PUBLIC_DIR, alt), live_sub)
     # 富信息版（带note/kind），便于人看；App 只读上面的 urls
-    C.write_json(os.path.join(C.PUBLIC_DIR, "subscriptions.detail.json"), {
+    write_cfg(os.path.join(C.PUBLIC_DIR, "subscriptions.detail.json"), {
         "updated_at": C.bjnow(), "count": len(profiles),
         "base_url": base_url(), "profiles": profiles,
         "live_profiles": live_tiers,
@@ -908,7 +928,7 @@ def merge(build: bool = False) -> dict:
     # 多仓订阅的常见后缀变体：影视仓等 App 习惯用 .txt/.webp 承载多仓订阅，
     # 填在「仓库 / 订阅地址」入口（不是「配置地址」）。内容仍是同一份 JSON。
     for alt in ("sub.txt", "sub.webp", "sub.json"):
-        C.write_json(os.path.join(C.PUBLIC_DIR, alt), sub_obj)
+        write_cfg(os.path.join(C.PUBLIC_DIR, alt), sub_obj)
     stats["profiles"] = len(profiles)
     stats["profiles_written"] = written_profiles
     stats["tiers_written"] = tiers_written
