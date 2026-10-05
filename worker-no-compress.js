@@ -34,6 +34,10 @@ const ALIAS = {
   // 所以这些源从主档剔出、单独成档。见 merge.write_deps_tier。
   "/deps-config": "/tv-deps.json",
   "/tvdeps": "/tv-deps.json",
+  // 极简诊断档：12 个标准采集站，不带 spider/lives/parses/flags。
+  // 用于二分定位「配置解析失败」到底出在哪一层。
+  "/safe": "/tv-safe.json",
+  "/test": "/tv-safe.json",
 };
 
 const CT = [

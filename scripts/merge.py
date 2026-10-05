@@ -700,6 +700,32 @@ def write_fast_tier(sites: list[dict], parses: list[dict], flags: list,
     return ["tv-fast.json"]
 
 
+def write_safe_tier(sites: list[dict], spider: str = "") -> list[str]:
+    """产出 tv-safe.json（订阅别名 /safe）—— **极简诊断档**。
+
+    用途：用户报「配置解析失败」时，用它做**二分定位**：
+
+      - `/safe` 能加载、`/tv` 不能 → 问题在某个**可选字段**
+        （spider / lives / parses / flags / proxy / doh / rules）
+      - `/safe` 也不能加载 → 问题在**客户端或网络**，与配置内容无关
+
+    因此这一档**刻意什么都不带**：
+      - 无 spider（避免 jar 加载失败牵连整份配置）
+      - 无 lives / parses / flags / proxy / doh / rules / hosts
+      - 只有 12 个最标准的 http 采集站（type=1、api 为 http）
+
+    配置越小、变量越少，定位越准。
+    """
+    picked = [s for s in sites
+              if s.get("type") == 1
+              and str(s.get("api") or "").startswith(("http://", "https://"))][:12]
+    if not picked:
+        return []
+    obj = {"sites": picked}
+    write_cfg(os.path.join(C.PUBLIC_DIR, "tv-safe.json"), C.scrub_urls(obj))
+    return ["tv-safe.json"]
+
+
 def write_deps_tier(sites: list[dict], parses: list[dict], flags: list,
                     spider: str, scalars: dict) -> list[str]:
     """产出 tv-deps.json —— **api 为同源相对路径**的源专用档。
@@ -1043,6 +1069,8 @@ def merge(build: bool = False) -> dict:
     # 相对路径源专用档（FongMi 系客户端用；见 write_deps_tier 说明）
     deps_written = write_deps_tier(relpath_kept, parses, flags, spider, scalars) \
         if build else []
+    # 极简诊断档（无 spider / lives / parses / flags），用于二分定位「解析失败」
+    safe_written = write_safe_tier(tv_sites) if build else []
 
     # 直播：清洗无效引用 + 体积分档（与点播同一套适配逻辑）
     clean_groups, live_clean_stats = clean_live_entries(live_out)
