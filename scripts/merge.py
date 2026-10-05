@@ -765,7 +765,8 @@ def write_min_tiers(sites: list[dict]) -> list[str]:
     written = []
     for name, obj in (
         ("tv-m1.json", {"sites": base}),
-        ("tv-m2.json", {"spider": "./spider-min.jar", "sites": base}),
+        # 用真实 jar（空壳 dex 会被客户端拒绝），且扩展名用 .png 绕过 CDN 白名单
+        ("tv-m2.json", {"spider": "./spider.png", "sites": base}),
     ):
         write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(obj))
         written.append(name)
@@ -1063,7 +1064,12 @@ def merge(build: bool = False) -> dict:
         #   spider 仍会去请求 Cloudflare 而卡住。
         #   相对路径则会跟随「配置是从哪个通道加载的」自动解析 ——
         #   从 jsDelivr 加载就指向 jsDelivr，从 Cloudflare 加载就指向 Cloudflare。
-        spider = "./spider.jar"
+        #   ★ 扩展名用 `.png` 而不是 `.jar`（2026-10-05 关键修复）：
+        #     jsDelivr 等 CDN 有**扩展名白名单**，`.jar` 直接返回 403，
+        #     客户端表现就是「加载写入缓存 jar 失败」。
+        #     上游（ysc / hebi）把 jar 命名成 `.png` 正是为了绕过这个限制；
+        #     客户端只按内容解析，不看 Content-Type。
+        spider = "./spider.png"
 
     # ★ 落盘前统一递归清洗，随后剔除因清洗而变空的壳
     #   （否则会出现「type=1 却没api」「lives 既无 channels 也无 url」的空壳，
