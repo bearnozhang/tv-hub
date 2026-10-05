@@ -154,8 +154,15 @@ def clean_site(site: Any) -> dict | None:
         elif k == "selected":
             out[k] = bool(v)
         else:
-            # 未知字段：gson 会忽略，原样保留（客户端反正不读）
-            out[k] = v
+            # ★ 未知字段：**丢弃**（2026-10-05 修正）。
+            #   原注释假设「gson 会忽略未知字段，客户端反正不读」——
+            #   这对讴歌/影视仓（FongMi 系）成立，但**主流 TVBox 官方版
+            #   （手机端）会因为未知字段直接判「解析配置失败」**。
+            #   上游夹带的私有字段很多（reference、discovery_decoded_works、
+            #   中文 key「类型」、title/lang/genre、id/isActive、order_num、
+            #   playurl（小写）……），必须在这里一次性拦掉。
+            #   原则：宁可少带字段，也不要带客户端不认识的东西。
+            continue
 
     # key 必须存在且非空，否则 toMap 会因 null key / 重复而崩
     key = (out.get("key") or "").strip()
@@ -164,6 +171,9 @@ def clean_site(site: Any) -> dict | None:
     out["key"] = key
     if not (out.get("name") or "").strip():
         out["name"] = key
+    # type 必须有值：实测有站点缺 type；补 0（XML）为客户端默认
+    if not isinstance(out.get("type"), int):
+        out["type"] = 0
     return out
 
 

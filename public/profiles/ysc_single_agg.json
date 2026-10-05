@@ -562,26 +562,6 @@
       "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
     },
     {
-      "key": "gszy",
-      "name": "🎥┃光速┃资源",
-      "type": 1,
-      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
-    },
-    {
       "key": "lzzy",
       "name": "🎥┃量子┃资源",
       "type": 1,
@@ -660,18 +640,24 @@
       ]
     },
     {
-      "key": "儿童",
-      "name": "📚┃儿童┃启蒙",
-      "type": 3,
-      "api": "./api/drpy2.min.js",
-      "searchable": 0,
-      "quickSearch": 0,
-      "changeable": 0,
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "ext": "./js/%E5%85%94%E5%B0%8F%E8%B4%9D.js"
+      "key": "gszy",
+      "name": "🎥┃光速┃资源",
+      "type": 1,
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
     },
     {
       "key": "py_douban",

@@ -302,6 +302,45 @@ def is_usable_url(u: str) -> bool:
     return is_valid_remote_url(u)
 
 
+_SITE_ALLOW_CACHE = None
+
+
+def site_allow_fields() -> set:
+    """客户端支持的 Site 字段白名单（读契约 `kernel.json` 的 `site` 段）。
+
+    ★ 为什么需要（2026-10-05 事故）：
+      上游会夹带大量私有 / 调试字段 —— `reference`、`discovery_decoded_works`、
+      中文 key「类型」、`title`/`lang`/`genre`、`id`/`isActive`、`order_num`、
+      `playurl`（小写）…… 讴歌 / 影视仓（FongMi 系，用 gson）对未知字段是**忽略**
+      的，所以此前一直没暴露问题；但**主流 TVBox 官方版（手机端）会因为未知字段
+      直接判「解析配置失败」**。
+
+      落盘前只保留白名单字段 —— 宁可少带，也不要带客户端不认识的东西。
+    """
+    global _SITE_ALLOW_CACHE
+    if _SITE_ALLOW_CACHE is None:
+        spec = {}
+        try:
+            import kernel as K          # 延迟导入：kernel 依赖 common，避免循环
+            spec = K.contract().get("site") or {}
+        except Exception:  # noqa: BLE001
+            pass
+        allow = set()
+        for kind in ("str", "int", "list", "dict", "bool"):
+            allow |= set(spec.get(kind) or [])
+        allow |= set(spec.get("extra_allow")
+                     or ["group", "playerType", "filterable", "gridview"])
+        if not allow:                    # 契约读不到时的兜底：宁多勿少，避免误删
+            allow = {
+                "key", "name", "type", "api", "ext", "jar", "click", "playUrl",
+                "hide", "indexs", "timeout", "searchable", "changeable",
+                "quickSearch", "danmaku", "categories", "header", "style",
+                "selected", "group", "playerType", "filterable", "gridview",
+            }
+        _SITE_ALLOW_CACHE = allow
+    return _SITE_ALLOW_CACHE
+
+
 def is_valid_remote_url(u: str) -> bool:
     """能否被客户端使用：http(s) + 非本地地址 + 可编码。"""
     if not url_encodable(u):

@@ -24,14 +24,33 @@
     }
   },
   "site": {
-    "str": ["key", "name", "api", "ext", "jar", "click", "playUrl"],
-    "int": ["type", "hide", "indexs", "timeout", "searchable", "changeable", "quickSearch", "danmaku"],
+    "str": ["key", "name", "api", "ext", "jar", "click", "playUrl", "group", "gridview"],
+    "int": ["type", "hide", "indexs", "timeout", "searchable", "changeable",
+            "quickSearch", "danmaku", "playerType", "filterable"],
     "list": ["categories"],
     "dict": ["header", "style"],
     "bool": ["selected"],
     "required": ["key"],
     "key": {"field": "key", "non_empty": true, "unique": true},
-    "note_ext_must_be_string": "UrlUtil.convert(String) 要求 ext 为字符串；配置里写成对象会让 gson 抛异常。"
+    "note_ext_must_be_string": "UrlUtil.convert(String) 要求 ext 为字符串；配置里写成对象会让 gson 抛异常。",
+    "extra_allow": ["group", "playerType", "filterable", "gridview"],
+    "note_whitelist": [
+      "★ 字段白名单（2026-10-05）。上游会夹带大量私有/调试字段：",
+      "  reference / discovery_decoded_works / 中文 key「类型」/ title / lang /",
+      "  genre / id / isActive / search / jiexiUrl / spider / recordable / playable /",
+      "  order_num / category / playurl（小写）……",
+      "讴歌、影视仓（FongMi 系，用 gson）对未知字段是忽略的，所以此前没暴露问题；",
+      "但**主流 TVBox 官方版（手机端）会因未知字段直接判「解析配置失败」**。",
+      "因此落盘前只保留白名单字段 —— 宁可少带，也不要带客户端不认识的东西。",
+      "extra_allow 里的 group/playerType/filterable/gridview 由实测可用配置",
+      "（ysc_single_agg、上游主流源）证明客户端支持，故纳入白名单。"
+    ],
+    "note_api_scheme": [
+      "★ api 兼容性红线（同一次事故）：",
+      "  `./deps/xxx.js` 这类**相对路径 api** 只有 FongMi 系认，",
+      "  主流 TVBox 官方版不认 → 整份配置解析失败。",
+      "  主档 /tv 只放 http 与 csp_* 开头的 api；相对路径源移到 /tv-deps。"
+    ]
   },
   "parse": {
     "str": ["name", "url", "ext"],

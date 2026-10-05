@@ -72,7 +72,7 @@ HEALTH_FILE = os.path.join(DATA_DIR, "source_health.json")
 POLICY_FILE = os.path.join(C.CONFIG_DIR, "curate.json")
 BLOCKLIST_FILE = os.path.join(C.CONFIG_DIR, "blocklist.json")
 
-CATEGORIES = ("direct", "js", "pan", "paid", "magnet", "broken", "invalid")
+CATEGORIES = ("direct", "js", "pan", "paid", "magnet", "broken", "relpath", "invalid")
 
 # ──────────────────────────────────────────────────────────────────────
 # 默认策略（config/curate.json 缺失时使用；该文件存在时以文件为准）
@@ -80,7 +80,9 @@ CATEGORIES = ("direct", "js", "pan", "paid", "magnet", "broken", "invalid")
 DEFAULT_POLICY: dict = {
     "version": "1.0.0",
     "note": "源策展策略。改这里即可调整「剔除什么、保留什么、怎么排序」。",
-    "drop": ["pan", "paid", "magnet", "broken", "invalid"],
+    # relpath = api 是 `./` 相对路径。只有 FongMi 系认，主流 TVBox 官方版不认
+    # → 主档必须剔除（否则整份配置「解析配置失败」）。这些源改由 tv-deps.json 提供。
+    "drop": ["pan", "paid", "magnet", "broken", "relpath", "invalid"],
     "keep": ["direct", "js"],
     # ── 网盘类指纹：命中即判 pan ──
     #
@@ -320,6 +322,14 @@ def classify_site(s: dict, policy: dict) -> tuple[str, str]:
         for rx in res["drpy"]:
             if rx.search(api):
                 return "broken", f"drpy 引擎「{api.split('/')[-1]}」缺 ext，无法工作"
+
+    # ── relpath：api 是 `./` 同源相对路径（兼容性红线）──────────────
+    #   ★ 2026-10-05 事故：为「救活」残缺源，我们把上游的 `./deps/xxx.js`
+    #   原样保留进了主档。讴歌 / 影视仓（FongMi 系）能处理，但**主流
+    #   TVBox 官方版（手机端）不认相对路径 api → 整份配置「解析配置失败」**。
+    #   兼容性优先：主档剔除；这些源改由独立档位 tv-deps.json 提供。
+    if api.startswith("./"):
+        return "relpath", f"api 为相对路径（{api[:44]}），非 FongMi 系客户端不认"
 
     # ── js / direct ──
     #   脚本类源：type=3（spider）、api 指向 .js/.mjs/.py 脚本。

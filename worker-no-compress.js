@@ -24,12 +24,16 @@ const ALIAS = {
   "/livetxt": "/live.txt",
   "/tvbox": "/tv.json",
   "/tvs": "/tvs.json",
-  "/minimal": "/minimal.json",
   "/lite": "/tv-lite.json",
   // 高速精选：只含「有速度证据且够快」的源（见 scripts/curate.py）
   "/fast": "/tv-fast.json",
   "/tv-fast": "/tv-fast.json",
   "/quick": "/tv-fast.json",
+  // 相对路径源专用档：仅 FongMi 系（讴歌/影视仓）客户端可用。
+  // 主流 TVBox 官方版不认 `./` 开头的 api，会整体「解析配置失败」，
+  // 所以这些源从主档剔出、单独成档。见 merge.write_deps_tier。
+  "/deps-config": "/tv-deps.json",
+  "/tvdeps": "/tv-deps.json",
 };
 
 const CT = [

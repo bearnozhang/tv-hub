@@ -224,5 +224,64 @@ class TestProbeHelpers(unittest.TestCase):
         self.assertIsNone(CU.name_speed_ms({"name": "没有标注"}))
 
 
+class TestOutputWhitelist(unittest.TestCase):
+    """产物里的站点字段必须全在契约白名单内。
+
+    ★ 2026-10-05 兼容性红线：
+      上游夹带 reference / discovery_decoded_works / 中文 key「类型」/
+      title / id / order_num / playurl（小写）等私有字段。
+      FongMi 系（讴歌、影视仓）忽略未知字段，所以此前没暴露；
+      但**主流 TVBox 官方版（手机端）会因未知字段直接判「解析配置失败」**。
+
+      这条测试是回归闸门：任何未知字段混进产物即失败。
+    """
+
+    def test_no_unknown_site_fields(self):
+        pub = os.path.join(ROOT, "public")
+        if not os.path.isdir(pub):
+            self.skipTest("尚未构建")
+        allow = C.site_allow_fields()
+        self.assertTrue(allow, "契约未加载到字段白名单")
+        bad: dict = {}
+        for fn in sorted(os.listdir(pub)):
+            if not fn.endswith(".json"):
+                continue
+            try:
+                with open(os.path.join(pub, fn), encoding="utf-8-sig") as f:
+                    d = json.load(f)
+            except Exception:  # noqa: BLE001
+                continue
+            if not isinstance(d, dict):
+                continue
+            for s in (d.get("sites") or []):
+                if not isinstance(s, dict):
+                    continue
+                unknown = [k for k in s if k not in allow]
+                if unknown:
+                    bad.setdefault(fn, set()).update(unknown)
+        self.assertFalse(
+            bad, "产物出现非白名单字段（主流 TVBox 会判「解析配置失败」）："
+                 + json.dumps({k: sorted(v) for k, v in bad.items()}, ensure_ascii=False))
+
+    def test_relative_api_absent_from_main_tiers(self):
+        """主档（/tv、/fast、/lite、/standard）不得含 `./` 相对路径 api。
+
+        只有 FongMi 系认相对路径 api，主流 TVBox 官方版不认。
+        这些源应只出现在 tv-deps.json。
+        """
+        pub = os.path.join(ROOT, "public")
+        if not os.path.isdir(pub):
+            self.skipTest("尚未构建")
+        for fn in ("tv.json", "tv-fast.json", "tv-lite.json", "tv-standard.json"):
+            p = os.path.join(pub, fn)
+            if not os.path.exists(p):
+                continue
+            with open(p, encoding="utf-8-sig") as f:
+                d = json.load(f)
+            rel = [s.get("key") for s in (d.get("sites") or [])
+                   if str(s.get("api") or "").startswith("./")]
+            self.assertFalse(rel, f"{fn} 含相对路径 api（应移入 tv-deps.json）：{rel[:5]}")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -7,7 +7,7 @@
     "（urllib 默认跟随会把请求带到第三方域名 —— 曾触发火绒「木马盗号」告警）。"
   ],
 
-  "drop": ["pan", "paid", "magnet", "broken", "invalid"],
+  "drop": ["pan", "paid", "magnet", "broken", "relpath", "invalid"],
   "keep": ["direct", "js"],
 
   "pan_patterns": [

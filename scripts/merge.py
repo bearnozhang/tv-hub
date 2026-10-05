@@ -188,6 +188,16 @@ def normalize_site(s: dict) -> dict:
         out.pop("ext", None)
     # 去掉本项目内部标记字段，不外泄到最终配置
     out.pop("_rescued_from", None)
+    # ★ 字段白名单裁剪（2026-10-05）：只保留客户端契约内的字段。
+    #   上游夹带 reference / discovery_decoded_works / 中文 key「类型」/
+    #   title / lang / id / isActive / order_num / playurl（小写）等私有字段。
+    #   FongMi 系（讴歌、影视仓，用 gson）忽略未知字段，所以此前没暴露；
+    #   但**主流 TVBox 官方版（手机端）会因未知字段直接判「解析配置失败」**。
+    #   宁可少带字段，也不要带客户端不认识的东西。
+    allow = C.site_allow_fields()
+    out = {k: v for k, v in out.items() if k in allow}
+    if "type" not in out:      # 实测有站点缺 type；补 0 保证字段齐整
+        out["type"] = 0
     return out
 
 
@@ -690,6 +700,44 @@ def write_fast_tier(sites: list[dict], parses: list[dict], flags: list,
     return ["tv-fast.json"]
 
 
+def write_deps_tier(sites: list[dict], parses: list[dict], flags: list,
+                    spider: str, scalars: dict) -> list[str]:
+    """产出 tv-deps.json —— **api 为同源相对路径**的源专用档。
+
+    为什么单独一档（2026-10-05 事故）：
+      上游有 140+ 个源的 api 写作 `./deps/auto/.../xxx.js`（相对路径）。
+      讴歌 / 影视仓（FongMi 系）会以「配置所在目录」为基准拼接，能正常工作；
+      但**主流 TVBox 官方版（手机端）不认相对路径 api → 整份配置解析失败**。
+
+      所以主档 /tv 只放 http / csp_* 的源（**兼容性优先**），
+      这一档专门给 FongMi 系客户端 —— 它们本来就是这批源的原始受众。
+
+    依赖 Worker 的 `/deps/*` 反代（把相对路径映射到上游镜像仓库），
+    因此**仅在主通道 `tv.bearno1.dpdns.org` 下可用**。
+    """
+    if not sites:
+        return []
+    KEY_ORDER = ("spider", "wallpaper", "logo", "warningText", "proxy", "doh",
+                 "hosts", "rules", "sites", "lives", "parses", "flags")
+    obj: dict = {"sites": sites}
+    if spider:
+        obj = {"spider": spider, **obj}
+    for k in ("wallpaper", "logo", "proxy", "doh", "hosts", "rules"):
+        if scalars.get(k) not in (None, "", [], {}):
+            obj[k] = scalars[k]
+    if parses:
+        obj["parses"] = [p for p in parses[:60]
+                         if str(p.get("url") or "").startswith(("http://", "https://"))]
+    if flags:
+        obj["flags"] = flags
+    obj["lives"] = []
+    obj["sites"] = [x for x in obj["sites"] if x.get("api")]
+    ordered = {k: obj[k] for k in KEY_ORDER if k in obj}
+    ordered.update({k: v for k, v in obj.items() if k not in ordered})
+    write_cfg(os.path.join(C.PUBLIC_DIR, "tv-deps.json"), C.scrub_urls(ordered))
+    return ["tv-deps.json"]
+
+
 def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
     """把每个上游的原始内容重新落盘为 profiles/<id>.json，供订阅清单分发。
 
@@ -934,6 +982,18 @@ def merge(build: bool = False) -> dict:
     #   「很多源点进去不能用」的来源。
     #   同时按速度排序（上游 ms 标注 → 健康档案 EWMA）。
     #   策略见 config/curate.json；实现见 scripts/curate.py。
+    #
+    # ★ 相对路径 api 的源（`./deps/xxx.js`）单独成档：
+    #   只有 FongMi 系（讴歌/影视仓）认这种写法，**主流 TVBox 官方版不认** ——
+    #   放进主档会导致整份配置「解析配置失败」。所以从主档剔出，
+    #   改由 tv-deps.json（别名 /deps-config）提供，给支持的客户端用。
+    _pol_deps = dict(CU.load_policy())
+    _pol_deps["drop"] = [c for c in (_pol_deps.get("drop") or []) if c != "relpath"]
+    relpath_sites = [x for x in tv_sites if str(x.get("api") or "").startswith("./")]
+    relpath_kept = CU.curate(relpath_sites, _pol_deps, CU.load_health())["kept"] \
+        if relpath_sites else []
+    stats["relpath_sites"] = len(relpath_kept)
+
     _pre_curate = len(tv_sites)
     tv_sites = CU.apply(tv_sites, stats, build=build)
     stats["sites_curated_out"] = _pre_curate - len(tv_sites)
@@ -973,6 +1033,9 @@ def merge(build: bool = False) -> dict:
     written_profiles = write_profiles(cfg, per_source) if build else []
     tiers_written = write_lite_tiers(tv_sites, parses, flags, spider, scalars) if build else []
     fast_written = write_fast_tier(tv_sites, parses, flags, spider, scalars) if build else []
+    # 相对路径源专用档（FongMi 系客户端用；见 write_deps_tier 说明）
+    deps_written = write_deps_tier(relpath_kept, parses, flags, spider, scalars) \
+        if build else []
 
     # 直播：清洗无效引用 + 体积分档（与点播同一套适配逻辑）
     clean_groups, live_clean_stats = clean_live_entries(live_out)
