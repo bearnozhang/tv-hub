@@ -575,6 +575,68 @@
       ]
     },
     {
+      "key": "豪华资源",
+      "name": "🎥┃豪华┃资源",
+      "type": 1,
+      "api": "https://hhzyapi.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "categories": [
+        "内地剧",
+        "香港剧",
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "马泰剧",
+        "台湾剧",
+        "动画片",
+        "中国动漫",
+        "日本动漫",
+        "欧美动漫",
+        "剧情片",
+        "战争片",
+        "动作片",
+        "科幻片",
+        "记录片",
+        "爱情片",
+        "喜剧片",
+        "灾难片",
+        "悬疑片",
+        "犯罪片",
+        "大陆综艺",
+        "日韩综艺",
+        "港台综艺",
+        "欧美综艺"
+      ]
+    },
+    {
+      "key": "drpy_js_豆瓣",
+      "name": "🔥聚玩盒子4K",
+      "type": 3,
+      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
+      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
+    },
+    {
+      "key": "snzy",
+      "name": "🎥┃索尼┃资源",
+      "type": 1,
+      "api": "https://suoniapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
       "key": "lzzy",
       "name": "🎥┃量子┃资源",
       "type": 1,
@@ -616,33 +678,6 @@
         "剧情片",
         "战争片"
       ]
-    },
-    {
-      "key": "snzy",
-      "name": "🎥┃索尼┃资源",
-      "type": 1,
-      "api": "https://suoniapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
-    },
-    {
-      "key": "drpy_js_豆瓣",
-      "name": "🔥聚玩盒子4K",
-      "type": 3,
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
     },
     {
       "key": "gszy",

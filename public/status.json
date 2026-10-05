@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-05T08:00:49Z",
-  "generated_at_bj": "2026-10-05 16:00:49",
+  "generated_at": "2026-10-05T08:02:06Z",
+  "generated_at_bj": "2026-10-05 16:02:06",
   "base_url": "https://tv.bearno1.dpdns.org",
   "summary": {
     "total_sources": 8,
@@ -106,21 +106,21 @@
     ],
     "sources_skipped": [],
     "per_source_sites": {
-      "ysc_single_agg": 668,
-      "hebi_tvbox": 16808,
-      "hebi_vod": 0
+      "hebi_vod": 0,
+      "hebi_tvbox": 15921,
+      "ysc_single_agg": 668
     },
     "hashes": {
-      "tv": "95fab16b17a53f24",
-      "live": "25ce7074a5172b97",
-      "subscriptions": "651396738a0decbf",
+      "tv": "fc3f9e8d484daba2",
+      "live": "e1fd934031a40cc0",
+      "subscriptions": "a04c2448b5c03e61",
       "live_txt": "C:\\Users\\Adminis",
       "live_sub": "db386bb6e9015741"
     },
     "curate": {
-      "curate_in": 1741,
-      "curate_kept": 1313,
-      "curate_dropped": 428,
+      "curate_in": 1511,
+      "curate_kept": 1322,
+      "curate_dropped": 189,
       "curate_by_category": {
         "direct": 290,
         "js": 1055,
@@ -132,20 +132,20 @@
         "invalid": 0
       },
       "curate_drop_reasons": {
-        "relpath": 147,
-        "quarantine": 201,
-        "pan": 54,
-        "magnet": 23,
+        "relpath": 90,
+        "quarantine": 23,
+        "pan": 53,
+        "magnet": 20,
         "broken": 3
       },
       "curate_policy_version": "1.0.0",
       "curate_probe": {
-        "probed": 466,
-        "ok": 246,
+        "probed": 183,
+        "ok": 136,
         "paid": 4,
-        "fail": 216,
+        "fail": 43,
         "skipped_budget": 0,
-        "elapsed_s": 30.7
+        "elapsed_s": 13.8
       }
     }
   },
