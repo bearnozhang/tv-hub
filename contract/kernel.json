@@ -53,11 +53,21 @@
     ]
   },
   "parse": {
-    "str": ["name", "url", "ext"],
+    "str": ["name", "url"],
     "int": ["type"],
-    "dict": ["header"],
+    "dict": ["header", "ext"],
     "required": ["name", "url"],
-    "key": {"field": "name", "non_empty": true, "unique": true}
+    "key": {"field": "name", "non_empty": true, "unique": true},
+    "note_ext_must_be_object": [
+      "★ 2026-10-05 事故根因：Parse.ext 在 FongMi 里是**对象**，不是字符串。",
+      "  Parse.java: `@SerializedName(\"ext\") private Ext ext;`",
+      "  Ext 结构：`{flag: [String], header: {String:String}}`",
+      "  且 `Parse.objectFrom` **没有 try-catch**（不像 Site.objectFrom 会吞异常）——",
+      "  于是 ext 写成字符串时 gson 抛异常直接冒泡 → **整份配置「解析配置失败」**。",
+      "  实测对照：能加载的 ysc 配置，parses[].ext 全部是对象；",
+      "  而我们的 95 个 parses[].ext 是 JSON 字符串 → t4 档稳定复现报错。",
+      "  消毒器会把字符串形式的 ext 自动 json.loads 成对象（解不开则丢弃）。"
+    ]
   },
   "live": {
     "str": ["name", "url", "epg", "logo"],

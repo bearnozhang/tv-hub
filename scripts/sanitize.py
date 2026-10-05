@@ -177,6 +177,43 @@ def clean_site(site: Any) -> dict | None:
     return out
 
 
+def _as_ext(v: Any) -> dict | None:
+    """把 `Parse.ext` 规范化成**对象**。
+
+    ★ 2026-10-05 事故：`Parse.ext` 在 FongMi 里是对象（`Ext{flag,header}`），
+      不是字符串。上游大量把它写成 JSON 字符串，而 `Parse.objectFrom`
+      **没有 try-catch**（不像 Site.objectFrom 会吞异常）—— gson 抛出的异常
+      直接冒泡，导致**整份配置「解析配置失败」**。
+
+    这里做规范化：
+      - dict → 提取 flag / header
+      - str  → 先 json.loads 再按上处理（上游最常见的写法）
+      - 解不开 → None（丢弃该字段，绝不把字符串放回产物）
+    """
+    if isinstance(v, str):
+        s = v.strip()
+        if not s:
+            return None
+        try:
+            v = json.loads(s)
+        except Exception:  # noqa: BLE001
+            return None
+    if not isinstance(v, dict):
+        return None
+    out: dict = {}
+    flag = v.get("flag")
+    if isinstance(flag, list):
+        f = [str(x) for x in flag if isinstance(x, (str, int))]
+        if f:
+            out["flag"] = f
+    header = v.get("header")
+    if isinstance(header, dict):
+        h = {str(a): _as_str(b) for a, b in header.items() if _as_str(b) is not None}
+        if h:
+            out["header"] = h
+    return out or None
+
+
 def clean_parse(p: Any) -> dict | None:
     if not isinstance(p, dict):
         return None
@@ -197,8 +234,14 @@ def clean_parse(p: Any) -> dict | None:
         elif k == "header":
             if isinstance(v, dict):
                 out[k] = {str(a): _as_str(b) for a, b in v.items() if _as_str(b) is not None}
+        elif k == "ext":
+            e = _as_ext(v)          # 必须是对象，见 _as_ext 的说明
+            if e is not None:
+                out[k] = e
         else:
-            out[k] = v
+            # 未知字段丢弃（与 clean_site 一致）。parse 顶层偶见上游误写的
+            # flag/header（本应放在 ext 里），一并清掉。
+            continue
     if not (out.get("name") or "").strip() or not (out.get("url") or "").strip():
         return None
     return out

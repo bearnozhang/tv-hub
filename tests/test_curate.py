@@ -263,6 +263,39 @@ class TestOutputWhitelist(unittest.TestCase):
             bad, "产物出现非白名单字段（主流 TVBox 会判「解析配置失败」）："
                  + json.dumps({k: sorted(v) for k, v in bad.items()}, ensure_ascii=False))
 
+    def test_parse_ext_is_object_not_string(self):
+        """★ 产物里 parses[].ext 必须是**对象**，不能是字符串。
+
+        2026-10-05 事故：`Parse.ext` 在 FongMi 里是对象（Ext{flag,header}），
+        而 `Parse.objectFrom` **没有 try-catch**（不像 Site.objectFrom 会吞异常）
+        —— 上游把 ext 写成 JSON 字符串时，gson 抛异常直接冒泡，
+        表现是**整份配置「解析配置失败」**（实测 t4 档稳定复现）。
+
+        对照：能加载的 ysc 配置里 parses[].ext 全部是对象。
+        """
+        pub = os.path.join(ROOT, "public")
+        if not os.path.isdir(pub):
+            self.skipTest("尚未构建")
+        bad = {}
+        for fn in sorted(os.listdir(pub)):
+            if not fn.endswith(".json"):
+                continue
+            try:
+                with open(os.path.join(pub, fn), encoding="utf-8-sig") as f:
+                    d = json.load(f)
+            except Exception:  # noqa: BLE001
+                continue
+            if not isinstance(d, dict):
+                continue
+            for p in (d.get("parses") or []):
+                ext = p.get("ext") if isinstance(p, dict) else None
+                if ext is not None and not isinstance(ext, dict):
+                    bad.setdefault(fn, []).append(
+                        {"name": p.get("name"), "ext_type": type(ext).__name__})
+        self.assertFalse(
+            bad, "parses[].ext 必须是对象（字符串会让整份配置解析失败）："
+                 + json.dumps(bad, ensure_ascii=False))
+
     def test_relative_api_absent_from_main_tiers(self):
         """主档（/tv、/fast、/lite、/standard）不得含 `./` 相对路径 api。
 
