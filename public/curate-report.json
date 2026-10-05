@@ -6,13 +6,13 @@
     "kept": 1313,
     "dropped": 428,
     "by_category": {
-      "direct": 606,
-      "js": 908,
-      "pan": 54,
+      "direct": 290,
+      "js": 1055,
+      "pan": 53,
       "paid": 0,
-      "magnet": 23,
+      "magnet": 20,
       "broken": 3,
-      "relpath": 147,
+      "relpath": 90,
       "invalid": 0
     },
     "drop_reasons": {
@@ -81,6 +81,12 @@
       "api_host": "Naixxzy.com",
       "reason": "探测判定付费：响应含「收费」",
       "fails_streak": 10
+    },
+    {
+      "key": "naixxzy.com",
+      "api_host": "naixxzy.com",
+      "reason": "探测判定付费：响应含「收费」",
+      "fails_streak": 2
     },
     {
       "key": "ruyi_2",
@@ -1312,7 +1318,7 @@
       "key": "ffc08730-71ad-56b8-a153-e2e563e6d64c",
       "name": "奶香",
       "category": "quarantine",
-      "reason": "探测判定付费：响应含「收费」"
+      "reason": "连续 10 轮探测失败"
     },
     {
       "key": "hhzy2",
@@ -1321,8 +1327,8 @@
       "reason": "连续 10 轮探测失败"
     },
     {
-      "key": "奶香香资源站采集接口",
-      "name": "奶香香资源站采集接口",
+      "key": "naixxzy.com",
+      "name": "★奶香香(直连)",
       "category": "quarantine",
       "reason": "探测判定付费：响应含「收费」"
     },
@@ -2395,12 +2401,6 @@
       "reason": "名称含「荐片」"
     },
     {
-      "key": "蓝光影视",
-      "name": "⚡蓝光┃APP",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/29-196s/tvbox-master-doki/js/drp），非 FongMi 系客户端不认"
-    },
-    {
       "key": "drpy_js_EMO蓝光[V2]",
       "name": "影视 | EMO蓝光[V2][js]",
       "category": "relpath",
@@ -2417,12 +2417,6 @@
       "name": "磁力 | 4KHDR[磁][js]",
       "category": "magnet",
       "reason": "名称含「磁力」"
-    },
-    {
-      "key": "利播蓝光",
-      "name": "🥮利播┃韩剧",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/22-270s/tvbox-master-doki/js/drp），非 FongMi 系客户端不认"
     },
     {
       "key": "Cat_荐片",
@@ -2467,46 +2461,28 @@
       "reason": "api 为相对路径（./deps/xingwei/kstore/xw/js/%E6%B0%B8%E4%B9%），非 FongMi 系客户端不认"
     },
     {
-      "key": "meowtv_a8yy",
-      "name": "A8Y🎵音乐",
+      "key": "drpy_js_樱之空",
+      "name": "樱之空[直连]",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/22-270s/tvbox-master-doki/js/drp），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "ylsp",
-      "name": "永乐视频",
+      "key": "哔哩合集2",
+      "name": "🅱️┃哔哩┃合集2",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/247-3s/js/%E6%B0%B8%E4%B9%90%E8%），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "荐片影院",
-      "name": "🔎荐片┃p2p",
-      "category": "magnet",
-      "reason": "磁力特征 /(?:^|[/.])jianpian/"
+      "key": "哔哩合集3",
+      "name": "🅱️┃哔哩┃合集3",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "爱看机器",
-      "name": "🤖爱看┃机器",
+      "key": "bili_di",
+      "name": "🅱️┃哔哩┃直连",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/22-270s/tvbox-master-doki/js/drp），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "360ba",
-      "name": "360吧",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/360ba_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "kanqiu",
-      "name": "88看球",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/kanqiu_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "91",
-      "name": "91",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/91_open.js），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
       "key": "dj0898_book_open",
@@ -2515,64 +2491,10 @@
       "reason": "api 为相对路径（./deps/auto/24-243s/lib/MyDJ0898.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "ktv",
-      "name": "KTV",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/ktv_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "haudu",
-      "name": "huadu",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/huadu_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "kan80",
-      "name": "kan80",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/lsq_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "maiyoux",
-      "name": "maiyoux",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/maiyoux_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "mmcl",
-      "name": "mmcl",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/mmcl_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "一三九",
-      "name": "一三九",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/90-77s/%E5%BD%B1%E8%A7%86/JS/drp），非 FongMi 系客户端不认"
-    },
-    {
       "key": "yqk",
       "name": "一起看[cat]",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/auto/24-243s/lib/yqktv_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "不开心",
-      "name": "不开心",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/90-77s/%E5%BD%B1%E8%A7%86/JS/drp），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "leshi",
-      "name": "乐视采集【📺】",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/caiji.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "免费看",
-      "name": "免费看",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/90-77s/%E5%BD%B1%E8%A7%86/JS/drp），非 FongMi 系客户端不认"
     },
     {
       "key": "猫农民",
@@ -2591,12 +2513,6 @@
       "name": "厂长资源[cat]",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/auto/24-243s/lib/czzy_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "49zyw",
-      "name": "四九【📺】",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/caiji.js），非 FongMi 系客户端不认"
     },
     {
       "key": "猫在线之家",
@@ -2665,18 +2581,6 @@
       "reason": "api 为相对路径（./deps/auto/24-243s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "抓饭体育",
-      "name": "抓饭体育",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/236-7s/%E4%BD%93%E8%82%B2/JS/drp），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "柒之社",
-      "name": "柒之社",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/90-77s/%E5%BD%B1%E8%A7%86/JS/drp），非 FongMi 系客户端不认"
-    },
-    {
       "key": "230ts",
       "name": "爱上你听书网[cat]",
       "category": "relpath",
@@ -2713,12 +2617,6 @@
       "reason": "api 为相对路径（./deps/auto/24-243s/lib/subaibai_open.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "美益达",
-      "name": "美益达",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/90-77s/%E5%BD%B1%E8%A7%86/JS/drp），非 FongMi 系客户端不认"
-    },
-    {
       "key": "drpy_js_ikanbot1",
       "name": "聚搜 | 爱看机器人1[js]",
       "category": "relpath",
@@ -2734,67 +2632,121 @@
       "key": "drpy_js_酷吧",
       "name": "酷吧[js]|磁",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/66-108s/pg/lib/drpy2.min.js），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/66-108s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "量子影视",
-      "name": "量子影视",
+      "key": "6",
+      "name": "👖APP",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/90-77s/%E5%BD%B1%E8%A7%86/JS/drp），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/229-22s/kulao/ext/04b5c0b4.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "零零七",
-      "name": "零零七",
+      "key": "1",
+      "name": "👖IPTV",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/90-77s/%E5%BD%B1%E8%A7%86/JS/drp），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/229-22s/kulao/ext/f05e3b39.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "yinyuetai",
-      "name": "音悦台",
+      "key": "8",
+      "name": "👖JS",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/212-35s/open/yinyuetai_open.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "18哈影视",
-      "name": "🍒18HA┃高清",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/22-270s/tvbox-master-doki/js/drp），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/229-22s/kulao/ext/f7b46c7f.js），非 FongMi 系客户端不认"
     },
     {
       "key": "drpy_js_88ball",
       "name": "88看球[js]",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/66-108s/pg/lib/drpy2.min.js），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/66-108s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "蜻蜓收音机",
-      "name": "收音机",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/188-13s/tvbox/%E7%91%9F%E7%91%9F），非 FongMi 系客户端不认"
+      "key": "drpy_js_磁力熊",
+      "name": "磁力熊[js]|索引",
+      "category": "magnet",
+      "reason": "磁力特征 /(?:^|[/.])cilixiong/"
     },
     {
-      "key": "yyt",
-      "name": "音悦台🎵MV",
+      "key": "中医药区",
+      "name": "🅱️┃中医┃药区",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/22-270s/tvbox-master-doki/js/yin），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "js_豆瓣热播",
-      "name": "🅱️追剧影院|T热播",
+      "key": "体育健身",
+      "name": "🅱️┃体育┃健身",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/99-66s/lib/Api.js），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "魔力高清",
-      "name": "🥮魔力┃高清",
+      "key": "哔哩精简",
+      "name": "🅱️┃哔哩┃精简",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/22-270s/tvbox-master-doki/js/drp），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "hipy_js_KTV歌厅[听]1",
-      "name": "KTV歌厅",
+      "key": "戏曲合集",
+      "name": "🅱️┃戏曲┃合集",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/53-140s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "歌手合集",
+      "name": "🅱️┃歌手┃合集",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "歌曲演唱",
+      "name": "🅱️┃歌曲┃演唱",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "球队球星",
+      "name": "🅱️┃球队┃球星",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "美女舞蹈",
+      "name": "🅱️┃美女┃舞蹈",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "哔哩音乐",
+      "name": "🅱️┃音乐┃合集",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "音悦合集",
+      "name": "🅱️┃音悦┃合集",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "斗鱼",
+      "name": "🐟斗鱼直播",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/93-78s/%E5%8D%97%E9%A3%8E/api/dr），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "搭配教程",
+      "name": "💃┃搭配┃教程",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "搭讪教程",
+      "name": "💋┃搭讪┃教程",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/26-215s/lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "有声小说吧",
+      "name": "📚有声小说吧",
+      "category": "relpath",
+      "reason": "api 为相对路径（./deps/auto/93-78s/%E5%8D%97%E9%A3%8E/api/dr），非 FongMi 系客户端不认"
     },
     {
       "key": "布雷影视",
@@ -2833,34 +2785,10 @@
       "reason": "api 为相对路径（./deps/sv/tiantiankaixin/%E5%A4%A9%E5%A4%A9%），非 FongMi 系客户端不认"
     },
     {
-      "key": "drpy_js_188看",
-      "name": "188看[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
       "key": "310直播",
       "name": "310｜看球",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/js/drpy2.min），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_31看影院",
-      "name": "31看影院[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_539影院",
-      "name": "539影院[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_555影视",
-      "name": "555影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
     },
     {
       "key": "56动漫",
@@ -2869,34 +2797,10 @@
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/js/drpy2.min），非 FongMi 系客户端不认"
     },
     {
-      "key": "drpy_js_HoHo影视",
-      "name": "HoHo影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
       "key": "JRKAN直播",
       "name": "JRKAN｜直播",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/js/drpy2.min），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_MXONE",
-      "name": "MXONE[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_Nike影视",
-      "name": "Nike影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_TV蜂",
-      "name": "TV蜂[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
     },
     {
       "key": "cat_剧迷网",
@@ -2929,66 +2833,6 @@
       "reason": "api 为相对路径（./deps/xingwei/kstore/xw/js/cat_%E9%AA%9A%E7），非 FongMi 系客户端不认"
     },
     {
-      "key": "drpy_js_七小时影院",
-      "name": "七小时影院[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_云播",
-      "name": "云播[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_JRS录像",
-      "name": "体育|JRS录像[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_JRS看比赛",
-      "name": "体育|JRS看比赛[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_JRS看球网",
-      "name": "体育|JRS看球网5G[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_JRS看直播",
-      "name": "体育|JRS看直播[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_冲TMTV[飞]",
-      "name": "冲TMTV[飞][DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_剧白白",
-      "name": "剧白白[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_剧荒",
-      "name": "剧荒[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_剧迷",
-      "name": "剧迷[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
       "key": "动漫岛",
       "name": "动漫岛｜动漫",
       "category": "relpath",
@@ -2999,24 +2843,6 @@
       "name": "动画片｜动漫",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/js/drpy2.min），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_喵喵",
-      "name": "喵喵[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_四个圈影视",
-      "name": "四个圈影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_在线189",
-      "name": "在线189[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
     },
     {
       "key": "奇米动漫",
@@ -3031,40 +2857,16 @@
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/drpy_libs/dr），非 FongMi 系客户端不认"
     },
     {
-      "key": "drpy_js_小宝影院",
-      "name": "小宝影院[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_小强迷",
-      "name": "小强迷[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_库马伊",
-      "name": "库马伊[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
       "key": "drpy_js_gaze",
       "name": "影视 | gaze[js]",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/auto/24-243s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
-      "key": "drpy_js_RP影视",
-      "name": "影视|RP影视[DRPY]",
+      "key": "drpy_js_l0l",
+      "name": "影视 | l0l[js]",
       "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_影视工厂",
-      "name": "影视工厂[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
+      "reason": "api 为相对路径（./deps/auto/24-243s/lib/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
       "key": "恰瓜子",
@@ -3073,148 +2875,16 @@
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/drpy_libs/dr），非 FongMi 系客户端不认"
     },
     {
-      "key": "drpy_js_我爱电影网",
-      "name": "我爱电影网[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_新安影院",
-      "name": "新安影院[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_星辰",
-      "name": "星辰[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
       "key": "武享吧",
       "name": "格斗｜直播",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/js/drpy2.min），非 FongMi 系客户端不认"
     },
     {
-      "key": "drpy_js_欧乐影院",
-      "name": "欧乐影院[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
       "key": "清风DJ",
       "name": "清风｜听歌",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/shiguang/svip/heads/main/js/drpy2.min），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_牛马TV",
-      "name": "牛马TV[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_特狗影视",
-      "name": "特狗影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_瓜皮TV",
-      "name": "瓜皮TV[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_电影大师",
-      "name": "电影大师[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_皮皮泡",
-      "name": "皮皮泡[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_看视界",
-      "name": "看视界[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_神马影视",
-      "name": "神马影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_艾旦影视",
-      "name": "艾旦影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_莫扎兔",
-      "name": "莫扎兔[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_蛋蛋魔法",
-      "name": "蛋蛋魔法[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_视中心影视",
-      "name": "视中心影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_豆芽影院",
-      "name": "豆芽影院[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_追剧啦",
-      "name": "追剧啦[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_追剧喵",
-      "name": "追剧喵[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_追剧影视",
-      "name": "追剧影视[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_酷酷韩剧",
-      "name": "酷酷韩剧[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_饭团",
-      "name": "饭团[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "drpy_js_麦豆",
-      "name": "麦豆[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
     },
     {
       "key": "个影",
@@ -3227,12 +2897,6 @@
       "name": "⚽聚合🔹球赛",
       "category": "relpath",
       "reason": "api 为相对路径（./deps/xingwei/kstore/xw/js/%E4%BD%93%E8%82%），非 FongMi 系客户端不认"
-    },
-    {
-      "key": "飞云",
-      "name": "🥮飞云┃影视",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/22-270s/tvbox-master-doki/js/App），非 FongMi 系客户端不认"
     },
     {
       "key": "JD4kss",
@@ -3463,12 +3127,6 @@
       "reason": "网盘接口特征 /[?&]type=(?:quark|uc|ali/ 命中「?type=baidu」"
     },
     {
-      "key": "网盘",
-      "name": "👖网盘",
-      "category": "pan",
-      "reason": "分组「综合-网盘」标记网盘且非标准采集接口"
-    },
-    {
       "key": "t4public-2",
       "name": "🔍T4公共",
       "category": "pan",
@@ -3571,10 +3229,10 @@
       "reason": "网盘接口特征 /alist/ 命中「alist」"
     },
     {
-      "key": "drpy_js_秋霞",
-      "name": "秋霞[DRPY]",
-      "category": "relpath",
-      "reason": "api 为相对路径（./deps/auto/35-163s/6/lib/drpy.min.js），非 FongMi 系客户端不认"
+      "key": "裤佬荐片JS",
+      "name": "☁云霄丨荐片丨JS",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
     },
     {
       "key": "荐片.js",
