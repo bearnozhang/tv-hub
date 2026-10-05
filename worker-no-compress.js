@@ -16,13 +16,22 @@ const NO_COMPRESS_TYPES = /\.(json|txt|m3u|html|xml|jar)$/i;
 // （实测饭太硬就是 `http://fty.xxooo.cf/tv`，返回 JSON 但路径没有 .json）。
 // 这里把无扩展名路径映射到实际资产，并按目标类型返回正确 Content-Type。
 const ALIAS = {
-  "/tv": "/tv.json",
-  "/tv.json": "/tv.json",
-  "/api": "/tv.json",
-  "/config": "/tv.json",
+  // ★ 主档：只用「爬虫代码就在 jar 里」的源（csp_XXX），
+  //   不访问任何第三方服务器，因此不会因为别人的站挂了而转圈/失效。
+  //   用户实测：240 个第三方采集接口那档在国内「一直转圈」；
+  //   而 150/167 是 csp_ 源的配置秒开 —— 这就是差别所在。
+  //   见 scripts/merge.py 的 write_main_tier()。
+  "/tv": "/tv-main.json",
+  "/main": "/tv-main.json",
+  "/tv-main": "/tv-main.json",
+  "/api": "/tv-main.json",
+  "/config": "/tv-main.json",
+  "/tvbox": "/tv-main.json",
   "/live": "/live.txt",
   "/livetxt": "/live.txt",
-  "/tvbox": "/tv.json",
+  // 全量档：1300+ 站（含大量第三方采集接口）。网络好、要最大覆盖面时用。
+  "/full": "/tv.json",
+  "/tv.json": "/tv.json",
   "/tvs": "/tvs.json",
   "/lite": "/tv-lite.json",
   // 高速精选：只含「有速度证据且够快」的源（见 scripts/curate.py）

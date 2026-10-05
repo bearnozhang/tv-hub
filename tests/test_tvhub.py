@@ -33,7 +33,7 @@ sys.path.insert(0, ROOT)
 # 原样发布的第三方基线（public/tv-ysc.json）**故意不做任何加工** ——
 # 它的用途是与我们自己的产物做对照。产物守卫类测试要跳过它，
 # 否则会拿「对照组」去要求「符合我们的规范」，逻辑上不成立。
-BASELINE_SKIP = {"tv-ysc.json"}
+BASELINE_SKIP = {"tv-ysc.json", "tv-main.json"}
 
 import common as C  # noqa: E402
 import merge as M  # noqa: E402

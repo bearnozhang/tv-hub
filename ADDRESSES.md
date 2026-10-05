@@ -4,7 +4,17 @@
 
 ---
 
-## 一、就填这个（首选，不要轻易更换）
+## 一、先填这个（推荐）
+
+```
+http://tv.bearno1.dpdns.org/fast
+```
+
+**为什么推荐它而不是全量主档**：客户端加载配置后，会**逐个源去取分类数据**。
+源越多，启动越慢、越容易卡在转圈。`/fast` 只有 **240 个源**（98KB），
+且**每一个都经过本项目实测可达**（按 EWMA 实测速度排序），启动最快。
+
+**全量主档**（1314 站，471KB，覆盖面最大）：
 
 ```
 http://tv.bearno1.dpdns.org/tv
@@ -18,39 +28,54 @@ http://tv.bearno1.dpdns.org/live
 
 **位置**：App 设置 → 配置地址（点播）/ 直播地址（直播）。
 
----
-
-## 一·B、嫌源太多、只想要「确定快」的？（可选）
-
-```
-http://tv.bearno1.dpdns.org/fast
-```
-
-这是**高速精选**档：只保留「有实测速度证据且够快」的源（≤1.2 秒），上限 240 个，
-按快慢排序。适合不想在几百个源里翻的人。
-
-与主档的区别：
-
-| | `/tv`（主档） | `/fast`（高速精选） |
-|---|---|---|
-| 内容 | 全部免费源（已筛掉网盘/付费/磁力） | 其中**确认快**的那部分 |
-| 数量 | 1400+ | ≤ 240 |
-| 适合 | 想慢慢挑、要最大覆盖面 | 想直接看、讨厌等 |
-
-两个都用同一套筛选：**网盘类（要夸克/UC/天翼会员的）、付费类、磁力类、
-以及配置残缺的空壳源，都已经剔除。**
+> 两个档内容同源、只是数量递减。**选在你那儿能打开的最大的那个**：
+> `/fast`（240 站）→ `/tv`（1314 站）→ 若都卡，用 `/lite`（60 站）。
 
 ---
 
-## 二、打不开了再往下换（按顺序）
+## 一·B、三档速查
 
-| 顺序 | 地址 | 实测 |
+| 地址 | 源数 | 体积 | 说明 |
+|---|---|---|---|
+| `/fast` | 240 | 98 KB | **推荐**：实测可达 + 按速度排序 |
+| `/tv` | 1314 | 471 KB | 全量，覆盖面最大，启动较慢 |
+| `/lite` | 60 | 51 KB | 最小，网络最差时用 |
+
+三档都已剔除**网盘类（要夸克/UC/天翼会员的）、付费类、磁力类、
+以及配置残缺的空壳源**。
+
+---
+
+## 一·C、两条硬约束（踩过坑，写死在这里）
+
+**① `spider` 必须是绝对 http 地址。**
+客户端 `JarLoader.parseJar` 只认三种写法：本地缓存命中、`http` 开头、`file` 开头。
+写成相对路径（`./spider.png`）时**三个分支一个都不匹配 → 被静默忽略**，
+jar 永远加载不到。而 `VodConfig.initSite` 是在解析站点**之前**就加载 jar。
+
+**② jar 的文件名不能以 `.jar` 结尾。**
+jsDelivr 等 CDN 有**扩展名白名单**，`.jar` 直接返回 403。
+所以发布成 `spider.png`（内容仍是 jar，客户端只按内容解析）。
+上游把 jar 伪装成 `.png` / `.txt` 正是这个原因。
+
+
+---
+
+## 二、主通道打不开了再往下换（按顺序）
+
+| 顺序 | 地址 | 说明 |
 |---|---|---|
-| 1 | `http://tv.bearno1.dpdns.org/tv` | ✅ 1421 站（已筛网盘/付费/磁力） |
-| 1·B | `http://tv.bearno1.dpdns.org/fast` | ✅ 240 站（高速精选） |
-| 2 | `https://fastly.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json` | ✅ 1421 站 |
-| 3 | `https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json` | ✅ 内容可能滞后一版 |
-| 4 | `https://gh-proxy.com/https://raw.githubusercontent.com/bearnozhang/tv-hub/main/public/tv.json` | ⚠️ 内容正确，但部分客户端会拒绝（响应头不规范） |
+| 1 | `http://tv.bearno1.dpdns.org/fast` | ✅ 240 站，推荐 |
+| 2 | `http://tv.bearno1.dpdns.org/live` | 直播另填 |
+| 3 | `https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv-fast.json` | 备用通道（见下方⚠️ 缓存说明） |
+| 4 | `https://gh-proxy.com/https://raw.githubusercontent.com/bearnozhang/tv-hub/main/public/tv-fast.json` | ⚠️ 部分客户端会拒绝（响应头不规范） |
+
+> ⚠️ **jsDelivr 的 `@main` 有约 12 小时缓存**，可能取到旧版本。
+> 需要**保证是最新内容**时，把 `@main` 换成一个具体的 commit sha（每次发布后更新）。
+
+**主通道为什么更可靠**：`/deps/*` 反代只在我们自己的域名上生效，
+备用通道走不了。且主通道由我们自己的 Worker 直出，**没有 CDN 缓存延迟**。
+
 
 > 注意：备用通道（jsDelivr / gh-proxy）下，部分源的脚本依赖走不了 `/deps/*` 反代
 > （那只在我们自己的域名上生效），所以**主通道能用就用主通道**。

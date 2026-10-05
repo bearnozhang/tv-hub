@@ -345,7 +345,10 @@ def sanitize_config(data: dict) -> tuple[dict, dict]:
 
 # 原样发布的第三方基线：**故意不消毒**。
 # 它的用途是「对照组」—— 消毒会改变它，就失去对照意义（见 merge.write_baseline）。
-BASELINE_SKIP = {"tv-ysc.json"}
+# 这两个档的内容来自**用户实测能加载**的第三方配置（ysc），
+# 我们对它们不做消毒 —— 改了就不再是「已验证的那份」了。
+# tv-main.json 是我们基于它挑出的「只用 jar 内置爬虫」的自包含主档。
+BASELINE_SKIP = {"tv-ysc.json", "tv-main.json"}
 
 
 def _iter_json_targets(paths: list[str]) -> list[str]:

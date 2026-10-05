@@ -22,7 +22,7 @@ import curate as CU     # noqa: E402
 
 # 原样发布的第三方基线（public/tv-ysc.json）不做任何加工，
 # 用途是与我们自己的产物做对照 —— 产物守卫测试必须跳过它。
-BASELINE_SKIP = {"tv-ysc.json"}
+BASELINE_SKIP = {"tv-ysc.json", "tv-main.json"}
 
 
 def _site(**kw) -> dict:

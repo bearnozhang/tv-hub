@@ -643,6 +643,87 @@ def write_lite_tiers(sites: list[dict], parses: list[dict], flags: list,
 TIER_FAST_MAX = 240
 
 
+def _jar_classes(jar_path: str) -> set:
+    """读出 jar 内 dex 里所有 `com/github/catvod/spider/*` 的顶层类名。"""
+    import re as _re
+    import zipfile
+    if not os.path.exists(jar_path):
+        return set()
+    try:
+        with zipfile.ZipFile(jar_path) as z:
+            names = set()
+            for entry in z.namelist():
+                if not entry.endswith(".dex"):
+                    continue
+                data = z.read(entry)
+                for m in _re.findall(rb"com/github/catvod/spider/([A-Za-z0-9_$]+)", data):
+                    names.add(m.decode().split("$")[0])
+            return names
+    except Exception:
+        return set()
+
+
+def write_main_tier(spider: str) -> list[str]:
+    """★ 自包含主档（`/tv`）—— 只用「爬虫代码就在 jar 里」的源。
+
+    ## 为什么（用户实测 + 源码核实，2026-10-05）
+    用户在国内加载 `/fast`（240 个第三方 http 采集接口）→ **一直转圈**。
+    真因不是配置加载失败，而是客户端要**逐个去第三方站取数据**，
+    这些采集站（`19q.cc` / `xjzyapi.com` / …）国内多数不通 → 客户端一直等。
+
+    对照：用户实测**能开**的 ysc 配置里，150/167 的源是 `csp_XXX` ——
+    爬虫类**就在 jar 内**，本机执行、**不访问任何第三方服务器** → 秒回。
+
+    ## 做法
+    从 ysc 的源里挑出同时满足三条的：
+      1. api 形如 `csp_Xxx`
+      2. `Xxx` 这个类**在我们自己的 spider.jar 里**
+      3. **没有自己的 jar 字段**（否则又要去下载别人的 jar）
+    再配上我们自己的 spider → 整份配置**只依赖一个 jar**。
+
+    这类源不取外部数据、不依赖任何第三方服务器的死活 ——
+    这才是「地址不用一直换」的真正含义：**依赖越少，越不会失效**。
+    """
+    classes = _jar_classes(os.path.join(C.PUBLIC_DIR, "spider.jar"))
+    ysc_path = os.path.join(C.CACHE_DIR, "ysc_single_agg.json")
+    if not classes or not os.path.exists(ysc_path):
+        return []
+    try:
+        with open(ysc_path, encoding="utf-8-sig") as f:
+            y = json.load(f)
+    except Exception:
+        return []
+
+    sites: list[dict] = []
+    for s in (y.get("sites") or []):
+        if not isinstance(s, dict):
+            continue
+        api = str(s.get("api") or "")
+        if not api.startswith("csp_"):
+            continue
+        if api[4:] not in classes:      # 类不在我们 jar 里 → 用不了
+            continue
+        if s.get("jar"):                # 要额外下别人的 jar → 排除
+            continue
+        item = dict(s)
+        item.pop("jar", None)
+        sites.append(item)
+
+    if not sites:
+        return []
+
+    # 顶层结构照抄 ysc（它已被用户实测证明可加载），只替换 sites / spider，
+    # 并丢掉 lives（ysc 的 lives 是它仓库内的相对路径文件，我们域名下不存在）。
+    out = {k: v for k, v in y.items() if k not in ("sites", "lives", "spider")}
+    out["spider"] = spider
+    out["sites"] = sites
+    written = []
+    name = "tv-main.json"
+    write_cfg(os.path.join(C.PUBLIC_DIR, name), out)
+    written.append(name)
+    return written
+
+
 def write_fast_tier(sites: list[dict], parses: list[dict], flags: list,
                     spider: str, scalars: dict) -> list[str]:
     """产出「高速精选」档 tv-fast.json（订阅别名 /fast）。
@@ -1214,6 +1295,8 @@ def merge(build: bool = False) -> dict:
     # 单仓级配置文件：让订阅清单里的每个条目都能直接打开
     written_profiles = write_profiles(cfg, per_source) if build else []
     tiers_written = write_lite_tiers(tv_sites, parses, flags, spider, scalars) if build else []
+    # ★ 自包含主档（/tv）：只用 jar 内置爬虫源，不依赖任何第三方服务器
+    main_written = write_main_tier(spider) if build else []
     fast_written = write_fast_tier(tv_sites, parses, flags, spider, scalars) if build else []
     # 相对路径源专用档（FongMi 系客户端用；见 write_deps_tier 说明）
     deps_written = write_deps_tier(relpath_kept, parses, flags, spider, scalars) \
