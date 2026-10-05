@@ -1287,87 +1287,52 @@
       "group": "其他"
     },
     {
-      "name": "火星影视(聚)",
-      "key": "line_189",
+      "key": "catvod_月光影视",
+      "name": "💥月光影视💥",
+      "type": 3,
+      "api": "http://192.129.140.23:5757/cat/%E6%9C%88%E5%85%89%E5%BD%B1%E8%A7%86.js?pwd=dzyyds",
+      "searchable": 1,
+      "filterable": 1,
+      "quickSearch": 1,
+      "title": "月光影视",
+      "lang": "cat",
+      "group": "其他"
+    },
+    {
+      "key": "155zy.com",
+      "name": "♥155(直连)",
       "type": 1,
-      "api": "http://47.102.85.40/api.php/provide/vod/",
-      "reference": "https://github.mxw.qzz.io/https://raw.githubusercontent.com/hello2z/TVbox-API/main/%E5%B7%A7%E8%AE%B0.json",
-      "discovery_decoded_works": 0,
+      "api": "https://155api.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "filterable": 1,
       "group": "综合-采集站"
     },
     {
-      "key": "腾讯幕",
-      "name": "企鹅｜X",
-      "type": 3,
-      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
-      "ext": "./deps/hajimi/kstore/js/%E8%85%BE%E8%AE%AF%E8%A7%86%E9%A2%91.js",
-      "group": "其他"
-    },
-    {
-      "key": "芒果幕",
-      "name": "芒果｜X",
-      "type": 3,
-      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
-      "ext": "./deps/hajimi/kstore/js/%E8%8A%92%E6%9E%9C%E8%A7%86%E9%A2%91.js",
-      "group": "其他"
-    },
-    {
-      "key": "qiqi",
-      "name": "晚霞|自定",
-      "type": 3,
-      "api": "http://64.90.4.187:25252/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/drpy2.min.js",
-      "ext": "./deps/xiaohuban/hb/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/%E5%A5%87%E5%A5%87.js",
-      "group": "其他"
-    },
-    {
-      "key": "优酷幕",
-      "name": "优酷｜X",
-      "type": 3,
-      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
-      "ext": "./deps/hajimi/kstore/js/%E4%BC%98%E9%85%B7%E5%BC%B9%E5%B9%95.js",
-      "group": "其他"
-    },
-    {
-      "key": "tenteng",
-      "name": "落日|自定",
-      "type": 3,
-      "api": "http://64.90.4.187:25252/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/drpy2.min.js",
-      "ext": "./deps/xiaohuban/hb/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/%E8%85%BE%E8%85%BE.js",
-      "group": "其他"
-    },
-    {
-      "key": "mangmang",
-      "name": "朝阳|自定",
-      "type": 3,
-      "api": "http://64.90.4.187:25252/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/drpy2.min.js",
-      "ext": "./deps/xiaohuban/hb/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/%E8%8C%AB%E8%8C%AB.js",
-      "group": "其他"
-    },
-    {
-      "key": "爱奇艺幕",
-      "name": "爱奇艺｜X",
-      "type": 3,
-      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
-      "ext": "./deps/hajimi/kstore/js/%E7%88%B1%E5%A5%87%E8%89%BA.js",
-      "group": "其他"
-    },
-    {
-      "key": "youyou",
-      "name": "日出|自定",
-      "type": 3,
-      "api": "http://64.90.4.187:25252/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/drpy2.min.js",
-      "ext": "./deps/xiaohuban/hb/%E4%BB%85%E4%BE%9B%E6%B5%8B%E8%AF%95/lib/%E4%BC%98%E4%BC%98.js",
-      "group": "其他"
-    },
-    {
-      "key": "2558901012882844714",
-      "name": "home.jundie.top:81 [快]",
-      "type": 3,
-      "api": "http://home.jundie.top:81/top98.json",
+      "key": "a红牛资源",
+      "name": "🐂红牛┃采集",
+      "type": 1,
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
       "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "group": "其他"
+      "changeable": 1,
+      "categories": [
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片",
+        "国产剧",
+        "港澳剧",
+        "日剧",
+        "欧美剧",
+        "台湾剧",
+        "泰剧",
+        "韩剧",
+        "纪录片",
+        "动漫电影"
+      ],
+      "group": "综合-采集站"
     },
     {
       "name": "雨哥哥影视(聚)",
@@ -1379,12 +1344,48 @@
       "group": "综合-采集站"
     },
     {
-      "key": "春盈",
-      "name": "TV直播2",
+      "key": "155资源站",
+      "name": "155 | 采集",
+      "type": 1,
+      "api": "https://155api.com/api.php/provide/vod/",
+      "quickSearch": 1,
+      "searchable": 1,
+      "changeable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "name": "ckzyCK资源",
+      "key": "11CK2",
+      "type": 1,
+      "api": "https://ckzy.me/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "CK采集网",
+      "name": "😰CK采集网",
+      "type": 1,
+      "api": "https://ckzy.me/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "色猫",
+      "name": "色猫 | 采集",
+      "type": 1,
+      "api": "https://caiji.semaozy.net/inc/apijson_vod.php",
+      "group": "综合-采集站"
+    },
+    {
+      "key": "drpy_js_omofun动漫",
+      "name": "动漫 | omofun动漫[js]",
       "type": 3,
-      "api": "http://rihou.cc:555/sdtv.js",
-      "ext": "./deps/auto/205-70s/517sdtv.txt",
-      "jar": "./deps/auto/205-70s/sdtv.jar",
+      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
+      "ext": "./deps/auto/26-211s/dr/js/omofun%E5%8A%A8%E6%BC%AB.js",
       "group": "其他"
     },
     {
@@ -1438,12 +1439,10 @@
       "key": "4K电影网",
       "name": "💝分享电影",
       "type": 3,
-      "api": "https://15487.kstore.space/4K%E7%94%B5%E5%BD%B1%E7%BD%91.py",
+      "api": "https://12586.kstore.space/123.txt",
       "searchable": 1,
-      "changeable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "playerType": 2,
       "group": "其他"
     },
     {
@@ -1608,18 +1607,6 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "categories": [
-        "短剧",
-        "国产剧",
-        "动作片",
-        "喜剧片",
-        "科幻片",
-        "爱情片",
-        "纪录片",
-        "动画片",
-        "欧美剧",
-        "香港剧"
-      ],
       "group": "综合-采集站"
     },
     {
@@ -1685,11 +1672,52 @@
       "key": "5123923903775170124",
       "name": "www.yingm.cc [快]",
       "type": 3,
-      "api": "https://www.yingm.cc/dm/dm.json",
+      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py5/getapp.py",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
+      "ext": "{\"host\":\"https://app.omofun1.top\"}",
       "group": "其他"
+    },
+    {
+      "key": "腾讯幕",
+      "name": "企鹅｜X",
+      "type": 3,
+      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
+      "ext": "./deps/hajimi/kstore/js/%E8%85%BE%E8%AE%AF%E8%A7%86%E9%A2%91.js",
+      "group": "其他"
+    },
+    {
+      "api": "http://by.bfzyapi.com/api.php/provide/vod/",
+      "key": "16952cefcaeeda11b0bae2529a576e12",
+      "name": "11-暴风",
+      "type": 1,
+      "group": "综合-采集站",
+      "searchable": 1
+    },
+    {
+      "key": "pool_32",
+      "name": "神马云",
+      "type": 1,
+      "api": "https://api.1080zyku.com/inc/apijson.php/",
+      "reference": "https://github.mxw.qzz.io/https://raw.githubusercontent.com/666zmy/moontv-v0/main/config.json",
+      "discovery_decoded_works": 0,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "最大采集",
+      "name": "最大｜采集",
+      "type": 1,
+      "api": "https://zuida.xyz/api.php/provide/vod/",
+      "quickSearch": 1,
+      "searchable": 1,
+      "changeable": 1,
+      "categories": [
+        "国产动漫",
+        "日韩动漫",
+        "国产剧"
+      ],
+      "group": "综合-采集站"
     },
     {
       "key": "drpy_js_有声小说吧",
@@ -1878,12 +1906,81 @@
       "group": "其他"
     },
     {
-      "key": "豆瓣(js)",
-      "name": "💥豆瓣",
+      "key": "优酷幕",
+      "name": "优酷｜X",
       "type": 3,
-      "api": "https://www.agit.ai/fantaiying/dr_py/raw/branch/main/libs/drpy2.min.js",
+      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
+      "ext": "./deps/hajimi/kstore/js/%E4%BC%98%E9%85%B7%E5%BC%B9%E5%B9%95.js",
+      "group": "其他"
+    },
+    {
+      "key": "ikunzy",
+      "name": "🐓┃爱坤┃资源",
+      "type": 1,
+      "api": "https://ikunzyapi.com/api.php/provide/vod ",
       "searchable": 1,
-      "ext": "https://www.agit.ai/fantaiying/dr_py/raw/branch/main/js/drpy.js",
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
+      "key": "草莓影视.py",
+      "name": "💥草莓影视💥",
+      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/%E8%8D%89%E8%8E%93%E5%BD%B1%E8%A7%86.py",
+      "filterable": 1,
+      "quickSearch": 1,
+      "searchable": 1,
+      "type": 3,
+      "group": "其他"
+    },
+    {
+      "key": "爱奇艺幕",
+      "name": "爱奇艺｜X",
+      "type": 3,
+      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
+      "ext": "./deps/hajimi/kstore/js/%E7%88%B1%E5%A5%87%E8%89%BA.js",
+      "group": "其他"
+    },
+    {
+      "key": "hnzy",
+      "name": "🎥┃红牛┃资源",
+      "type": 1,
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
+    },
+    {
+      "key": "4K电影网",
+      "name": "💝分享电影",
+      "type": 3,
+      "api": "https://15487.kstore.space/4K%E7%94%B5%E5%BD%B1%E7%BD%91.py",
+      "searchable": 1,
+      "changeable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "playerType": 2,
       "group": "其他"
     },
     {
@@ -1897,273 +1994,22 @@
       "group": "其他"
     },
     {
-      "key": "51duanju.py",
-      "name": "💥51duanju💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/51duanju.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
+      "key": "搜索┃豆瓣js",
+      "name": "♻️豆瓣┃公众号:业余打发。",
       "type": 3,
-      "group": "短剧"
-    },
-    {
-      "key": "zmingcx_v12",
-      "name": "🦜知更鸟V12(脚本截取)",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/qist/tvbox/refs/heads/master/lib/drpy2.min.js",
-      "changeable": 0,
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "ext": "./deps/auto/234-8s/zmingcx_v12.js",
+      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
+      "ext": "./deps/feishu-sync/yydfys/yydf/-/raw/main/yydf/lib/douban.js",
       "group": "其他"
     },
     {
-      "key": "人人电影.js",
-      "name": "💥人人电影💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/js/drpy2.min_2.js",
-      "changeable": 0,
-      "ext": "./deps/auto/1-698s/heads/main/yingshi/js/%E4%BA%BA%E4%BA%BA%E7%94%B5%E5%BD%B1.js",
-      "group": "其他"
-    },
-    {
-      "key": "stripchat直播.py",
-      "name": "💥stripchat直播💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/stripchat%E7%9B%B4%E6%92%AD.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "我的哔哩[官].js",
-      "name": "💥我的哔哩[官]💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/js/drpy2.min.js",
-      "changeable": 0,
-      "ext": "./deps/auto/1-698s/heads/main/yingshi/js2/%E6%88%91%E7%9A%84%E5%93%94%E5%93%A9[%E5%AE%98].js",
-      "group": "其他"
-    },
-    {
-      "key": "电影天堂(1).py",
-      "name": "💥电影天堂💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/%E7%94%B5%E5%BD%B1%E5%A4%A9%E5%A0%82(1).py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "tcniao_v14",
-      "name": "🦜TC鸟V14(纯数字收藏)",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/qist/tvbox/refs/heads/master/lib/drpy2.min.js",
-      "changeable": 0,
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "ext": "./deps/auto/234-8s/tcniao_v14.js",
-      "group": "其他"
-    },
-    {
-      "key": "爱动漫.js",
-      "name": "💥爱动漫💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/js/drpy2.min.js",
-      "changeable": 0,
-      "ext": "./deps/auto/1-698s/heads/main/yingshi/js/%E7%88%B1%E5%8A%A8%E6%BC%AB.js",
-      "group": "其他"
-    },
-    {
-      "key": "两个BT(js)",
-      "name": "💥两个BT",
-      "type": 3,
-      "api": "https://www.agit.ai/fantaiying/dr_py/raw/branch/main/libs/drpy2.min.js",
-      "searchable": 1,
-      "ext": "https://www.agit.ai/fantaiying/dr_py/raw/branch/main/js/%E4%B8%A4%E4%B8%AABT.js",
-      "group": "其他"
-    },
-    {
-      "key": "裤佬兄弟PY",
-      "name": "☁云霄丨兄弟丨PY",
-      "api": "https://mpimg.cn/down.php/b1cdcf76574a0cb24d5b937d46458cdf.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "厂长(js)",
-      "name": "💥厂长",
-      "type": 3,
-      "api": "https://www.agit.ai/fantaiying/dr_py/raw/branch/main/libs/drpy2.min.js",
-      "searchable": 1,
-      "ext": "https://www.agit.ai/fantaiying/dr_py/raw/branch/main/js/%E5%8E%82%E9%95%BF%E8%B5%84%E6%BA%90.js",
-      "group": "其他"
-    },
-    {
-      "key": "优",
-      "name": "💥优优影视💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py3/%E4%BC%98.py",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 60,
-      "group": "其他"
-    },
-    {
-      "key": "采集合集.py",
-      "name": "💥采集合集💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py3/%E9%87%87%E9%9B%86%E5%90%88%E9%9B%861.py",
-      "searchable": 1,
-      "quickSearch": 0,
-      "filterable": 0,
-      "changeable": 0,
-      "group": "其他"
-    },
-    {
-      "key": "果果视频",
-      "name": "🎇｜果果｜解析",
-      "type": 3,
-      "api": "https://chigua.eu.org/js/online/drpy2.min.js",
-      "ext": "./deps/dongli/chigua/js/online/mg.js",
-      "group": "短剧"
-    },
-    {
-      "key": "看剧AI.py",
-      "name": "💥看剧AI💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/%E7%9C%8B%E5%89%A7AI.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "DJ音乐[听]",
-      "name": "💥DJ音乐💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/js/drpy2.min.js",
-      "changeable": 0,
-      "ext": "./deps/auto/1-698s/heads/main/yingshi/js/DJ%E9%9F%B3%E4%B9%90[%E5%90%AC].js",
-      "group": "其他"
-    },
-    {
-      "key": "ms影视.py",
-      "name": "💥ms影视💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/ms.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "truvaze_client.py",
-      "name": "💥truvaze_client💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py8/truvaze.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "贝乐虎[儿].js",
-      "name": "💥贝乐虎💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/js/drpy2.min.js",
-      "changeable": 0,
-      "ext": "./deps/auto/1-698s/heads/main/yingshi/js7/%E8%B4%9D%E4%B9%90%E8%99%8E[%E5%84%BF].js",
-      "group": "其他"
-    },
-    {
-      "key": "nivod",
-      "name": "(js)泥视频┃墙👑",
-      "api": "https://androidcatvodspider.pages.dev/json/js/nivod.js",
-      "timeout": 30,
-      "playerType": 0,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "腾讯备",
-      "name": "🦐腾讯",
-      "type": 3,
-      "api": "https://gh-proxy.com/https://raw.githubusercontent.com/IY-CPU/IY/main/lib/drpy2.min.js",
-      "ext": "https://fastlink.cokey.xyz/f/1MOEc5/%E8%85%BE%E8%85%BE.js",
-      "group": "其他"
-    },
-    {
-      "key": "freeokok_spider.py",
-      "name": "💥freeokok💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/freeokok_spider.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "star",
-      "name": "(js)星视界┃墙☄️",
-      "api": "https://androidcatvodspider.pages.dev/json/js/star.js",
-      "timeout": 30,
-      "playerType": 0,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "tcniao_v26",
-      "name": "🦜TC鸟V26(最新)",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/qist/tvbox/refs/heads/master/lib/drpy2.min.js",
-      "changeable": 0,
-      "style": {
-        "type": "rect",
-        "ratio": 1.597
-      },
-      "ext": "./deps/auto/234-8s/tcniao_v26.js",
-      "group": "其他"
-    },
-    {
-      "key": "电影港.js",
-      "name": "💥电影港💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/js/drpy2.min_2.js",
-      "changeable": 0,
-      "ext": "./deps/auto/1-698s/heads/main/yingshi/js/%E7%94%B5%E5%BD%B1%E6%B8%AF.js",
-      "group": "其他"
-    },
-    {
-      "key": "油管直播.py",
-      "name": "💥油管直播💥",
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py9/%E6%B2%B9%E7%AE%A1%E7%9B%B4%E6%92%AD.py",
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "type": 3,
-      "group": "其他"
-    },
-    {
-      "key": "py_猎豹_APP",
-      "name": "💥猎豹11💥",
-      "type": 3,
-      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py5/getapp.py",
+      "key": "src_0",
+      "name": "非凡资源",
+      "type": 1,
+      "api": "http://api.ffzyapi.com/api.php/provide/vod",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "{\"host\":\"https://444421.xyz\"}",
-      "group": "其他"
+      "group": "综合-采集站"
     },
     {
       "key": "py_蓝鹰_APP",
