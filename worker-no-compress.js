@@ -27,8 +27,10 @@ const ALIAS = {
   "/api": "/tv-main.json",
   "/config": "/tv-main.json",
   "/tvbox": "/tv-main.json",
+  // 直播：本轮已换成**实测筛过**的频道列表（原 4500 行野鸡 IP 源只剩 18% 可达）
   "/live": "/live.txt",
   "/livetxt": "/live.txt",
+  // 注：/live-full.txt 是直播档（JSON），不是 txt 频道表，别当直播地址填
   // 全量档：1300+ 站（含大量第三方采集接口）。网络好、要最大覆盖面时用。
   "/full": "/tv.json",
   "/tv.json": "/tv.json",

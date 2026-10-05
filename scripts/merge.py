@@ -723,6 +723,24 @@ def write_main_tier(spider: str) -> list[str]:
     out = {k: v for k, v in y.items() if k not in ("sites", "lives", "spider")}
     out["spider"] = spider
     out["sites"] = sites
+
+    # ★ 直播源（2026-10-05 重做）
+    #   之前给的 live.txt 是 4500 行「网友自建 IP 代理」，实测只有 18% 能连
+    #   —— 这就是用户说的「乱七八糟」。
+    #   改为两条腿：
+    #     ① lives 里放**第三方持续维护的聚合源**（客户端在直播页可切换）
+    #        只留实测可达的：咪咕直播、FMM
+    #     ② 另出 /live（= public/live.txt）本轮已换成**实测筛选后的频道列表**
+    #   epg / logo 沿用社区通用的 112114，客户端认识这两个占位符。
+    out["lives"] = [
+        {"name": "咪咕直播", "type": 0, "playerType": 2,
+         "url": "https://ghfast.top/https://raw.githubusercontent.com/"
+                "develop202/migu_video/refs/heads/main/interface.txt",
+         "ua": "bingcha/1.1 (mianfeifenxiang) "},
+        {"name": "FMM", "type": 0,
+         "url": "https://m3u.ibert.me/txt/fmml_ipv6.txt",
+         "epg": "https://epg.112114.xyz/?ch={name}&date={date}"},
+    ]
     written = []
     name = "tv-main.json"
     path = os.path.join(C.PUBLIC_DIR, name)

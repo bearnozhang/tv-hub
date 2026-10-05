@@ -271,6 +271,29 @@ def main() -> int:
         C.log(f"  {f:20s} {os.path.getsize(p):>10,d} B  {digest[:16]}")
 
     C.log("\n--- 产物校验 ---")
+    # ★ 直播源实测筛选（2026-10-05 重做）
+    #   上游 live.txt 是 4500 行「网友自建 IP 代理」，实测只有 18% 可达 ——
+    #   这正是用户说的「乱七八糟」。这里做一次实测，只留「至少有一个源能连」
+    #   的频道，每频道最多 3 个已验证 URL（按实测延迟排序）。
+    #   全量原样另存 live-full.txt，供排查或网络更好的场景使用。
+    # 注意：`public/live-full.txt` 是 merge.write_live_tiers 的产物（直播档 JSON），
+    #      不要占用这个名字。上游原始全量 txt 只放 cache（不发布）。
+    cur = os.path.join(C.PUBLIC_DIR, "live.txt")
+    raw = os.path.join(C.CACHE_DIR, "live-raw.txt")
+    if os.path.exists(cur) and os.path.getsize(cur) > 2000:
+        import shutil as _sh
+        _sh.copyfile(cur, raw)          # write_live_tiers 刚写出的「未筛选全量」
+    if os.path.exists(raw) and os.path.getsize(raw) > 2000:
+        import subprocess as _sp
+        import sys as _sys
+        _sp.call([_sys.executable,
+                  os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               "probe_live.py"),
+                  "--in", raw,
+                  "--report", os.path.join(C.CACHE_DIR, "live-probe.json"),
+                  "--write-public", cur,
+                  "--workers", "32", "--timeout", "6"])
+
     vr = V.scope_output()
     if not vr["_summary"]["ok"]:
         C.log("[build][FATAL] 产物校验不通过")
