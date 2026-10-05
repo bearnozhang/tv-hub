@@ -1,10 +1,10 @@
 {
-  "at": "2026-10-05T07:19:06Z",
-  "at_bj": "2026-10-05 15:19:06",
+  "at": "2026-10-05T07:21:06Z",
+  "at_bj": "2026-10-05 15:21:06",
   "stats": {
     "in": 1741,
-    "kept": 1657,
-    "dropped": 84,
+    "kept": 1653,
+    "dropped": 88,
     "by_category": {
       "direct": 606,
       "js": 1055,
@@ -17,56 +17,80 @@
     "drop_reasons": {
       "pan": 54,
       "magnet": 23,
-      "quarantine": 4,
+      "quarantine": 8,
       "broken": 3
     },
     "policy_version": "1.0.0",
     "probe": {
       "probed": 1589,
-      "ok": 855,
-      "paid": 4,
-      "fail": 730,
+      "ok": 878,
+      "paid": 8,
+      "fail": 703,
       "skipped_budget": 0,
-      "elapsed_s": 90.6
+      "elapsed_s": 71.6
     }
   },
   "probe": {
     "probed": 1589,
-    "ok": 855,
-    "paid": 4,
-    "fail": 730,
+    "ok": 878,
+    "paid": 8,
+    "fail": 703,
     "skipped_budget": 0,
-    "elapsed_s": 90.6
+    "elapsed_s": 71.6
   },
   "health": {
-    "rounds": 2,
+    "rounds": 3,
     "entries": 1788,
-    "quarantined": 4
+    "quarantined": 8
   },
   "quarantined": [
+    {
+      "key": "ffc08730-71ad-56b8-a153-e2e563e6d64c",
+      "api_host": "Naixxzy.com",
+      "reason": "探测判定付费：响应含「收费」",
+      "fails_streak": 3
+    },
+    {
+      "key": "奶香香资源站采集接口",
+      "api_host": "Naixxzy.com",
+      "reason": "探测判定付费：响应含「收费」",
+      "fails_streak": 3
+    },
+    {
+      "key": "奶香香",
+      "api_host": "naixxzy.com",
+      "reason": "探测判定付费：响应含「收费」",
+      "fails_streak": 3
+    },
+    {
+      "key": "奶香",
+      "api_host": "naixxzy.com",
+      "reason": "探测判定付费：响应含「收费」",
+      "fails_streak": 3
+    },
     {
       "key": "5265207397011986833",
       "api_host": "gh.halonice.com",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 2
+      "fails_streak": 3
     },
     {
       "key": "3743094571226914065",
       "api_host": "liu673cn.github.io",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 2
+      "fails_streak": 3
     },
     {
       "key": "2740222323333891006",
       "api_host": "raw.liucn.cc",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 2
+      "fails_streak": 3
     },
     {
       "key": "密云视频.py",
       "api_host": "gh-proxy.org",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 2
+      "fails_streak": 3
     }
   ],
   "dropped": [
@@ -81,6 +105,30 @@
       "name": "🧲┃荐片┃磁力",
       "category": "magnet",
       "reason": "磁力特征 /(?:^|[/.])jianpian/"
+    },
+    {
+      "key": "ffc08730-71ad-56b8-a153-e2e563e6d64c",
+      "name": "奶香",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「收费」"
+    },
+    {
+      "key": "奶香香资源站采集接口",
+      "name": "奶香香资源站采集接口",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「收费」"
+    },
+    {
+      "key": "奶香香",
+      "name": "奶香 | 采集",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「收费」"
+    },
+    {
+      "key": "奶香",
+      "name": "🚀奶香",
+      "category": "quarantine",
+      "reason": "探测判定付费：响应含「收费」"
     },
     {
       "key": "cat_荐片app",
