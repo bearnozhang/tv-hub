@@ -1,10 +1,10 @@
 {
-  "spider": "https://tv.bearno1.dpdns.org/spider.jar",
+  "spider": "./spider.jar",
   "lives": [
     {
       "name": "直播",
       "type": 0,
-      "url": "https://tv.bearno1.dpdns.org/live.txt",
+      "url": "./live.txt",
       "epg": ""
     }
   ],

@@ -765,8 +765,7 @@ def write_min_tiers(sites: list[dict]) -> list[str]:
     written = []
     for name, obj in (
         ("tv-m1.json", {"sites": base}),
-        ("tv-m2.json", {"spider": base_url().rstrip("/") + "/spider-min.jar",
-                        "sites": base}),
+        ("tv-m2.json", {"spider": "./spider-min.jar", "sites": base}),
     ):
         write_cfg(os.path.join(C.PUBLIC_DIR, name), C.scrub_urls(obj))
         written.append(name)
@@ -911,7 +910,7 @@ def write_profiles(cfg: dict, per_source_sites: dict) -> list[str]:
                          and str(x.get("url") or "").startswith(("http://", "https://"))]
         if isinstance(out.get("lives"), list):
             out["lives"] = [{"name": x["name"], "type": 0,
-                             "url": base_url().rstrip("/") + "/live.txt", "epg": ""}
+                             "url": "./live.txt", "epg": ""}
                             for x in keep_alive_lives(out["lives"]) if x.get("name")]
 
         # 直播引用壳（sites=0）落盘后是「空配置」，客户端会直接报解析失败，
@@ -1051,12 +1050,20 @@ def merge(build: bool = False) -> dict:
     #   同源相对路径加载 jar；跨域绝对地址会被判为「解析配置失败」。
     #   jar 已随 public/spider.jar 一同发布。
     if spider:
-        # ★ 用**绝对地址**（2026-10-05 修正）
-        #   此前写 `./spider.jar`（相对路径）。实测对照：用户验证过能加载的
-        #   ysc 配置，spider 是**绝对 https 地址**（伪装成 .png 的 jar）。
-        #   相对路径只有部分 FongMi 系内核认；**主流 TVBox 官方版要求绝对 URL**
-        #   —— 而 spider 在顶层，一旦解析不了就是整份「解析配置失败」。
-        spider = base_url().rstrip("/") + "/spider.jar"
+        # ★ 改回**同源相对路径**（2026-10-05 二次修正）。
+        #
+        #   上一次改成绝对地址（指向 Cloudflare 域名），理由是想兼容
+        #   「不认相对路径的客户端」。这个理由**是错的**：
+        #   FongMi 的 `Decoder.fix()` 会主动把配置里的 `./` 替换成
+        #   `UrlUtil.resolve(配置URL, "./")` —— 相对路径一定会被解析成
+        #   绝对地址，不存在「客户端不认」的问题。
+        #
+        #   而绝对地址有一个致命缺点：**把资源钉死在单一通道上**。
+        #   用户在国内时 Cloudflare 时通时不通，即便换个通道加载了配置，
+        #   spider 仍会去请求 Cloudflare 而卡住。
+        #   相对路径则会跟随「配置是从哪个通道加载的」自动解析 ——
+        #   从 jsDelivr 加载就指向 jsDelivr，从 Cloudflare 加载就指向 Cloudflare。
+        spider = "./spider.jar"
 
     # ★ 落盘前统一递归清洗，随后剔除因清洗而变空的壳
     #   （否则会出现「type=1 却没api」「lives 既无 channels 也无 url」的空壳，
@@ -1073,9 +1080,9 @@ def merge(build: bool = False) -> dict:
     #   之前误用了 group/channels 结构（无 url），内核取不到 url 直接抛异常。
     tv_lives = [x for x in keep_alive_lives(lives + live_out)
                 if _is_tv_group(str(x.get("name") or "").strip())]
-    #   同理用绝对地址（相对路径在备用通道下还会指错地方）。
-    tv_lives = [{"name": "直播", "type": 0,
-                 "url": base_url().rstrip("/") + "/live.txt", "epg": ""}]
+    #   同理用同源相对路径：跟随「配置从哪个通道加载」自动解析，
+    #   避免把资源钉死在单一通道上（见上面 spider 的说明）。
+    tv_lives = [{"name": "直播", "type": 0, "url": "./live.txt", "epg": ""}]
 
     # ★ parses 必须有 url，否则 Parse.objectFrom 取不到地址会抛异常。
     tv_parses = [x for x in C.scrub_urls(parses)
