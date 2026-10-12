@@ -575,13 +575,16 @@
       ]
     },
     {
-      "key": "gszy",
-      "name": "🎥┃光速┃资源",
+      "key": "lzzy",
+      "name": "🎥┃量子┃资源",
       "type": 1,
-      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
       "searchable": 1,
       "filterable": 0,
       "categories": [
+        "国产动漫",
+        "日韩动漫",
+        "大陆剧",
         "欧美剧",
         "韩剧",
         "日剧",
@@ -595,10 +598,10 @@
       ]
     },
     {
-      "key": "hnzy",
-      "name": "🎥┃红牛┃资源",
+      "key": "gszy",
+      "name": "🎥┃光速┃资源",
       "type": 1,
-      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
       "searchable": 1,
       "filterable": 0,
       "categories": [
@@ -650,16 +653,13 @@
       ]
     },
     {
-      "key": "lzzy",
-      "name": "🎥┃量子┃资源",
+      "key": "hnzy",
+      "name": "🎥┃红牛┃资源",
       "type": 1,
-      "api": "https://cj.lziapi.com/api.php/provide/vod/",
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
       "searchable": 1,
       "filterable": 0,
       "categories": [
-        "国产动漫",
-        "日韩动漫",
-        "大陆剧",
         "欧美剧",
         "韩剧",
         "日剧",
