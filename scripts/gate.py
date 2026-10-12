@@ -108,6 +108,9 @@ def collect(public_dir: str = None) -> dict:
                 text = f.read()
             lines = text.splitlines()
             m["live_groups"] = sum(1 for line in lines if "#genre#" in line)
+            # 口径标记：2026-10-05 起 live.txt 是 probe_live 实测筛选后的结果，
+            # 与此前「上游全量 4500 行」不可比，必须带口径一起存基线。
+            m["live_metric"] = "live.txt-probed"
             m["live_channels"] = sum(1 for line in lines
                                       if line and "#genre#" not in line and "," in line)
             m["live_group_names"] = [
@@ -161,6 +164,11 @@ def evaluate(metrics: dict, baseline: dict | None,
                     f"跌幅超过 {(1-ratio)*100:.0f}%）")
 
         base_ch = int(baseline.get("live_channels") or 0)
+        if base_ch and baseline.get("live_metric") != metrics.get("live_metric"):
+            soft.append(
+                f"直播基线口径不同（{baseline.get('live_metric') or '旧全量'} → "
+                f"{metrics.get('live_metric')}），本轮跳过频道骤降比较并重置基线")
+            base_ch = 0
         if base_ch:
             cur = int(metrics.get("live_channels") or 0)
             if cur < base_ch * ratio:
@@ -211,6 +219,7 @@ def save_baseline(metrics: dict) -> None:
         "parses": metrics.get("parses"),
         "live_channels": metrics.get("live_channels"),
         "live_groups": metrics.get("live_groups"),
+        "live_metric": metrics.get("live_metric"),
         "artifacts": metrics.get("artifacts"),
     }
     tmp = GATE_FILE + ".tmp"
