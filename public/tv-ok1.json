@@ -18,14 +18,6 @@
       "group": "综合-采集站"
     },
     {
-      "key": "drpy_js_omofun动漫",
-      "name": "动漫 | omofun动漫[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/omofun%E5%8A%A8%E6%BC%AB.js",
-      "group": "其他"
-    },
-    {
       "key": "dbokutv_key",
       "name": "🐼｜独播库",
       "type": 3,
@@ -38,22 +30,43 @@
       "group": "其他"
     },
     {
-      "key": "drpy_js_中华听书网",
-      "name": "听书 | 中华听书网[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E4%B8%AD%E5%8D%8E%E5%90%AC%E4%B9%A6%E7%BD%91.js",
-      "playerType": 2,
-      "group": "其他"
-    },
-    {
-      "key": "a93050f8-e282-521d-9c92-cdbbf5add205",
-      "name": "色猫",
+      "name": "光速资源(切)",
       "type": 1,
-      "api": "https://caiji.semaozy.net/inc/apijson_vod.php",
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
+      "key": "cms_apiguangsuapicom",
+      "categories": [
+        "电影",
+        "电视剧",
+        "综艺",
+        "动漫",
+        "喜剧片",
+        "剧情片",
+        "大陆剧",
+        "欧美剧",
+        "港澳剧",
+        "韩剧",
+        "动漫电影",
+        "日剧",
+        "台湾剧",
+        "泰剧",
+        "体育赛事",
+        "短剧",
+        "预告片",
+        "足球",
+        "篮球",
+        "大陆综艺",
+        "日韩综艺",
+        "港台综艺",
+        "欧美综艺",
+        "中国动漫",
+        "日本动漫",
+        "欧美动漫",
+        "反转爽剧",
+        "AI漫剧"
+      ],
       "searchable": 1,
       "quickSearch": 1,
-      "filterable": 1,
+      "changeable": 1,
       "group": "综合-采集站"
     },
     {
@@ -62,14 +75,6 @@
       "type": 3,
       "api": "https://ghfast.top/https://raw.githubusercontent.com/GodLike631/Ly_live/refs/heads/main/datas/4k.py",
       "searchable": 1,
-      "group": "其他"
-    },
-    {
-      "key": "drpy_js_啊班[V2]",
-      "name": "影视 | 啊班[V2][js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E5%95%8A%E7%8F%AD[V2].js",
       "group": "其他"
     },
     {
@@ -83,14 +88,6 @@
       "group": "其他"
     },
     {
-      "key": "drpy_js_真不卡",
-      "name": "影视 | 真不卡[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E7%9C%9F%E4%B8%8D%E5%8D%A1.js",
-      "group": "其他"
-    },
-    {
       "key": "vv003",
       "name": "️👙主題👙",
       "type": 4,
@@ -98,14 +95,6 @@
       "searchable": 0,
       "quickSearch": 0,
       "filterable": 0,
-      "group": "其他"
-    },
-    {
-      "key": "drpy_js_云镜影视",
-      "name": "影视 | 云镜影视[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E4%BA%91%E9%95%9C%E5%BD%B1%E8%A7%86.js",
       "group": "其他"
     },
     {
@@ -120,14 +109,6 @@
       "name": "[367ms|直播] Acfun",
       "type": 3,
       "api": "https://fastlink.cokey.xyz/f/XB4Oik/Acfun.py",
-      "group": "其他"
-    },
-    {
-      "key": "drpy_js_人人",
-      "name": "影视 | 人人[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E4%BA%BA%E4%BA%BA.js",
       "group": "其他"
     },
     {
@@ -199,14 +180,6 @@
       "group": "其他"
     },
     {
-      "key": "drpy_js_UM电影",
-      "name": "影视 | UM电影[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/UM%E7%94%B5%E5%BD%B1.js",
-      "group": "其他"
-    },
-    {
       "key": "vv002",
       "name": "️👠番號👠",
       "type": 4,
@@ -217,14 +190,6 @@
       "group": "其他"
     },
     {
-      "key": "drpy_js_星空影视",
-      "name": "影视 | 星空影视[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E6%98%9F%E7%A9%BA%E5%BD%B1%E8%A7%86.js",
-      "group": "其他"
-    },
-    {
       "key": "应该可以",
       "name": "应该可以",
       "type": 3,
@@ -232,52 +197,19 @@
       "group": "其他"
     },
     {
-      "key": "drpy_js_酷影[V2]",
-      "name": "影视 | 酷影[V2][js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E9%85%B7%E5%BD%B1[V2].js",
-      "group": "其他"
+      "key": "7ced0073619101d397b5c86fc3578ed4",
+      "name": "[106ms|apple] 💥┃火狐2K┃有广",
+      "type": 1,
+      "api": "https://hhzyapi.com/api.php/provide/vod/",
+      "group": "综合-采集站"
     },
     {
-      "key": "drpy_js_如意[V2]",
-      "name": "影视 | 如意[V2][js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E5%A6%82%E6%84%8F[V2].js",
-      "group": "其他"
-    },
-    {
-      "key": "drpy_js_扛把子影院",
-      "name": "影视 | 扛把子影院[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E6%89%9B%E6%8A%8A%E5%AD%90%E5%BD%B1%E9%99%A2.js",
-      "group": "其他"
-    },
-    {
-      "key": "drpy_js_多米[V2]",
-      "name": "影视 | 多米[V2][js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E5%A4%9A%E7%B1%B3[V2].js",
-      "group": "其他"
-    },
-    {
-      "key": "drpy_js_豆巴影视",
-      "name": "影视 | 豆巴影视[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/%E8%B1%86%E5%B7%B4%E5%BD%B1%E8%A7%86.js",
-      "group": "其他"
-    },
-    {
-      "key": "drpy_js_MV263",
-      "name": "MV | 263[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/MV263.js",
-      "group": "其他"
+      "key": "155CMS",
+      "name": "👭155👭",
+      "type": 1,
+      "api": "https://155api.com/api.php/provide/vod/",
+      "changeable": 1,
+      "group": "综合-采集站"
     },
     {
       "key": "1080资源库",
@@ -307,20 +239,60 @@
       "group": "其他"
     },
     {
-      "key": "drpy_js_FreeOK",
-      "name": "影视 | FreeOK[js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/FreeOK.js",
-      "group": "其他"
+      "key": "奶香香",
+      "name": "奶香 | 采集",
+      "type": 1,
+      "api": "https://naixxzy.com/api.php/provide/vod/",
+      "quickSearch": 1,
+      "searchable": 1,
+      "changeable": 1,
+      "group": "综合-采集站"
     },
     {
-      "key": "drpy_js_HG影院[V2]",
-      "name": "影视 | HG影院[V2][js]",
-      "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/yw88075/tvbox/main/dr/lib/drpy2.min.js",
-      "ext": "./deps/auto/27-211s/dr/js/HG%E5%BD%B1%E9%99%A2[V2].js",
-      "group": "其他"
+      "key": "鸡坤",
+      "name": "鸡坤 | 采集",
+      "type": 1,
+      "api": "https://jkunzyapi.com/api.php/provide/vod/",
+      "quickSearch": 1,
+      "searchable": 0,
+      "changeable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "a红牛资源",
+      "name": "🐂红牛┃采集",
+      "type": 1,
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
+      "searchable": 1,
+      "changeable": 1,
+      "categories": [
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片",
+        "国产剧",
+        "港澳剧",
+        "日剧",
+        "欧美剧",
+        "台湾剧",
+        "泰剧",
+        "韩剧",
+        "纪录片",
+        "动漫电影"
+      ],
+      "group": "综合-采集站"
+    },
+    {
+      "searchable": 1,
+      "quickSearch": 1,
+      "api": "https://jkunzyapi.com/api.php/provide/vod/at/json",
+      "key": "鸡坤-2",
+      "type": 1,
+      "name": "[137ms|zy] 🍊鸡坤",
+      "group": "综合-采集站"
     },
     {
       "key": "csp_xml_优质",
@@ -371,6 +343,121 @@
       "api": "https://d.kstore.dev/download/4127/PY/%E5%88%86%E4%BA%AB%E5%8A%AA%E5%8A%AA.py",
       "playerType": 2,
       "filterable": 1,
+      "group": "其他"
+    },
+    {
+      "key": "EmbyJS",
+      "name": "[367ms|直播] Emby丨JS",
+      "type": 3,
+      "api": "https://17264.kstore.space/Emby.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "group": "其他"
+    },
+    {
+      "key": "tv_back-023_虎牙",
+      "name": "🐯虎牙采集·ok线路1",
+      "type": 1,
+      "api": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8",
+      "searchable": 1,
+      "quickSearch": 1,
+      "categories": [
+        "内地剧",
+        "动作片",
+        "科幻片",
+        "战争片",
+        "喜剧片",
+        "爱情片",
+        "恐怖片",
+        "犯罪片",
+        "剧情片",
+        "冒险片",
+        "记录片",
+        "韩剧",
+        "香港剧",
+        "台湾剧",
+        "欧美剧",
+        "日剧",
+        "马泰剧",
+        "体育赛事",
+        "综艺",
+        "动画片",
+        "中国动漫",
+        "日本动漫",
+        "欧美动漫"
+      ],
+      "group": "综合-采集站"
+    },
+    {
+      "key": "奶香",
+      "name": "🚀奶香",
+      "type": 1,
+      "api": "https://naixxzy.com/api.php/provide/vod/at/json",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "♻️少儿频道专区♻️",
+      "name": "🌏以下是“少儿频道”专区🌏",
+      "type": 3,
+      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/%E5%8D%8F%E8%AE%AE.js",
+      "group": "其他"
+    },
+    {
+      "key": "芒果幕",
+      "name": "芒果｜X",
+      "type": 3,
+      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
+      "ext": "./deps/hajimi/kstore/js/%E8%8A%92%E6%9E%9C%E8%A7%86%E9%A2%91.js",
+      "group": "其他"
+    },
+    {
+      "key": "6828170191126768707",
+      "name": "12586.kstore.space [快]",
+      "type": 3,
+      "api": "https://12586.kstore.space/123.txt",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "其他"
+    },
+    {
+      "searchable": 1,
+      "quickSearch": 1,
+      "api": "https://vnzyz.com/api.php/provide/vod",
+      "key": "越南",
+      "type": 1,
+      "name": "[137ms|zy] 🍊越南",
+      "group": "综合-采集站"
+    },
+    {
+      "key": "py_曼波_APP",
+      "name": "💥曼波💥",
+      "type": 3,
+      "api": "https://gh-proxy.org/https://raw.githubusercontent.com/wliqi495-create/jaychouqq/refs/heads/main/yingshi/py5/getapp.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "{\"host\":\"https://app.omofun1.top\"}",
+      "group": "其他"
+    },
+    {
+      "key": "腾讯幕",
+      "name": "企鹅｜X",
+      "type": 3,
+      "api": "http://nn.4688888.xyz/js/drpy2.min.js",
+      "ext": "./deps/hajimi/kstore/js/%E8%85%BE%E8%AE%AF%E8%A7%86%E9%A2%91.js",
+      "group": "其他"
+    },
+    {
+      "key": "MG-2",
+      "name": "[590ms|5] 芒果TV[追剧]",
+      "type": 3,
+      "api": "https://file.icve.com.cn/file_doc/249/899/3E7E0C8A023B624CEC6BDCC200F06F02.js",
+      "ext": "./deps/feishu-sync/file/images/bwc/20251023002108-a4795930ec.js",
       "group": "其他"
     }
   ]
