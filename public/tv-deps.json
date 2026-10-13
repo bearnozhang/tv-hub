@@ -941,36 +941,12 @@
       "group": "综合-本地JS"
     },
     {
-      "key": "js_爱上你听书网",
-      "name": "📚️┃听书┃爱尚",
-      "type": 3,
-      "api": "./deps/auto/63-140s/lib/drpy2.js",
-      "changeable": 0,
-      "style": {
-        "type": "rect",
-        "ratio": 1
-      },
-      "ext": "https://jihulab.com/iduoduo/xduo/-/raw/main/libs/aishang.js",
-      "group": "综合-本地JS"
-    },
-    {
       "key": "yyt",
       "name": "音悦台🎵MV",
       "type": 3,
       "api": "./deps/auto/22-270s/tvbox-master-doki/js/yinyuetai.js",
       "searchable": 0,
       "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "js_88看球",
-      "name": "🏀┃八八┃看球",
-      "type": 3,
-      "api": "./deps/auto/63-140s/lib/drpy2.js",
-      "searchable": 0,
-      "quickSearch": 0,
-      "filterable": 0,
-      "ext": "./deps/auto/63-140s/lib/88%E7%9C%8B%E7%90%83.js",
       "group": "综合-本地JS"
     },
     {
@@ -983,6 +959,18 @@
       "filterable": 0,
       "ext": "./deps/auto/22-270s/tvbox-master-doki/js/HDmoli.js",
       "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
+      "group": "综合-本地JS"
+    },
+    {
+      "key": "hipy_js_KTV歌厅[听]1",
+      "name": "KTV歌厅",
+      "type": 3,
+      "api": "./deps/auto/62-140s/lib/drpy2.min.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "./deps/auto/62-140s/js/drpy2.js",
+      "jar": "./deps/auto/62-140s/pg.jar",
       "group": "综合-本地JS"
     },
     {
@@ -1804,32 +1792,6 @@
       }
     },
     {
-      "name": "-爱酷-",
-      "type": 0,
-      "url": "https://jx.zhanlangbu.com/?url=",
-      "ext": {
-        "flag": [
-          "qq",
-          "腾讯",
-          "qiyi",
-          "爱奇艺",
-          "奇艺",
-          "youku",
-          "优酷",
-          "mgtv",
-          "芒果",
-          "letv",
-          "乐视",
-          "pptv",
-          "PPTV",
-          "sohu",
-          "bilibili",
-          "哔哩哔哩",
-          "哔哩"
-        ]
-      }
-    },
-    {
       "name": "-云解析-",
       "type": 0,
       "url": "https://jx.yparse.com/index.php?url=",
@@ -1868,43 +1830,6 @@
           "user-agent": "Mozilla/5.0 (Linux; Android 13; V2049A Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36",
           "referer": "https://jiejie.uk/"
         }
-      }
-    },
-    {
-      "name": "PM",
-      "url": "https://www.playm3u8.cn/jiexi.php?url=",
-      "type": 0,
-      "ext": {
-        "flag": [
-          "qiyi",
-          "imgo",
-          "爱奇艺",
-          "奇艺",
-          "qq",
-          "腾讯",
-          "youku",
-          "优酷",
-          "pptv",
-          "PPTV",
-          "letv",
-          "乐视",
-          "leshi",
-          "bilibili",
-          "哔哩哔哩",
-          "哔哩",
-          "mgtv",
-          "芒果",
-          "sohu",
-          "xigua",
-          "fun",
-          "风行"
-        ],
-        "header": {
-          "User-Agent": "Mozilla/5.0"
-        }
-      },
-      "header": {
-        "User-Agent": "Mozilla/5.0"
       }
     },
     {
@@ -2057,11 +1982,6 @@
       "url": "https://jx.m3u8.tv/jx/jx.php?url="
     },
     {
-      "name": "🌲林中小屋🏡解析线路⑤",
-      "type": 0,
-      "url": "https://www.8090g.cn/jiexi/?url="
-    },
-    {
       "name": "🌲林中小屋🏡解析线路⑥",
       "type": 0,
       "url": "https://jx.hls.one/?url=",
@@ -2166,13 +2086,48 @@
       }
     },
     {
-      "name": "ckplayer",
+      "name": "OKJX",
       "type": 0,
-      "url": "https://www.ckplayer.vip/jiexi/?url=",
+      "url": "https://okjx.cc/?url=",
       "ext": {
         "header": {
           "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.57"
         }
+      }
+    },
+    {
+      "name": "线路NX",
+      "type": 1,
+      "url": "https://vip.nxflv.com/home/api?uid=701203&key=bltuyCEFKLTX013679&url="
+    },
+    {
+      "name": "leduo",
+      "type": 1,
+      "url": "https://api.ldjx.cc/wp-api/getvodurl.php?token=1001&vid=",
+      "ext": {
+        "flag": [
+          "leduo"
+        ]
+      }
+    },
+    {
+      "name": "欢雨",
+      "type": 1,
+      "url": "http://www.youhuifuligou.com/json/?id=7&url=",
+      "ext": {
+        "flag": [
+          "qq",
+          "腾讯",
+          "qiyi",
+          "爱奇艺",
+          "奇艺",
+          "youku",
+          "优酷",
+          "letv",
+          "乐视",
+          "xigua",
+          "西瓜"
+        ]
       }
     }
   ],

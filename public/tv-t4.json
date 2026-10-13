@@ -468,32 +468,6 @@
       }
     },
     {
-      "name": "-爱酷-",
-      "type": 0,
-      "url": "https://jx.zhanlangbu.com/?url=",
-      "ext": {
-        "flag": [
-          "qq",
-          "腾讯",
-          "qiyi",
-          "爱奇艺",
-          "奇艺",
-          "youku",
-          "优酷",
-          "mgtv",
-          "芒果",
-          "letv",
-          "乐视",
-          "pptv",
-          "PPTV",
-          "sohu",
-          "bilibili",
-          "哔哩哔哩",
-          "哔哩"
-        ]
-      }
-    },
-    {
       "name": "-云解析-",
       "type": 0,
       "url": "https://jx.yparse.com/index.php?url=",
@@ -532,43 +506,6 @@
           "user-agent": "Mozilla/5.0 (Linux; Android 13; V2049A Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36",
           "referer": "https://jiejie.uk/"
         }
-      }
-    },
-    {
-      "name": "PM",
-      "url": "https://www.playm3u8.cn/jiexi.php?url=",
-      "type": 0,
-      "ext": {
-        "flag": [
-          "qiyi",
-          "imgo",
-          "爱奇艺",
-          "奇艺",
-          "qq",
-          "腾讯",
-          "youku",
-          "优酷",
-          "pptv",
-          "PPTV",
-          "letv",
-          "乐视",
-          "leshi",
-          "bilibili",
-          "哔哩哔哩",
-          "哔哩",
-          "mgtv",
-          "芒果",
-          "sohu",
-          "xigua",
-          "fun",
-          "风行"
-        ],
-        "header": {
-          "User-Agent": "Mozilla/5.0"
-        }
-      },
-      "header": {
-        "User-Agent": "Mozilla/5.0"
       }
     },
     {
@@ -721,11 +658,6 @@
       "url": "https://jx.m3u8.tv/jx/jx.php?url="
     },
     {
-      "name": "🌲林中小屋🏡解析线路⑤",
-      "type": 0,
-      "url": "https://www.8090g.cn/jiexi/?url="
-    },
-    {
       "name": "🌲林中小屋🏡解析线路⑥",
       "type": 0,
       "url": "https://jx.hls.one/?url=",
@@ -830,16 +762,6 @@
       }
     },
     {
-      "name": "ckplayer",
-      "type": 0,
-      "url": "https://www.ckplayer.vip/jiexi/?url=",
-      "ext": {
-        "header": {
-          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.57"
-        }
-      }
-    },
-    {
       "name": "OKJX",
       "type": 0,
       "url": "https://okjx.cc/?url=",
@@ -863,16 +785,65 @@
           "leduo"
         ]
       }
+    },
+    {
+      "name": "欢雨",
+      "type": 1,
+      "url": "http://www.youhuifuligou.com/json/?id=7&url=",
+      "ext": {
+        "flag": [
+          "qq",
+          "腾讯",
+          "qiyi",
+          "爱奇艺",
+          "奇艺",
+          "youku",
+          "优酷",
+          "letv",
+          "乐视",
+          "xigua",
+          "西瓜"
+        ]
+      }
+    },
+    {
+      "name": "web1",
+      "type": 0,
+      "url": "https://www.nxflv.com/?url=",
+      "ext": {
+        "flag": [
+          "youku",
+          "优酷",
+          "mgtv",
+          "芒果",
+          "qq",
+          "腾讯",
+          "qiyi",
+          "爱奇艺",
+          "qq",
+          "奇艺",
+          "sohu",
+          "letv"
+        ]
+      }
+    },
+    {
+      "name": "ltnb04",
+      "type": 0,
+      "url": "https://vip.bljiex.com/?v=",
+      "ext": {
+        "flag": [
+          "ltnb"
+        ]
+      }
+    },
+    {
+      "name": "羽路均沾",
+      "type": 0,
+      "url": "https://ylu.cc/index.php?url="
     }
   ],
   "sites": [
-    {
-      "key": "7ced0073619101d397b5c86fc3578ed4",
-      "name": "[106ms|apple] 💥┃火狐2K┃有广",
-      "type": 1,
-      "api": "https://hhzyapi.com/api.php/provide/vod/",
-      "group": "综合-采集站"
-    },
     {
       "searchable": 1,
       "quickSearch": 1,
@@ -970,6 +941,15 @@
       "key": "越南",
       "type": 1,
       "name": "[137ms|zy] 🍊越南",
+      "group": "综合-采集站"
+    },
+    {
+      "searchable": 1,
+      "quickSearch": 1,
+      "api": "https://jkunzyapi.com/api.php/provide/vod/at/json",
+      "key": "鸡坤-2",
+      "type": 1,
+      "name": "[137ms|zy] 🍊鸡坤",
       "group": "综合-采集站"
     }
   ]
