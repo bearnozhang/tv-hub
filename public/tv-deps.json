@@ -568,45 +568,21 @@
       "ext": "./js/%E5%85%94%E5%B0%8F%E8%B4%9D.js"
     },
     {
-      "key": "蓝光影视",
-      "name": "⚡蓝光┃APP",
-      "type": 3,
-      "api": "./deps/auto/31-196s/tvbox-master-doki/js/drpy2.min.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "http://www.4kgod4.club/appto/v1/ ",
-      "jar": "https://mirror.ghproxy.com/https://raw.githubusercontent.com/mygoww/xoxo/main/XBQH.jar;md5;3ec42e286452fc6c253ffe064eba6eaf",
-      "group": "4K-本地JS"
-    },
-    {
       "key": "drpy_js_EMO蓝光[V2]",
       "name": "影视 | EMO蓝光[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/EMO%E8%93%9D%E5%85%89[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/EMO%E8%93%9D%E5%85%89[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "4K-本地JS"
     },
     {
       "key": "drpy_js_布雷蓝光[V2]",
       "name": "影视 | 布雷蓝光[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E5%B8%83%E9%9B%B7%E8%93%9D%E5%85%89[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
-      "group": "4K-本地JS"
-    },
-    {
-      "key": "利播蓝光",
-      "name": "🥮利播┃韩剧",
-      "type": 3,
-      "api": "./deps/auto/22-270s/tvbox-master-doki/js/drpy.min.js",
-      "searchable": 0,
-      "quickSearch": 1,
-      "changeable": 1,
-      "ext": "./deps/auto/22-270s/tvbox-master-doki/js/libvio.js",
-      "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E5%B8%83%E9%9B%B7%E8%93%9D%E5%85%89[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "4K-本地JS"
     },
     {
@@ -679,472 +655,319 @@
       "group": "综合-本地JS"
     },
     {
-      "key": "meowtv_a8yy",
-      "name": "A8Y🎵音乐",
+      "key": "Cat_梨园戏",
+      "name": "🌸梨园丨戏曲",
       "type": 3,
-      "api": "./deps/auto/22-270s/tvbox-master-doki/js/drpy2.min.js",
+      "api": "./deps/auto/55-122s/ouge/api/liyuan_xi.js",
       "searchable": 1,
-      "quickSearch": 1,
+      "quickSearch": 0,
       "filterable": 1,
-      "ext": "./deps/auto/22-270s/tvbox-master-doki/js/a8yinyue.js",
-      "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
+      "jar": "./deps/auto/55-122s/ouge/spider.jar",
       "group": "综合-本地JS"
     },
     {
-      "key": "cat_3Q影视",
-      "name": "cat_3Q影视.js",
+      "key": "Cat_聚合儿歌",
+      "name": "👶聚合丨儿童",
       "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_3Q%E5%BD%B1%E8%A7%86.js",
+      "api": "./deps/auto/55-122s/ouge/api/erge_juhe.js",
       "searchable": 1,
-      "quickSearch": 1,
+      "quickSearch": 0,
       "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
+      "jar": "./deps/auto/55-122s/ouge/spider.jar",
       "group": "综合-本地JS"
     },
     {
-      "key": "cat_七味网",
-      "name": "cat_七味网.js",
+      "key": "Cat_聚合知识",
+      "name": "👶聚合丨知识",
       "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_%E4%B8%83%E5%91%B3%E7%BD%91.js",
+      "api": "./deps/auto/55-122s/ouge/api/zhishi_juhe.js",
       "searchable": 1,
-      "quickSearch": 1,
+      "quickSearch": 0,
       "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
+      "jar": "./deps/auto/55-122s/ouge/spider.jar",
       "group": "综合-本地JS"
     },
     {
-      "key": "cat_孜然影视",
-      "name": "cat_孜然影视.js",
+      "key": "Cat_91电视",
+      "name": "🚀91电视丨直播",
       "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_%E5%AD%9C%E7%84%B6%E5%BD%B1%E8%A7%86.js",
+      "api": "./deps/auto/55-122s/ouge/api/91live_zb.js",
       "searchable": 1,
-      "quickSearch": 1,
+      "quickSearch": 0,
       "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "cat_白天鹅",
-      "name": "cat_白天鹅",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/%E7%99%BD%E5%A4%A9%E9%B9%85[cat].js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "cat_花花影院",
-      "name": "cat_花花影院.js",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_%E8%8A%B1%E8%8A%B1%E5%BD%B1%E9%99%A2.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "cat_金帝影视",
-      "name": "cat_金帝影视.js",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_%E9%87%91%E5%B8%9D%E5%BD%B1%E8%A7%86.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "山有木兮",
-      "name": "山有木兮.js",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/%E5%B1%B1%E6%9C%89%E6%9C%A8%E5%85%AE.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "爱看机器",
-      "name": "🤖爱看┃机器",
-      "type": 3,
-      "api": "./deps/auto/22-270s/tvbox-master-doki/js/drpy2.min.js",
-      "searchable": 1,
-      "changeable": 1,
-      "ext": "./deps/auto/22-270s/tvbox-master-doki/js/ikanbot2.js",
-      "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
+      "jar": "./deps/auto/55-122s/ouge/spider.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "dj0898_book_open",
       "name": "DJ网[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/MyDJ0898.js",
+      "api": "./deps/auto/22-243s/lib/MyDJ0898.js",
       "playerType": 2,
-      "jar": "./deps/auto/24-243s/f.jar",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "yqk",
       "name": "一起看[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/yqktv_open.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/yqktv_open.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "猫农民",
       "name": "农民[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/%E7%8C%AB%E5%86%9C%E6%B0%91.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/%E7%8C%AB%E5%86%9C%E6%B0%91.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "猫南瓜",
       "name": "南瓜[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/%E7%8C%AB%E5%8D%97%E7%93%9C.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/%E7%8C%AB%E5%8D%97%E7%93%9C.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "czzy",
       "name": "厂长资源[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/czzy_open.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/czzy_open.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "猫在线之家",
       "name": "在线之家[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/%E7%8C%AB%E5%9C%A8%E7%BA%BF%E4%B9%8B%E5%AE%B6.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/%E7%8C%AB%E5%9C%A8%E7%BA%BF%E4%B9%8B%E5%AE%B6.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_小纸条",
       "name": "小纸条[测试js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/%E5%B0%8F%E7%BA%B8%E6%9D%A1%E4%B8%80%E7%BA%A7%E6%8E%A8%E9%80%81%E6%B5%8B%E8%AF%95.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/%E5%B0%8F%E7%BA%B8%E6%9D%A1%E4%B8%80%E7%BA%A7%E6%8E%A8%E9%80%81%E6%B5%8B%E8%AF%95.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_555电影",
       "name": "影视 | 555电影[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/555%E7%94%B5%E5%BD%B1.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/555%E7%94%B5%E5%BD%B1.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_lf_ikanbot",
       "name": "影视 | lf_ikanbot[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/lf_ikanbot4_1_min.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/lf_ikanbot4_1_min.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_rrdyw",
       "name": "影视 | rrdyw[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/rrdyw.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/rrdyw.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_佳靓[V2]",
       "name": "影视 | 佳靓[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E4%BD%B3%E9%9D%93[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E4%BD%B3%E9%9D%93[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_创艺影视[V2]",
       "name": "影视 | 创艺影视[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E5%88%9B%E8%89%BA%E5%BD%B1%E8%A7%86[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E5%88%9B%E8%89%BA%E5%BD%B1%E8%A7%86[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_电影先生[V2]",
       "name": "影视 | 电影先生[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E7%94%B5%E5%BD%B1%E5%85%88%E7%94%9F[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E7%94%B5%E5%BD%B1%E5%85%88%E7%94%9F[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_纽约影院",
       "name": "影视 | 纽约影院[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E7%BA%BD%E7%BA%A6%E5%BD%B1%E9%99%A2.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E7%BA%BD%E7%BA%A6%E5%BD%B1%E9%99%A2.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_蘑菇",
       "name": "影视 | 蘑菇[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E8%98%91%E8%8F%87.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E8%98%91%E8%8F%87.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_速看100[V2]",
       "name": "影视 | 速看100[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E9%80%9F%E7%9C%8B100[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E9%80%9F%E7%9C%8B100[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_飞云[V2]",
       "name": "影视 | 飞云[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E9%A3%9E%E4%BA%91[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E9%A3%9E%E4%BA%91[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_鸭鸭[V2]",
       "name": "影视 | 鸭鸭[V2][js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E9%B8%AD%E9%B8%AD[V2].js",
-      "jar": "./deps/auto/24-243s/f.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "热播影视大全",
-      "name": "热播影视大全|APP",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/RJAPP.js",
-      "ext": "http://v.rbotv.cn",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E9%B8%AD%E9%B8%AD[V2].js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "230ts",
       "name": "爱上你听书网[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/230ts_open.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/230ts_open.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "ikanbot_open",
       "name": "爱看bot[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/ikanbot_open.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/ikanbot_open.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "kunyu77",
       "name": "琨娱七七[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/kunyu77_open.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/kunyu77_open.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "道长直播2点播",
       "name": "电视 | 直播[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/live2cms.js",
-      "ext": "./deps/auto/24-243s/lib/live2mv_data.json",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/live2cms.js",
+      "ext": "./deps/auto/22-243s/lib/live2mv_data.json",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "路飞直播2点播",
       "name": "电视 | 路飞[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/lf_live10_min.js",
-      "ext": "./deps/auto/24-243s/lib/lf_live.json",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/lf_live10_min.js",
+      "ext": "./deps/auto/22-243s/lib/lf_live.json",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "subaibai",
       "name": "素白白[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/subaibai_open.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/subaibai_open.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "drpy_js_ikanbot1",
       "name": "聚搜 | 爱看机器人1[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/%E7%88%B1%E7%9C%8B%E6%9C%BA%E5%99%A8%E4%BA%BA.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/%E7%88%B1%E7%9C%8B%E6%9C%BA%E5%99%A8%E4%BA%BA.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "jojo",
       "name": "舟舟[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/jojo_open.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/jojo_open.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
       "key": "livbo",
       "name": "荔波[cat]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/MyCatLibvio.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/MyCatLibvio.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
-      "key": "18哈影视",
-      "name": "🍒18HA┃高清",
+      "key": "cat_123TV",
+      "name": "🥇壹影｜影视",
       "type": 3,
-      "api": "./deps/auto/22-270s/tvbox-master-doki/js/drpy.min.js",
-      "ext": "./deps/auto/22-270s/tvbox-master-doki/js/18%E5%93%88.js",
-      "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "🎒央视合集",
-      "name": "🎒央视合集",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%F0%9F%8E%92%E5%A4%AE%E8%A7%86%E5%90%88%E9%9B%86.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "🎒央视大全",
-      "name": "🎒央视大全",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%F0%9F%8E%92%E5%A4%AE%E8%A7%86%E5%A4%A7%E5%85%A8.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "🎒央视少儿",
-      "name": "🎒央视少儿",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%F0%9F%8E%92%E5%A4%AE%E8%A7%86%E5%B0%91%E5%84%BF.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "🎒央视新闻",
-      "name": "🎒央视新闻",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%F0%9F%8E%92%E5%A4%AE%E8%A7%86%E6%96%B0%E9%97%BB.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "🎒央视经济",
-      "name": "🎒央视经济",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%F0%9F%8E%92%E5%A4%AE%E8%A7%86%E7%BB%8F%E6%B5%8E.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "🎒央视综合",
-      "name": "🎒央视综合",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%F0%9F%8E%92%E5%A4%AE%E8%A7%86%E7%BB%BC%E5%90%88.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "js_爱上你听书网",
-      "name": "📚️┃听书┃爱尚",
-      "type": 3,
-      "api": "./deps/auto/63-140s/lib/drpy2.js",
-      "changeable": 0,
+      "api": "./deps/auto/55-122s/ouge/api/cat_123TV.js",
       "style": {
         "type": "rect",
         "ratio": 1
       },
-      "ext": "https://jihulab.com/iduoduo/xduo/-/raw/main/libs/aishang.js",
+      "changeable": 1,
+      "jar": "./deps/auto/55-122s/ouge/spider.jar",
       "group": "综合-本地JS"
     },
     {
-      "key": "📺PTT优[📺]",
-      "name": "📺PTT优[📺]",
+      "key": "永1乐",
+      "name": "🥇永乐｜影视",
       "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%F0%9F%93%BAPTT%E4%BC%98[%F0%9F%93%BA].js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
+      "api": "./deps/auto/55-122s/ouge/api/%E6%B0%B8%E4%B9%90%E8%A7%86%E9%A2%91.js",
+      "jar": "./deps/auto/55-122s/ouge/spider.jar",
       "group": "综合-本地JS"
     },
     {
-      "key": "豆瓣追更",
-      "name": "豆瓣追更",
+      "key": "鬼片",
+      "name": "🥇鬼片｜影视",
       "type": 3,
+      "api": "./deps/auto/55-122s/ouge/api/%E9%AC%BC%E7%89%87%E4%B9%8B%E5%AE%B6.js",
+      "jar": "./deps/auto/55-122s/ouge/spider.jar",
+      "group": "综合-本地JS"
+    },
+    {
+      "key": "drpy_js_88ball",
+      "name": "88看球[js]",
+      "type": 3,
+      "api": "./deps/auto/60-108s/lib/drpy2.min.js",
+      "ext": "./deps/auto/60-108s/js/88ball.js",
+      "quickSearch": 0,
       "searchable": 0,
       "changeable": 0,
-      "quickSearch": 0,
-      "filterable": 1,
-      "indexs": 1,
-      "api": "./deps/auto/5-398s/ys/lib/apiv57uukw.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "yyt",
-      "name": "音悦台🎵MV",
-      "type": 3,
-      "api": "./deps/auto/22-270s/tvbox-master-doki/js/yinyuetai.js",
-      "searchable": 0,
-      "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "js_88看球",
-      "name": "🏀┃八八┃看球",
-      "type": 3,
-      "api": "./deps/auto/63-140s/lib/drpy2.js",
-      "searchable": 0,
-      "quickSearch": 0,
-      "filterable": 0,
-      "ext": "./deps/auto/63-140s/lib/88%E7%9C%8B%E7%90%83.js",
-      "group": "综合-本地JS"
-    },
-    {
-      "key": "魔力高清",
-      "name": "🥮魔力┃高清",
-      "type": 3,
-      "api": "./deps/auto/22-270s/tvbox-master-doki/js/drpy2.min.js",
-      "searchable": 0,
-      "quickSearch": 0,
-      "filterable": 0,
-      "ext": "./deps/auto/22-270s/tvbox-master-doki/js/HDmoli.js",
-      "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
+      "timeout": 30,
+      "jar": "./deps/auto/60-108s/pg.jar",
       "group": "综合-本地JS"
     },
     {
@@ -1345,9 +1168,9 @@
       "key": "drpy_js_gaze",
       "name": "影视 | gaze[js]",
       "type": 3,
-      "api": "./deps/auto/24-243s/lib/drpy2.min.js",
-      "ext": "./deps/auto/24-243s/lib/gaze.js",
-      "jar": "./deps/auto/24-243s/f.jar",
+      "api": "./deps/auto/22-243s/lib/drpy2.min.js",
+      "ext": "./deps/auto/22-243s/lib/gaze.js",
+      "jar": "./deps/auto/22-243s/f.jar",
       "group": "综合-本地JS"
     },
     {
@@ -1416,17 +1239,6 @@
       "group": "综合-本地JS"
     },
     {
-      "key": "飞云",
-      "name": "🥮飞云┃影视",
-      "type": 3,
-      "api": "./deps/auto/22-270s/tvbox-master-doki/js/AppysV2.js",
-      "searchable": 1,
-      "changeable": 1,
-      "ext": "{\"host\":\"http://122.228.84.103:6117/api.php/app/\"}",
-      "jar": "./deps/auto/22-270s/tvbox-master-doki/jar/spider.jar",
-      "group": "综合-本地JS"
-    },
-    {
       "key": "Cat_聚合短剧",
       "name": "🎦聚合🔹短剧",
       "type": 3,
@@ -1435,48 +1247,6 @@
       "quickSearch": 0,
       "filterable": 1,
       "jar": "./deps/xingwei/kstore/twvip/jarR/raw/master/kjtw.jar",
-      "group": "短剧"
-    },
-    {
-      "key": "cat_星芽短剧",
-      "name": "cat_星芽短剧.js",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_%E6%98%9F%E8%8A%BD%E7%9F%AD%E5%89%A7.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "短剧"
-    },
-    {
-      "key": "cat_红果短剧",
-      "name": "cat_红果短剧.js",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_%E7%BA%A2%E6%9E%9C%E7%9F%AD%E5%89%A7.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "短剧"
-    },
-    {
-      "key": "cat_锦鲤短剧",
-      "name": "cat_锦鲤短剧.js",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/cat_%E9%94%A6%E9%B2%A4%E7%9F%AD%E5%89%A7.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
-      "group": "短剧"
-    },
-    {
-      "key": "好看动漫",
-      "name": "好看｜动漫",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/drpy2.min.js",
-      "ext": "./deps/auto/5-398s/ys/js/%E5%A5%BD%E7%9C%8B%E5%8A%A8%E6%BC%AB.js",
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
       "group": "短剧"
     },
     {
@@ -1518,17 +1288,6 @@
       "api": "./deps/shiguang/svip/heads/main/js/drpy2.min.js",
       "ext": "./deps/shiguang/svip/heads/main/js/%E6%B2%B3%E9%A9%AC%E7%9F%AD%E5%89%A7.js",
       "jar": "./deps/shiguang/svip/heads/main/svip.jar",
-      "group": "短剧"
-    },
-    {
-      "key": "短剧聚合",
-      "name": "短剧聚合",
-      "type": 3,
-      "api": "./deps/auto/5-398s/ys/js/%E7%9F%AD%E5%89%A7%E8%81%9A%E5%90%88.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "jar": "./deps/auto/5-398s/ys/jar/xyqxbpq.jar",
       "group": "短剧"
     },
     {
@@ -2055,6 +1814,16 @@
       }
     },
     {
+      "name": "-剖云-",
+      "type": 0,
+      "url": "https://www.kkvip2022.com/vip/jiexi1/?url=",
+      "ext": {
+        "header": {
+          "user-agent": "Mozilla/5.0 (Linux; Android 13; V2049A Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/116.0.0.0 Mobile Safari/537.36"
+        }
+      }
+    },
+    {
       "name": "-全看-",
       "type": 0,
       "url": "https://jx.quankan.app/?url=",
@@ -2374,16 +2143,6 @@
       "name": "ckplayer",
       "type": 0,
       "url": "https://www.ckplayer.vip/jiexi/?url=",
-      "ext": {
-        "header": {
-          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.57"
-        }
-      }
-    },
-    {
-      "name": "OKJX",
-      "type": 0,
-      "url": "https://okjx.cc/?url=",
       "ext": {
         "header": {
           "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.57"
