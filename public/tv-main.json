@@ -1069,7 +1069,7 @@
   "sites": [
     {
       "key": "豆瓣",
-      "name": "🐼┃公众号：熊猫是只肥猫┃",
+      "name": "🐼┃QQ频道：肥猫宝贝┃",
       "type": 3,
       "api": "csp_Douban",
       "searchable": 0
@@ -1098,22 +1098,6 @@
       "ext": "{\"site_urls\":[\"http://shandian.blog/\",\"http://sd.sduc.site/\"],\"threadinfo\":{\"chunksize\":512,\"threads\":16},\"url_key\":\"FeiMaoUC\"}"
     },
     {
-      "key": "csp_Duopan",
-      "name": "🖍︎┃蜡笔┃影视",
-      "type": 3,
-      "api": "csp_Duopan",
-      "filterable": 1,
-      "ext": "{\"site_urls\":[\"http://xiaocge.fun\",\"http://feimo.fun\",\"http://www.labi88.sbs\",\"http://fmao.site\",\"http://fmao.shop\",\"http://xiaocgege.shop\",\"http://www.xiaocgege.shop\"],\"threadinfo\":{\"chunksize\":512,\"threads\":16},\"url_key\":\"Duopan2\"}"
-    },
-    {
-      "key": "csp_Netfixtv",
-      "name": "💌┃️至臻┃影视",
-      "type": 3,
-      "api": "csp_Duopan",
-      "filterable": 1,
-      "ext": "{\"site_urls\":[\"https://pan.mihdr.top\",\"https://www.zhizhen1.top\",\"https://www.mihdr.top\",\"https://www.miqk.cc\",\"https://www.zhizhenpan.com\",\"https://www.zhizhen8.click\"],\"url_key\":\"Netfixtv2\",\"threadinfo\":{\"chunksize\":512,\"threads\":16}}"
-    },
-    {
       "key": "潮流",
       "name": "🏜┃潮流┃APP",
       "type": 3,
@@ -1124,15 +1108,8 @@
       "key": "肥猫",
       "name": "🐼┃肥猫┃APP",
       "type": 3,
-      "api": "csp_AppGet",
-      "ext": "https://appcms.4ksj.app|O3K6rYx75Q4xtiIE"
-    },
-    {
-      "key": "干饭",
-      "name": "🍚┃干饭┃APP",
-      "type": 3,
-      "api": "csp_AppGet",
-      "ext": "https://www.douy32mf.top|1234567887654321"
+      "api": "csp_AppQi",
+      "ext": "https://lanyingjisu.oss-cn-wuhan-lr.aliyuncs.com/lyjszx.txt|oW5UxZ5kWVr1DI69"
     },
     {
       "key": "光盘",
@@ -1142,32 +1119,10 @@
       "ext": "http://103.217.190.91:5566|hagYExMdMkeWfemK"
     },
     {
-      "key": "行动",
-      "name": "😌┃行动┃APP",
-      "type": 3,
-      "api": "csp_AppDrama",
-      "ext": "{\"host\":\"\",\"site\":\"https://dyttandroid04-1372779881.cos.ap-shanghai.myqcloud.com/app_dyttandroid.txt\",\"publicKey\":\"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCduNEnfxGaLuQRk5ABzXHhPV43zi00sCHjLo8BYc+Wi6xXm2b4v0i28Sq4WlNCKhseft9fz8kO/qLr6/022o1RcuOU7e4GFL3U9WnNODwRBYSYWd+K8nqpI/tAUDmZEBGRWqjrc7x6aMl3A+xpnWkLbPCLsuhbuuUE3tv09oeOpwIDAQAB\",\"dataKey\":\"D2KREWRIBVNAUJJYEDL4VFHOY2Q0PQ==\",\"dataIv\":\"OC1A06E197EF10CF3F6058CA7A803B5E\",\"commonKey\":\"\",\"version\":\"3.0.0.7\",\"pkg\":\"com.dytiantang.one\",\"appName\":\"电影天堂\",\"decrypt\":\"1\"}"
-    },
-    {
-      "key": "再来",
-      "name": "✌️┃再来┃APP",
-      "type": 3,
-      "api": "csp_AppGet",
-      "ext": "https://vv.229d.cn|8888888888888888"
-    },
-    {
-      "key": "一碗",
-      "name": "🥣┃一碗┃APP",
-      "type": 3,
-      "api": "csp_AppGet",
-      "ext": "https://app.95112475.xyz|5a9w6x58dsq6z3a6"
-    },
-    {
       "key": "韩圈",
       "name": "⭕┃韩圈 ┃APP",
       "type": 3,
-      "api": "csp_Hxq",
-      "ext": " http://www.小不点.com/api/2026/fishhxq.php"
+      "api": "csp_Hxq"
     },
     {
       "key": "蔬菜",
@@ -1375,7 +1330,7 @@
     },
     {
       "key": "push_agent",
-      "name": "关注公众号：熊猫是只肥猫",
+      "name": "QQ频道：肥猫宝贝",
       "type": 3,
       "api": "csp_Push",
       "playerType": 1,
