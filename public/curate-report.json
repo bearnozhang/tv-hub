@@ -1,62 +1,62 @@
 {
-  "at": "2026-10-16T07:02:56Z",
-  "at_bj": "2026-10-16 15:02:56",
+  "at": "2026-10-16T17:58:31Z",
+  "at_bj": "2026-10-17 01:58:31",
   "stats": {
-    "in": 1488,
-    "kept": 1315,
-    "dropped": 173,
+    "in": 1559,
+    "kept": 1340,
+    "dropped": 219,
     "by_category": {
-      "direct": 319,
+      "direct": 344,
       "js": 1019,
-      "pan": 52,
+      "pan": 53,
       "paid": 0,
-      "magnet": 19,
+      "magnet": 24,
       "broken": 3,
-      "relpath": 76,
+      "relpath": 116,
       "invalid": 0
     },
     "drop_reasons": {
-      "relpath": 76,
+      "relpath": 116,
+      "magnet": 24,
+      "pan": 53,
       "quarantine": 23,
-      "pan": 52,
-      "magnet": 19,
       "broken": 3
     },
     "policy_version": "1.0.0",
     "probe": {
-      "probed": 208,
-      "ok": 173,
+      "probed": 230,
+      "ok": 193,
       "paid": 3,
-      "fail": 32,
+      "fail": 34,
       "skipped_budget": 0,
-      "elapsed_s": 9.9
+      "elapsed_s": 8.9
     }
   },
   "probe": {
-    "probed": 208,
-    "ok": 173,
+    "probed": 230,
+    "ok": 193,
     "paid": 3,
-    "fail": 32,
+    "fail": 34,
     "skipped_budget": 0,
-    "elapsed_s": 9.9
+    "elapsed_s": 8.9
   },
   "health": {
-    "rounds": 50,
-    "entries": 1889,
+    "rounds": 51,
+    "entries": 1911,
     "quarantined": 224
   },
   "quarantined": [
     {
       "key": "小胡",
       "api_host": "xh1.xn--yetu07f.icu",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "熊掌",
       "api_host": "xzcjz.com",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "guangsu2",
@@ -73,8 +73,8 @@
     {
       "key": "hhzy2",
       "api_host": "pz.v88.qzz.io",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "奶香香资源站采集接口",
@@ -85,146 +85,140 @@
     {
       "key": "ruyi_2",
       "api_host": "pz.v88.qzz.io",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "全民视界",
       "api_host": "www.cmov.cn",
-      "reason": "连续 10 轮探测失败",
-      "fails_streak": 10
+      "reason": "连续 11 轮探测失败",
+      "fails_streak": 11
     },
     {
       "key": "鸡坤-2",
       "api_host": "jkunzyapi.com",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 1
+      "fails_streak": 2
     },
     {
       "key": "U酷资源風",
       "api_host": "api.ukuapi.com",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "贵宾影院",
       "api_host": "vipdytv.com",
-      "reason": "连续 9 轮探测失败",
-      "fails_streak": 9
+      "reason": "连续 10 轮探测失败",
+      "fails_streak": 10
     },
     {
       "key": "U酷網",
       "api_host": "api.ukuapi.com",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "jkunzy.com",
       "api_host": "jkunzyapi.com",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 1
+      "fails_streak": 2
     },
     {
       "key": "夜貓_飞马影视",
       "api_host": "rise.eu.org",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "b954276569fe5d54ca57cf5cd6358465",
       "api_host": "rise.eu.org",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "播剧影视",
       "api_host": "www.ysxq.cc",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
-    },
-    {
-      "key": "鲨鱼资源",
-      "api_host": "shayuzy1.com",
-      "reason": "连续 4 轮探测失败",
-      "fails_streak": 4
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "鸡坤",
       "api_host": "jkunzyapi.com",
       "reason": "探测判定付费：响应含「付费」",
-      "fails_streak": 1
+      "fails_streak": 2
     },
     {
       "key": "天翼推送",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "夸克推送",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "百度推送",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "迅雷",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "阿里推送",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "天翼-2",
       "api_host": "38.76.197.172:15151",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "夸克推送-2",
       "api_host": "38.76.197.172:15151",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "xunlei-2",
       "api_host": "38.76.197.172:15151",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "123推送",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "UC推送",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "移动推送",
       "api_host": "so.yinpai.xyz",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "百度-4",
       "api_host": "38.76.197.172:15151",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "test",
@@ -235,8 +229,8 @@
     {
       "key": "AcFuns",
       "api_host": "www.acfuns.net",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "5265207397011986833",
@@ -265,8 +259,8 @@
     {
       "key": "2070335664787820544",
       "api_host": "banyeomni.780420.xyz:17777",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "密云视频.py",
@@ -277,26 +271,26 @@
     {
       "key": "123-3",
       "api_host": "38.76.197.172:15151",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "优惜",
       "api_host": "38.76.197.172:15151",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "新浪PHP",
       "api_host": "192.129.140.23:5757",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "新韩剧网PHP",
       "api_host": "192.129.140.23:5757",
-      "reason": "连续 50 轮探测失败",
-      "fails_streak": 50
+      "reason": "连续 51 轮探测失败",
+      "fails_streak": 51
     },
     {
       "key": "line_311",
@@ -1245,6 +1239,12 @@
       "api_host": "zy.xzam.cn",
       "reason": "连续 9 轮探测失败",
       "fails_streak": 9
+    },
+    {
+      "key": "line_226",
+      "api_host": "1.ahailove.cn:23456",
+      "reason": "连续 9 轮探测失败",
+      "fails_streak": 9
     }
   ],
   "dropped": [
@@ -1255,10 +1255,292 @@
       "reason": "api 为相对路径（./api/drpy2.min.js），非 FongMi 系客户端不认"
     },
     {
+      "key": "直播转点播",
+      "name": "📺︎┃电视┃点播",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/tv/zb.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "虎牙直播js",
+      "name": "🐯┃虎牙┃直播",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "csp_XYQBiu_斗鱼",
+      "name": "🐟┃斗鱼┃直播",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "贱贱",
+      "name": "🐭┃贱贱┃P2P",
+      "category": "relpath",
+      "reason": "api 为相对路径（./lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "云播影视",
+      "name": "☁️┃云播┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "聚短视频js",
+      "name": "📽️聚短┃视频",
+      "category": "relpath",
+      "reason": "api 为相对路径（./lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "有声小说js",
+      "name": "🎧有声┃小说",
+      "category": "relpath",
+      "reason": "api 为相对路径（./lib/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "drpy_js_lf_p2p",
+      "name": "💣┃磁力p2p┃搜索",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "爱看影视",
+      "name": "❤┃爱看┃蓝光",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_007",
+      "name": "🕵‍┃特工┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_低端",
+      "name": "🔥┃低端┃Js",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "奇优",
+      "name": " 🍩┃奇优┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "nangua",
+      "name": "🎃┃南瓜┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_骚火电影",
+      "name": "🔥┃骚火┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_荐片",
+      "name": "⏳┃荐片┃Js",
+      "category": "magnet",
+      "reason": "名称含「荐片」"
+    },
+    {
+      "key": "js_Lib",
+      "name": "🍲┃Lib┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_czsapp",
+      "name": "🏭️┃厂长┃Js",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_大师兄",
+      "name": "🐵┃师兄┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_电影先生",
+      "name": "🤵┃电影┃先生",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_Xinsj",
+      "name": "🐠┃视觉┃影院",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_农民",
+      "name": "👨‍🌾┃农民┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_bzys",
+      "name": "🌋┃B站┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_555",
+      "name": "🌟┃三五┃影视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_iqiyi",
+      "name": "🥝┃爱奇异(官)",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_youku",
+      "name": "🥔┃优酷(官)",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_qq",
+      "name": "🐧┃腾讯(官)",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_mgtv",
+      "name": "🥭┃芒果(官)",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_搜狗",
+      "name": "🚛┃搜狗(官)",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_360影视",
+      "name": "📺┃360(官) ",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_奇珍异兽",
+      "name": "🦍┃奇珍┃异兽",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_腾云驾雾",
+      "name": "☁️┃腾云┃驾雾",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_百忙无果",
+      "name": "🍋┃百忙┃无果",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_4KHDR",
+      "name": "🧲世界磁力┃Js",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "js_6V",
+      "name": "✡️六维磁力┃Js",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "js_磁力熊",
+      "name": "🐻‍贝尔磁力┃Js",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "js_酷吧",
+      "name": "😎酷吧磁力┃Js",
+      "category": "magnet",
+      "reason": "名称含「磁力」"
+    },
+    {
+      "key": "88js",
+      "name": "⚽ 88┃看球",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "csp_qiumi",
+      "name": "⚽ Jrs┃球迷",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "csp_310直播",
+      "name": "⚽310┃看球",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "酷奇js",
+      "name": "🎤酷奇┃MV",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_武享吧",
+      "name": "🥎┃格斗┃直播",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_a8音乐",
+      "name": "🎸┃奥迪┃音乐",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_童趣",
+      "name": "🧗‍┃童趣┃播视",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "dr_兔小贝",
+      "name": "📚儿童┃启蒙",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_B站精简",
+      "name": "🅱️┃哔哩┃精简",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "js_哔哩直播",
+      "name": "🅱️┃哔哩┃直播",
+      "category": "relpath",
+      "reason": "api 为相对路径（./libs/js/drpy2.min.js），非 FongMi 系客户端不认"
+    },
+    {
+      "key": "drpy_js_Alist",
+      "name": "网盘 | Alist[js]",
+      "category": "pan",
+      "reason": "网盘接口特征 /alist/ 命中「alist」"
+    },
+    {
       "key": "小胡",
       "name": "🔥┃小胡┃4K",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": " 在线┃直播2",
@@ -1276,25 +1558,31 @@
       "key": "熊掌",
       "name": "🐻┃熊掌┃高清",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
+    },
+    {
+      "key": "cms_uku",
+      "name": "U酷",
+      "category": "quarantine",
+      "reason": "连续 4 轮探测失败"
     },
     {
       "key": "hhzy2",
       "name": "豪华资源(代理)",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "ruyi_2",
       "name": "如意资源(代理)",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "全民视界",
       "name": "🌠全民┃影视",
       "category": "quarantine",
-      "reason": "连续 10 轮探测失败"
+      "reason": "连续 11 轮探测失败"
     },
     {
       "key": "鸡坤-2",
@@ -1306,19 +1594,19 @@
       "key": "U酷资源風",
       "name": "影视 • 尤酷[直连]",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "贵宾影院",
       "name": "贵宾影院(聚)",
       "category": "quarantine",
-      "reason": "连续 9 轮探测失败"
+      "reason": "连续 10 轮探测失败"
     },
     {
       "key": "U酷網",
       "name": "🏆U酷",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "jkunzy.com",
@@ -1330,25 +1618,19 @@
       "key": "夜貓_飞马影视",
       "name": "🛫if101影视",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "b954276569fe5d54ca57cf5cd6358465",
       "name": "57-飞马",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "播剧影视",
       "name": "👭播剧影视👭",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
-    },
-    {
-      "key": "鲨鱼资源",
-      "name": "💞鲨鱼资源💞",
-      "category": "quarantine",
-      "reason": "连续 4 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "鸡坤",
@@ -2104,7 +2386,7 @@
       "key": "AcFuns",
       "name": "[322ms|我的] AcFuns",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "5265207397011986833",
@@ -2128,7 +2410,7 @@
       "key": "2070335664787820544",
       "name": "💝分享热播",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "密云视频.py",
@@ -2170,13 +2452,13 @@
       "key": "新浪PHP",
       "name": "👭新浪👭",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "新韩剧网PHP",
       "name": "👭新韩剧网👭",
       "category": "quarantine",
-      "reason": "连续 50 轮探测失败"
+      "reason": "连续 51 轮探测失败"
     },
     {
       "key": "荐片33333",
@@ -2229,12 +2511,6 @@
     {
       "key": "catvod_荐片",
       "name": "💥荐片💥",
-      "category": "magnet",
-      "reason": "名称含「荐片」"
-    },
-    {
-      "key": "dr_荐片-2",
-      "name": "🧲荐片",
       "category": "magnet",
       "reason": "名称含「荐片」"
     },
