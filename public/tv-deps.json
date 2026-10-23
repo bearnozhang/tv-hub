@@ -221,7 +221,7 @@
   ],
   "rules": [
     {
-      "name": "вҷ»пёҸйҮҸйқһ",
+      "name": "♻️量非",
       "hosts": [
         "lz",
         "vip.lz",
@@ -237,7 +237,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸзҙўе°ј",
+      "name": "♻️索尼",
       "hosts": [
         "suonizy",
         "qrssv.com"
@@ -248,7 +248,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸд№җи§Ҷ",
+      "name": "♻️乐视",
       "hosts": [
         "leshiyun"
       ],
@@ -257,7 +257,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸдјҳиҙЁ",
+      "name": "♻️优质",
       "hosts": [
         "yzzy",
         "playback"
@@ -270,7 +270,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸеҝ«зңӢ",
+      "name": "♻️快看",
       "hosts": [
         "kuaikan",
         "vip.kuaikan"
@@ -282,7 +282,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸ360",
+      "name": "♻️360",
       "hosts": [
         "lyhuicheng"
       ],
@@ -292,7 +292,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸејҖжәҗжЈӢзүҢ",
+      "name": "♻️开源棋牌",
       "hosts": [
         "askzycdn",
         "jkunbf",
@@ -305,7 +305,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸжҡҙйЈҺ",
+      "name": "♻️暴风",
       "hosts": [
         "bfengbf.com",
         "bfzy",
@@ -317,7 +317,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸеҶңж°‘",
+      "name": "♻️农民",
       "hosts": [
         "toutiaovod.com"
       ],
@@ -326,7 +326,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸзҒ«еұұ",
+      "name": "♻️火山",
       "hosts": [
         "huoshan.com"
       ],
@@ -335,7 +335,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸжҠ–йҹі",
+      "name": "♻️抖音",
       "hosts": [
         "douyin.com"
       ],
@@ -344,18 +344,18 @@
       ]
     },
     {
-      "name": "вҷ»пёҸзЈҒеҠӣ",
+      "name": "♻️磁力",
       "hosts": [
         "magnet"
       ],
       "regex": [
-        "жңҖ ж–°",
-        "зӣҙ ж’ӯ",
-        "жӣҙ ж–°"
+        "最 新",
+        "直 播",
+        "更 新"
       ]
     },
     {
-      "name": "вҷ»пёҸйҘӯеӣўзӮ№еҮ»",
+      "name": "♻️饭团点击",
       "hosts": [
         "dadagui",
         "freeok",
@@ -366,7 +366,7 @@
       ]
     },
     {
-      "name": "вҷ»пёҸжҜӣй©ҙзӮ№еҮ»",
+      "name": "♻️毛驴点击",
       "hosts": [
         "www.maolvys.com"
       ],
@@ -812,8 +812,8 @@
   ],
   "sites": [
     {
-      "key": "е„ҝз«Ҙ",
-      "name": "рҹ“ҡв”ғе„ҝз«Ҙв”ғеҗҜи’ҷ",
+      "key": "儿童",
+      "name": "📚┃儿童┃启蒙",
       "type": 3,
       "api": "./api/drpy2.min.js",
       "searchable": 0,
@@ -823,7 +823,7 @@
         "type": "rect",
         "ratio": 1.597
       },
-      "ext": "./js/%D0%B5%E2%80%A6%E2%80%9D%D0%B5%C2%B0%D2%B8%D0%B8%D2%99%D2%9B.js"
+      "ext": "./js/%E5%85%94%E5%B0%8F%E8%B4%9D.js"
     },
     {
       "key": "直播转点播",
@@ -1979,30 +1979,30 @@
   "lives": [],
   "parses": [
     {
-      "name": "qiyi[е®ҳжәҗ]",
+      "name": "qiyi[官源]",
       "type": 1,
       "url": "http://39.104.230.177:1122/lxjx/myyk.php?url="
     },
     {
-      "name": "иӮҘзҢ«жңҖеҸҜзҲұ",
+      "name": "肥猫最可爱",
       "type": 1,
       "url": "http://xn--ihqu10cn4c.xn--z7x900a.live/jx.php?id=2&url=",
       "ext": {
         "flag": [
           "qq",
-          "и…ҫи®Ҝ",
+          "腾讯",
           "qiyi",
-          "зҲұеҘҮиүә",
-          "еҘҮиүә",
+          "爱奇艺",
+          "奇艺",
           "youku",
-          "дјҳй…·",
+          "优酷",
           "tucheng",
           "sohu",
-          "жҗңзӢҗ",
+          "搜狐",
           "letv",
-          "д№җи§Ҷ",
+          "乐视",
           "mgtv",
-          "иҠ’жһң",
+          "芒果",
           "tnmb",
           "seven",
           "yzm",
@@ -2042,41 +2042,6 @@
       "name": "公众号：肥猫宝贝",
       "type": 1,
       "url": "http://json.84jia.com/home/api?type=ys&uid=335253&key=demprsyzBMQRVY0234&url=",
-      "ext": {
-        "flag": [
-          "qq",
-          "腾讯",
-          "qiyi",
-          "爱奇艺",
-          "奇艺",
-          "youku",
-          "优酷",
-          "tucheng",
-          "sohu",
-          "搜狐",
-          "letv",
-          "乐视",
-          "mgtv",
-          "芒果",
-          "tnmb",
-          "seven",
-          "yzm",
-          "aliyun",
-          "RJuMao",
-          "bilibili",
-          "1905",
-          "xinvip",
-          "XAL",
-          "qiqi",
-          "XALS",
-          "YuMi-vip"
-        ]
-      }
-    },
-    {
-      "name": "肥猫最可爱",
-      "type": 1,
-      "url": "http://xn--ihqu10cn4c.xn--z7x900a.live/jx.php?id=2&url=",
       "ext": {
         "flag": [
           "qq",
@@ -2831,6 +2796,21 @@
       "name": "M3u8TV",
       "type": 0,
       "url": "https://jx.m3u8.tv/jiexi/?url="
+    },
+    {
+      "name": "CK",
+      "type": 0,
+      "url": "https://www.ckplayer.vip/jiexi/?url="
+    },
+    {
+      "name": "XY",
+      "type": 0,
+      "url": "https://jx.xymp4.cc/?url="
+    },
+    {
+      "name": "推荐",
+      "type": 1,
+      "url": "https://zy.qiaoji8.com/gouzi.php?url=94b07e0b2c0e8244&url="
     }
   ],
   "flags": [
