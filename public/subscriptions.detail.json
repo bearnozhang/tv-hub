@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30 03:33:46",
+  "updated_at": "2026-10-30 16:31:13",
   "count": 6,
   "base_url": "https://tv.bearno1.dpdns.org",
   "profiles": [
@@ -16,13 +16,13 @@
       "kind": "aggregate-lite"
     },
     {
-      "name": "tv-hub 全量聚合（1338 站 · 体积大）",
+      "name": "tv-hub 全量聚合（1339 站 · 体积大）",
       "url": "https://tv.bearno1.dpdns.org/tv.json",
       "note": "全部上游合并去重；老客户端加载大文件会失败，需手动切换到此",
       "kind": "aggregate"
     },
     {
-      "name": "影视仓·单仓聚合 · 45 站",
+      "name": "影视仓·单仓聚合 · 46 站",
       "url": "https://tv.bearno1.dpdns.org/profiles/ysc_single_agg.json",
       "note": "实测 2026-10-04：dict 结构，含 sites(167)/lives(7)/parses(33)/flags(61)/rules(33)。默认分支 ",
       "kind": "single"
@@ -45,25 +45,25 @@
       "name": "live-mini.txt",
       "groups": 2,
       "channels": 154,
-      "bytes": 49152
+      "bytes": 48916
     },
     {
       "name": "live-lite.txt",
       "groups": 7,
       "channels": 463,
-      "bytes": 151912
+      "bytes": 150989
     },
     {
       "name": "live-standard.txt",
       "groups": 22,
       "channels": 764,
-      "bytes": 230307
+      "bytes": 229384
     },
     {
       "name": "live-full.txt",
       "groups": 34,
-      "channels": 908,
-      "bytes": 264029
+      "channels": 906,
+      "bytes": 262851
     }
   ]
 }
