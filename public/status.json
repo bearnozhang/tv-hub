@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-09T09:38:06Z",
-  "generated_at_bj": "2026-11-09 17:38:06",
+  "generated_at": "2026-11-09T23:24:05Z",
+  "generated_at_bj": "2026-11-10 07:24:05",
   "base_url": "https://tv.bearno1.dpdns.org",
   "summary": {
     "total_sources": 8,
@@ -13,8 +13,8 @@
     "unique_parses": 237,
     "unique_lives": 537,
     "live_groups": 37,
-    "live_channels": 3781,
-    "live_url_deduped": 313,
+    "live_channels": 3780,
+    "live_url_deduped": 311,
     "subscriptions": 9,
     "sources_used": [
       {
@@ -67,9 +67,9 @@
         "id": "tvs_live_txt",
         "kind": "live_txt",
         "counts": {
-          "lines": 320,
-          "channels": 303,
-          "groups": 17
+          "lines": 233,
+          "channels": 215,
+          "groups": 18
         },
         "status": "ok"
       },
@@ -77,9 +77,9 @@
         "id": "tvs_live_m3u",
         "kind": "live_m3u",
         "counts": {
-          "lines": 626,
-          "channels": 303,
-          "groups": 17
+          "lines": 451,
+          "channels": 215,
+          "groups": 18
         },
         "status": "ok"
       },
@@ -106,16 +106,16 @@
     ],
     "sources_skipped": [],
     "per_source_sites": {
-      "ysc_single_agg": 2027,
       "hebi_vod": 0,
+      "ysc_single_agg": 2027,
       "hebi_tvbox": 15105
     },
     "hashes": {
-      "tv": "af88960774578653",
-      "live": "a3f8e6489a0ce70e",
+      "tv": "36eb1a181fad871f",
+      "live": "d5646f267ac3a836",
       "subscriptions": "e20d7c59cd4591cd",
       "live_txt": "/home/runner/wor",
-      "live_sub": "9b3ef60497a6e3f4"
+      "live_sub": "7d8e60ed34a4529e"
     },
     "curate": {
       "curate_in": 1559,
@@ -141,11 +141,11 @@
       "curate_policy_version": "1.0.0",
       "curate_probe": {
         "probed": 230,
-        "ok": 184,
+        "ok": 186,
         "paid": 0,
-        "fail": 46,
+        "fail": 44,
         "skipped_budget": 0,
-        "elapsed_s": 11.1
+        "elapsed_s": 10.0
       }
     }
   },
@@ -157,8 +157,8 @@
       "repo": "Lightconer/tvbox-ysc-config",
       "path": "output/单仓聚合.json",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:52Z",
-      "last_success": "2026-11-09T09:37:52Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:53Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/%E5%8D%95%E4%BB%93%E8%81%9A%E5%90%88.json",
       "http_status": 200,
@@ -185,8 +185,8 @@
       "repo": "Lightconer/tvbox-ysc-config",
       "path": "output/多仓订阅.json",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:52Z",
-      "last_success": "2026-11-09T09:37:52Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:53Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/%E5%A4%9A%E4%BB%93%E8%AE%A2%E9%98%85.json",
       "http_status": 200,
@@ -206,8 +206,8 @@
       "repo": "hebijunge/tvbox-config",
       "path": "tvbox.json",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:52Z",
-      "last_success": "2026-11-09T09:37:52Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:53Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/hebijunge/tvbox-config/main/tvbox.json",
       "http_status": 200,
@@ -231,8 +231,8 @@
       "repo": "hebijunge/tvbox-config",
       "path": "vod.json",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:52Z",
-      "last_success": "2026-11-09T09:37:53Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:53Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/hebijunge/tvbox-config/main/vod.json",
       "http_status": 200,
@@ -255,17 +255,17 @@
       "repo": "Lightconer/TVBox-Sources",
       "path": "output/live.txt",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:53Z",
-      "last_success": "2026-11-09T09:37:53Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:53Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/live.txt",
       "http_status": 200,
-      "bytes": 24167,
-      "sha256": "522aea08f5e07507e62361ae2488a9b22e04e319e7d7348587701f578d624d6a",
+      "bytes": 18090,
+      "sha256": "7323800ab17ba55f846f53b9199ac5bffc7709cd4923f8533fc64386bc867e12",
       "counts": {
-        "lines": 320,
-        "channels": 303,
-        "groups": 17
+        "lines": 233,
+        "channels": 215,
+        "groups": 18
       },
       "from_cache": false,
       "error": null,
@@ -278,17 +278,17 @@
       "repo": "Lightconer/TVBox-Sources",
       "path": "output/live.m3u",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:53Z",
-      "last_success": "2026-11-09T09:37:53Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:53Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/live.m3u",
       "http_status": 200,
-      "bytes": 60388,
-      "sha256": "f6e18e8b92e67c3af1259bad62e6be9657b3ab5df04270b9c5943d153ff58d5c",
+      "bytes": 43993,
+      "sha256": "478ba6ddfcc36b9500fbd9bfa70c9f1f1a08b2fc547d782052e6782d74ab2708",
       "counts": {
-        "lines": 626,
-        "channels": 303,
-        "groups": 17
+        "lines": 451,
+        "channels": 215,
+        "groups": 18
       },
       "from_cache": false,
       "error": null,
@@ -301,8 +301,8 @@
       "repo": "hebijunge/tvbox-config",
       "path": "lives/live_all.txt",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:53Z",
-      "last_success": "2026-11-09T09:37:53Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:53Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/hebijunge/tvbox-config/main/lives/live_all.txt",
       "http_status": 200,
@@ -331,8 +331,8 @@
       "repo": "Lightconer/TVBox-Sources",
       "path": "output/tvbox.json",
       "status": "ok",
-      "last_attempt": "2026-11-09T09:37:53Z",
-      "last_success": "2026-11-09T09:37:54Z",
+      "last_attempt": "2026-11-09T23:23:53Z",
+      "last_success": "2026-11-09T23:23:54Z",
       "consecutive_failures": 0,
       "used_url": "https://raw.githubusercontent.com/Lightconer/TVBox-Sources/main/output/tvbox.json",
       "http_status": 200,
