@@ -1,5 +1,7 @@
 # 订阅地址
 
+> 数字口径：2026-11-10 线上实测，站点数会随上游增减浮动。
+
 ## ✅ 你要填的地址
 
 ### 1. 「点播/配置地址」——填这个（单个配置）
@@ -8,7 +10,7 @@
 https://tv.bearno1.dpdns.org/tv.json
 ```
 
-全量聚合，4334 个站点 + 直播，一次到位。**不要填 `/sub.txt`**——
+全量聚合，1330 个站点 + 直播，一次到位。**不要填 `/sub.txt`**——
 那是「多仓订阅清单」，App 的「配置地址」字段读不了，会报无法解析。
 
 ### 2. 「直播地址」——填这个（纯文本直播源）
@@ -37,16 +39,18 @@ https://tv.bearno1.dpdns.org/subscriptions.json
 2. **Cloudflare 压缩**：客户端发 `Accept-Encoding: br, gzip` 时返回 Brotli 流，老客户端拿不到明文 → 必须在 Cloudflare 关闭 Brotli/Gzip（见 TROUBLESHOOT.md）。
 3. **直播字段填了 JSON**：`/live-sub.txt`、`/live-*.txt` 都是 JSON，直播字段要 `/live.txt`。
 
-### App 内会看到的清单（2026-10-04 线上实测）
+### App 内会看到的清单（2026-11-10 线上实测）
 
 | # | 名称 | 站点数 | 实际内容 |
 |---|---|---|---|
-| 1 | ★ tv-hub 全量聚合（推荐） | **4334** | 全部上游合并去重 + 直播 + 222 解析器 |
-| 2 | hebijunge·TVBox 全量 | 4286 | 单一上游原味（已清洗） |
-| 3 | 影视仓·单仓聚合 | 167 | 轻量版，加载快 |
-| 4 | hebijunge·纯点播 | 4278 | 只有影视、没有直播 |
+| 1 | ★ tv-lite（兼容版） | 60 | 轻量兼容版，加载最快，老设备 / 弱网优先 |
+| 2 | ★ tv-standard（兼容版） | 300 | 中量兼容版，覆盖与速度兼顾 |
+| 3 | tv-hub 全量聚合 | **1330** | 全部上游合并去重 + 直播 + 231 解析器 |
+| 4 | 影视仓·单仓聚合 | 46 | 单仓轻量版 |
+| 5 | hebijunge·TVBox 全量 | 1302 | 单一上游（已清洗） |
+| 6 | hebijunge·纯点播 | 1298 | 只有影视、没有直播 |
 
-线上逐条实测：4 个条目全部 HTTP 200 且解析正常。
+线上逐条实测：6 个条目全部 HTTP 200 且解析正常（2026-11-10）。
 
 ---
 
@@ -67,7 +71,7 @@ https://tv.bearno1.dpdns.org/subscriptions.json
 https://tv.bearno1.dpdns.org/tv.json
 ```
 
-这个就是全量聚合，4334 个站点 + 直播，一次到位。
+这个就是全量聚合，1330 个站点 + 直播，一次到位。设备弱或加载慢时，也可以从订阅清单里选 tv-lite（60 站）/ tv-standard（300 站）兼容版。
 
 ---
 
@@ -79,7 +83,7 @@ https://tv.bearno1.dpdns.org/live.json
 
 **位置**：设置 → 直播 → 添加直播源
 
-37 个分组 / 3765 个频道，761 个频道带多备源（播放失败自动换源）。
+34 个分组 / 910 个频道（`/live.json` 口径）。`/live.txt` 口径为 31 个分组、769 条频道行，部分频道带多备源（播放失败自动换源）。
 
 ---
 
@@ -102,6 +106,8 @@ https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json
 | `/subscriptions.json` | **订阅清单**（填这个） |
 | `/subscriptions.detail.json` | 同上 + note 说明，给人看 |
 | `/tv.json` | 全量聚合配置 |
+| `/tv-lite.json` | 兼容版：60 站轻量配置 |
+| `/tv-standard.json` | 兼容版：300 站配置 |
 | `/live.json` | 直播配置 |
 | `/profiles/hebi_tvbox.json` | 单仓：hebijunge 全量 |
 | `/profiles/ysc_single_agg.json` | 单仓：影视仓聚合 |
@@ -115,7 +121,7 @@ https://cdn.jsdelivr.net/gh/bearnozhang/tv-hub@main/public/tv.json
 
 `scripts/merge.py` 的 `build_profiles()`：
 
-1. 第一个条目固定是 `/tv.json`（全量聚合）
+1. 线上 `subscriptions.json` 当前顺序：tv-lite、tv-standard 在前，`/tv.json`（全量聚合）第三，其后是各单仓 profile
 2. 其余条目是各上游经**与主配置完全相同的清洗**后独立落盘的`profiles/<id>.json`
 3. 每个 profile 都经过 `validate.py` 校验，坏的不允许发布
 
