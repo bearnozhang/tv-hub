@@ -1115,6 +1115,14 @@
       "group": "综合-采集站"
     },
     {
+      "key": "155CMS",
+      "name": "👭155👭",
+      "type": 1,
+      "api": "https://155api.com/api.php/provide/vod/",
+      "changeable": 1,
+      "group": "综合-采集站"
+    },
+    {
       "key": "cms_netflix_suoni",
       "name": "奈飞·索尼",
       "type": 1,
@@ -1127,6 +1135,16 @@
         "Netflix电影",
         "Netflix自制剧"
       ],
+      "group": "综合-采集站"
+    },
+    {
+      "key": "zdzy",
+      "name": "🔝 最大资源",
+      "type": 1,
+      "api": "https://api.zuidapi.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
       "group": "综合-采集站"
     },
     {
@@ -1186,22 +1204,52 @@
       ]
     },
     {
-      "key": "155CMS",
-      "name": "👭155👭",
+      "key": "率率",
+      "name": "影视 | 率率[直连]",
       "type": 1,
-      "api": "https://155api.com/api.php/provide/vod/",
-      "changeable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "zdzy",
-      "name": "🔝 最大资源",
-      "type": 1,
-      "api": "https://api.zuidapi.com/api.php/provide/vod/?ac=list",
+      "api": "https://suoniapi.com/api.php/provide/vod/?ac=list",
       "searchable": 1,
       "quickSearch": 1,
-      "filterable": 1,
-      "group": "综合-采集站"
+      "changeable": 1,
+      "categories": [
+        "国产剧",
+        "韩剧",
+        "日剧",
+        "港剧",
+        "台剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "战争片",
+        "恐怖片",
+        "剧情片",
+        "国产动漫",
+        "日韩动漫",
+        "欧美动漫",
+        "大陆综艺",
+        "日韩综艺"
+      ]
+    },
+    {
+      "key": "gszy",
+      "name": "🎥┃光速┃资源",
+      "type": 1,
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
     },
     {
       "key": "xinlang",
@@ -1263,94 +1311,6 @@
       "group": "综合-采集站"
     },
     {
-      "key": "率率",
-      "name": "影视 | 率率[直连]",
-      "type": 1,
-      "api": "https://suoniapi.com/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "categories": [
-        "国产剧",
-        "韩剧",
-        "日剧",
-        "港剧",
-        "台剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "战争片",
-        "恐怖片",
-        "剧情片",
-        "国产动漫",
-        "日韩动漫",
-        "欧美动漫",
-        "大陆综艺",
-        "日韩综艺"
-      ]
-    },
-    {
-      "key": "gszy",
-      "name": "🎥┃光速┃资源",
-      "type": 1,
-      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
-    },
-    {
-      "key": "csp_xml_新浪",
-      "name": "❤新浪资源",
-      "type": 1,
-      "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod/",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "playerType": 2,
-      "categories": [
-        "动作片",
-        "喜剧片",
-        "科幻片",
-        "恐怖片",
-        "爱情片",
-        "剧情片",
-        "战争片",
-        "纪录片",
-        "动漫电影",
-        "大陆剧",
-        "欧美剧",
-        "港澳剧",
-        "韩剧",
-        "台湾剧",
-        "日剧",
-        "海外剧",
-        "泰剧",
-        "体育",
-        "国产动漫",
-        "日韩动漫",
-        "欧美动漫",
-        "港台动漫",
-        "海外动漫",
-        "大陆综艺",
-        "港台综艺",
-        "日韩综艺",
-        "欧美综艺"
-      ],
-      "group": "综合-采集站"
-    },
-    {
       "key": "极速资源",
       "name": "影视 | 极速[直连]",
       "type": 1,
@@ -1394,14 +1354,6 @@
       }
     },
     {
-      "key": "光速资源",
-      "name": "光速资源(切)",
-      "type": 1,
-      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1
-    },
-    {
       "key": "cms_netflix_zuida",
       "name": "奈飞·最大",
       "type": 1,
@@ -1417,29 +1369,69 @@
       "group": "综合-采集站"
     },
     {
-      "key": "ikunzy-2",
-      "name": "影视 🔰 ikun[直连]",
+      "key": "jkunzy.com",
+      "name": "💕jkun(直连)",
       "type": 1,
+      "api": "https://jkunzyapi.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "yhzy",
+      "name": "🌸 樱花资源",
+      "type": 1,
+      "api": "https://api.ukuapi88.com/api.php/provide/vod/?ac=list",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod?",
       "group": "综合-采集站"
     },
     {
-      "key": "laosebizy.com",
-      "name": "💕老色逼(直连)",
+      "key": "csp_xml_新浪",
+      "name": "❤新浪资源",
       "type": 1,
-      "api": "https://apilsbzy1.com/api.php/provide/vod/?ac=list",
+      "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod/",
       "searchable": 1,
+      "quickSearch": 1,
       "filterable": 1,
+      "playerType": 2,
+      "categories": [
+        "动作片",
+        "喜剧片",
+        "科幻片",
+        "恐怖片",
+        "爱情片",
+        "剧情片",
+        "战争片",
+        "纪录片",
+        "动漫电影",
+        "大陆剧",
+        "欧美剧",
+        "港澳剧",
+        "韩剧",
+        "台湾剧",
+        "日剧",
+        "海外剧",
+        "泰剧",
+        "体育",
+        "国产动漫",
+        "日韩动漫",
+        "欧美动漫",
+        "港台动漫",
+        "海外动漫",
+        "大陆综艺",
+        "港台综艺",
+        "日韩综艺",
+        "欧美综艺"
+      ],
       "group": "综合-采集站"
     },
     {
-      "key": "新浪资源",
-      "name": "新浪资源(切)",
+      "key": "光速资源",
+      "name": "光速资源(切)",
       "type": 1,
-      "api": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
       "searchable": 1,
       "quickSearch": 1
     },
@@ -1506,38 +1498,13 @@
       "group": "综合-采集站"
     },
     {
-      "key": "jkunzy.com",
-      "name": "💕jkun(直连)",
+      "key": "ikunzy-2",
+      "name": "影视 🔰 ikun[直连]",
       "type": 1,
-      "api": "https://jkunzyapi.com/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "api": "https://zuidazy.me/api.php/provide/vod/",
-      "key": "6e31126e4b7e6db33dcde3d30e309463",
-      "name": "55-最大",
-      "type": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "yhzy",
-      "name": "🌸 樱花资源",
-      "type": 1,
-      "api": "https://api.ukuapi88.com/api.php/provide/vod/?ac=list",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "1080资源库",
-      "name": "1080资源库(切)",
-      "type": 1,
-      "api": "https://api.1080zyku.com/inc/api_mac10.php",
-      "searchable": 0,
-      "quickSearch": 0,
+      "api": "https://ikunzyapi.com/api.php/provide/vod?",
       "group": "综合-采集站"
     },
     {
@@ -1575,12 +1542,74 @@
       "group": "综合-采集站"
     },
     {
-      "key": "百度",
-      "name": "🎏百度┃采集",
+      "key": "ikun-3",
+      "name": "iKun资源",
       "type": 1,
-      "api": "https://api.apibdzy.com/api.php/provide/vod/?ac=list",
+      "api": "https://ikunzyapi.com/api.php/provide/vod/?ac=list",
       "searchable": 1,
-      "filterable": 0
+      "quickSearch": 1,
+      "filterable": 1,
+      "categories": [
+        "短剧",
+        "国产剧",
+        "动作片",
+        "喜剧片",
+        "科幻片",
+        "爱情片",
+        "纪录片",
+        "动画片",
+        "欧美剧",
+        "香港剧"
+      ],
+      "group": "综合-采集站"
+    },
+    {
+      "api": "https://zuidazy.me/api.php/provide/vod/",
+      "key": "6e31126e4b7e6db33dcde3d30e309463",
+      "name": "55-最大",
+      "type": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "cms_U酷88",
+      "name": "U酷88",
+      "type": 1,
+      "api": "https://api.ukuapi88.com/api.php/provide/vod/?from=ukm3u8",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "changeable": 1,
+      "categories": [
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片",
+        "记录片",
+        "国产剧",
+        "港澳剧",
+        "台湾剧",
+        "韩剧",
+        "日剧",
+        "欧美剧",
+        "综艺",
+        "动漫电影",
+        "短剧",
+        "伦理片"
+      ],
+      "group": "综合-采集站"
+    },
+    {
+      "key": "ikun网",
+      "name": "🏆ikun",
+      "type": 0,
+      "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/at/xml",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
     },
     {
       "key": "CK采集网",
@@ -1593,13 +1622,20 @@
       "group": "综合-采集站"
     },
     {
-      "key": "huosuapi",
-      "name": "💞火速资源💞",
+      "key": "新浪资源",
+      "name": "新浪资源(切)",
       "type": 1,
-      "api": "https://api.huosuapi.cc/api.php/provide/vod/",
-      "quickSearch": 1,
+      "api": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/",
       "searchable": 1,
-      "filterable": 0,
+      "quickSearch": 1
+    },
+    {
+      "key": "laosebizy.com",
+      "name": "💕老色逼(直连)",
+      "type": 1,
+      "api": "https://apilsbzy1.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "filterable": 1,
       "group": "综合-采集站"
     },
     {
@@ -1643,26 +1679,31 @@
       "group": "综合-采集站"
     },
     {
-      "key": "ikun-3",
-      "name": "iKun资源",
+      "key": "lsb",
+      "name": "lsb",
+      "api": "https://apilsbzy1.com/api.php/provide/vod",
       "type": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod/?ac=list",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "categories": [
-        "短剧",
-        "国产剧",
-        "动作片",
-        "喜剧片",
-        "科幻片",
-        "爱情片",
-        "纪录片",
-        "动画片",
-        "欧美剧",
-        "香港剧"
-      ],
       "group": "综合-采集站"
+    },
+    {
+      "key": "1080资源库",
+      "name": "1080资源库(切)",
+      "type": 1,
+      "api": "https://api.1080zyku.com/inc/api_mac10.php",
+      "searchable": 0,
+      "quickSearch": 0,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "百度",
+      "name": "🎏百度┃采集",
+      "type": 1,
+      "api": "https://api.apibdzy.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "filterable": 0
     },
     {
       "key": "csp_XBiuiKUNcms",
@@ -1675,74 +1716,32 @@
       "group": "综合-采集站"
     },
     {
-      "key": "ikun网",
-      "name": "🏆ikun",
+      "key": "tyys",
+      "name": "🌴 天涯资源",
+      "type": 1,
+      "api": "https://tyyszy.com/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "group": "综合-采集站"
+    },
+    {
+      "key": "Ikun资源",
+      "name": "Ikun资源(切片)",
       "type": 0,
-      "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/at/xml",
+      "api": "https://ikunzyapi.com/api.php/provide/vod/at/xml/",
       "searchable": 1,
       "quickSearch": 1,
-      "filterable": 1,
       "group": "综合-采集站"
     },
     {
-      "key": "cms_dytt",
-      "name": "电影天堂",
+      "key": "155资源站",
+      "name": "155 | 采集",
       "type": 1,
-      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod/",
-      "searchable": 1,
+      "api": "https://155api.com/api.php/provide/vod/",
       "quickSearch": 1,
-      "filterable": 0,
+      "searchable": 1,
       "changeable": 1,
-      "group": "综合-采集站"
-    },
-    {
-      "key": "cms_天涯备用",
-      "name": "天涯备用",
-      "type": 1,
-      "api": "https://tyyszyapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0,
-      "changeable": 1,
-      "categories": [
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片",
-        "纪录片",
-        "国产剧",
-        "港台剧",
-        "台湾剧",
-        "韩国剧",
-        "日本剧",
-        "欧美剧",
-        "大陆综艺",
-        "日韩综艺",
-        "国产动漫",
-        "日韩动漫",
-        "动画片",
-        "伦理"
-      ],
-      "group": "综合-采集站"
-    },
-    {
-      "api": "https://niuniuzy3.com/api.php/provide/vod/",
-      "key": "be2647749acad7d9ad787c87cb03e9d4",
-      "name": "36-牛牛",
-      "type": 1,
-      "group": "综合-采集站",
-      "searchable": 0
-    },
-    {
-      "key": "didizy.com",
-      "name": "♥滴滴(直连)",
-      "type": 1,
-      "api": "https://api.ddapi.cc/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "filterable": 1,
       "group": "综合-采集站"
     }
   ],
