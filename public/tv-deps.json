@@ -221,7 +221,7 @@
   ],
   "rules": [
     {
-      "name": "♻️量非",
+      "name": "量非",
       "hosts": [
         "lz",
         "vip.lz",
@@ -237,7 +237,7 @@
       ]
     },
     {
-      "name": "♻️索尼",
+      "name": "索尼",
       "hosts": [
         "suonizy",
         "qrssv.com"
@@ -248,7 +248,7 @@
       ]
     },
     {
-      "name": "♻️乐视",
+      "name": "乐视",
       "hosts": [
         "leshiyun"
       ],
@@ -257,7 +257,7 @@
       ]
     },
     {
-      "name": "♻️优质",
+      "name": "优质",
       "hosts": [
         "yzzy",
         "playback"
@@ -270,7 +270,7 @@
       ]
     },
     {
-      "name": "♻️快看",
+      "name": "快看",
       "hosts": [
         "kuaikan",
         "vip.kuaikan"
@@ -282,7 +282,7 @@
       ]
     },
     {
-      "name": "♻️360",
+      "name": "360",
       "hosts": [
         "lyhuicheng"
       ],
@@ -292,7 +292,7 @@
       ]
     },
     {
-      "name": "♻️开源棋牌",
+      "name": "开源棋牌",
       "hosts": [
         "askzycdn",
         "jkunbf",
@@ -305,7 +305,7 @@
       ]
     },
     {
-      "name": "♻️暴风",
+      "name": "暴风",
       "hosts": [
         "bfengbf.com",
         "bfzy",
@@ -317,7 +317,7 @@
       ]
     },
     {
-      "name": "♻️农民",
+      "name": "农民",
       "hosts": [
         "toutiaovod.com"
       ],
@@ -326,7 +326,7 @@
       ]
     },
     {
-      "name": "♻️火山",
+      "name": "火山",
       "hosts": [
         "huoshan.com"
       ],
@@ -335,7 +335,7 @@
       ]
     },
     {
-      "name": "♻️抖音",
+      "name": "抖音",
       "hosts": [
         "douyin.com"
       ],
@@ -344,7 +344,7 @@
       ]
     },
     {
-      "name": "♻️磁力",
+      "name": "磁力",
       "hosts": [
         "magnet"
       ],
@@ -355,7 +355,7 @@
       ]
     },
     {
-      "name": "♻️饭团点击",
+      "name": "饭团点击",
       "hosts": [
         "dadagui",
         "freeok",
@@ -366,7 +366,7 @@
       ]
     },
     {
-      "name": "♻️毛驴点击",
+      "name": "毛驴点击",
       "hosts": [
         "www.maolvys.com"
       ],
@@ -738,17 +738,6 @@
       ]
     },
     {
-      "name": "索尼",
-      "hosts": [
-        "suonizy"
-      ],
-      "regex": [
-        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:15.1666,[\\s\\S]*?#EXT-X-DISCONTINUITY",
-        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:15.2666,[\\s\\S]*?#EXT-X-DISCONTINUITY",
-        "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
-      ]
-    },
-    {
       "name": "星星",
       "hosts": [
         "aws.ulivetv.net"
@@ -756,15 +745,6 @@
       "regex": [
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:8,[\\s\\S]*?#EXT-X-DISCONTINUITY",
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:9,[\\s\\S]*?#EXT-X-DISCONTINUITY"
-      ]
-    },
-    {
-      "name": "农民",
-      "hosts": [
-        "toutiaovod.com"
-      ],
-      "regex": [
-        "video/tos/cn"
       ]
     },
     {
@@ -778,35 +758,6 @@
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:6.433333,[\\s\\S]*?#EXT-X-DISCONTINUITY",
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:18.5333,[\\s\\S]*?#EXT-X-DISCONTINUITY",
         "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
-      ]
-    },
-    {
-      "name": "暴风",
-      "hosts": [
-        "bfzy",
-        "s5.bfzycdn"
-      ],
-      "regex": [
-        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:3,[\\s\\S]*?#EXT-X-DISCONTINUITY",
-        "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
-      ]
-    },
-    {
-      "name": "火山",
-      "hosts": [
-        "huoshan.com"
-      ],
-      "regex": [
-        "item_id="
-      ]
-    },
-    {
-      "name": "抖音",
-      "hosts": [
-        "douyin.com"
-      ],
-      "regex": [
-        "is_play_url="
       ]
     }
   ],

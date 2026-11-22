@@ -1,5 +1,5 @@
 {
-  "spider": "https://ss1.eisite.cn/autoupload/f/eja2s/20261102/WU58/0X0/fm261102c.png;md5;6a396033ae45efee57ba789f91d7123e",
+  "spider": "https://img2.gelonghui.com/library/3f9b9-de4a5d2c-7fea-4d70-8a85-79be6c379621.png;md5;3f9b9cac793a3e9b818131c8a7208800",
   "logo": "http://w.junce.dpdns.org/fm.gif",
   "warningText": "本配置由 9 个公开源自动聚合（含肥猫等），仅供学习交流，请勿商用",
   "proxy": [
@@ -222,7 +222,7 @@
   ],
   "rules": [
     {
-      "name": "♻️量非",
+      "name": "量非",
       "hosts": [
         "lz",
         "vip.lz",
@@ -238,7 +238,7 @@
       ]
     },
     {
-      "name": "♻️索尼",
+      "name": "索尼",
       "hosts": [
         "suonizy",
         "qrssv.com"
@@ -249,7 +249,7 @@
       ]
     },
     {
-      "name": "♻️乐视",
+      "name": "乐视",
       "hosts": [
         "leshiyun"
       ],
@@ -258,7 +258,7 @@
       ]
     },
     {
-      "name": "♻️优质",
+      "name": "优质",
       "hosts": [
         "yzzy",
         "playback"
@@ -271,7 +271,7 @@
       ]
     },
     {
-      "name": "♻️快看",
+      "name": "快看",
       "hosts": [
         "kuaikan",
         "vip.kuaikan"
@@ -283,7 +283,7 @@
       ]
     },
     {
-      "name": "♻️360",
+      "name": "360",
       "hosts": [
         "lyhuicheng"
       ],
@@ -293,7 +293,7 @@
       ]
     },
     {
-      "name": "♻️开源棋牌",
+      "name": "开源棋牌",
       "hosts": [
         "askzycdn",
         "jkunbf",
@@ -306,7 +306,7 @@
       ]
     },
     {
-      "name": "♻️暴风",
+      "name": "暴风",
       "hosts": [
         "bfengbf.com",
         "bfzy",
@@ -318,7 +318,7 @@
       ]
     },
     {
-      "name": "♻️农民",
+      "name": "农民",
       "hosts": [
         "toutiaovod.com"
       ],
@@ -327,7 +327,7 @@
       ]
     },
     {
-      "name": "♻️火山",
+      "name": "火山",
       "hosts": [
         "huoshan.com"
       ],
@@ -336,7 +336,7 @@
       ]
     },
     {
-      "name": "♻️抖音",
+      "name": "抖音",
       "hosts": [
         "douyin.com"
       ],
@@ -345,7 +345,7 @@
       ]
     },
     {
-      "name": "♻️磁力",
+      "name": "磁力",
       "hosts": [
         "magnet"
       ],
@@ -356,7 +356,7 @@
       ]
     },
     {
-      "name": "♻️饭团点击",
+      "name": "饭团点击",
       "hosts": [
         "dadagui",
         "freeok",
@@ -367,7 +367,7 @@
       ]
     },
     {
-      "name": "♻️毛驴点击",
+      "name": "毛驴点击",
       "hosts": [
         "www.maolvys.com"
       ],
@@ -739,17 +739,6 @@
       ]
     },
     {
-      "name": "索尼",
-      "hosts": [
-        "suonizy"
-      ],
-      "regex": [
-        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:15.1666,[\\s\\S]*?#EXT-X-DISCONTINUITY",
-        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:15.2666,[\\s\\S]*?#EXT-X-DISCONTINUITY",
-        "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
-      ]
-    },
-    {
       "name": "星星",
       "hosts": [
         "aws.ulivetv.net"
@@ -757,15 +746,6 @@
       "regex": [
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:8,[\\s\\S]*?#EXT-X-DISCONTINUITY",
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:9,[\\s\\S]*?#EXT-X-DISCONTINUITY"
-      ]
-    },
-    {
-      "name": "农民",
-      "hosts": [
-        "toutiaovod.com"
-      ],
-      "regex": [
-        "video/tos/cn"
       ]
     },
     {
@@ -779,35 +759,6 @@
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:6.433333,[\\s\\S]*?#EXT-X-DISCONTINUITY",
         "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:18.5333,[\\s\\S]*?#EXT-X-DISCONTINUITY",
         "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
-      ]
-    },
-    {
-      "name": "暴风",
-      "hosts": [
-        "bfzy",
-        "s5.bfzycdn"
-      ],
-      "regex": [
-        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:3,[\\s\\S]*?#EXT-X-DISCONTINUITY",
-        "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
-      ]
-    },
-    {
-      "name": "火山",
-      "hosts": [
-        "huoshan.com"
-      ],
-      "regex": [
-        "item_id="
-      ]
-    },
-    {
-      "name": "抖音",
-      "hosts": [
-        "douyin.com"
-      ],
-      "regex": [
-        "is_play_url="
       ]
     }
   ],
@@ -828,26 +779,6 @@
       "name": "🎥┃索尼┃资源",
       "type": 1,
       "api": "https://suoniapi.com/api.php/provide/vod/",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
-    },
-    {
-      "key": "gszy",
-      "name": "🎥┃光速┃资源",
-      "type": 1,
-      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
       "searchable": 1,
       "filterable": 0,
       "categories": [
@@ -928,38 +859,32 @@
       ]
     },
     {
-      "key": "非凡",
-      "name": "影视 | 非凡[直连]",
+      "key": "gszy",
+      "name": "🎥┃光速┃资源",
       "type": 1,
-      "api": "http://ffzy.tv/api.php/provide/vod/",
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
       "searchable": 1,
+      "filterable": 0,
       "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
         "动作片",
         "喜剧片",
         "爱情片",
         "科幻片",
         "恐怖片",
         "剧情片",
-        "战争片",
-        "国产剧",
-        "香港剧",
-        "韩国剧",
-        "欧美剧",
-        "记录片",
-        "台湾剧",
-        "日本剧",
-        "海外剧",
-        "泰国剧",
-        "大陆综艺",
-        "港台综艺",
-        "日韩综艺",
-        "欧美综艺",
-        "国产动漫",
-        "日韩动漫",
-        "欧美动漫",
-        "港台动漫",
-        "海外动漫"
+        "战争片"
       ]
+    },
+    {
+      "key": "新浪资源",
+      "name": "新浪资源(切)",
+      "type": 1,
+      "api": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1
     },
     {
       "key": "光速资源",
@@ -1003,14 +928,6 @@
       ]
     },
     {
-      "key": "新浪资源",
-      "name": "新浪资源(切)",
-      "type": 1,
-      "api": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1
-    },
-    {
       "key": "csp_非凡资源",
       "name": "🥗┃非凡┃资源",
       "type": 1,
@@ -1045,6 +962,14 @@
         "日韩综艺",
         "欧美综艺"
       ]
+    },
+    {
+      "key": "闪电资源",
+      "name": "闪电资源(切)",
+      "type": 1,
+      "api": "http://sdzyapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1
     },
     {
       "key": "索尼",
@@ -1082,12 +1007,12 @@
       ]
     },
     {
-      "key": "闪电资源",
-      "name": "闪电资源(切)",
+      "key": "百度",
+      "name": "🎏百度┃采集",
       "type": 1,
-      "api": "http://sdzyapi.com/api.php/provide/vod/",
+      "api": "https://api.apibdzy.com/api.php/provide/vod/?ac=list",
       "searchable": 1,
-      "quickSearch": 1
+      "filterable": 0
     },
     {
       "key": "hnzy",
@@ -1110,14 +1035,6 @@
       ]
     },
     {
-      "key": "红牛资源",
-      "name": "红牛资源(切)",
-      "type": 1,
-      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1
-    },
-    {
       "key": "天涯采集",
       "name": "影视 | 天涯",
       "type": 1,
@@ -1131,34 +1048,6 @@
       "filterable": 1,
       "changeable": 1,
       "playerType": 2
-    },
-    {
-      "key": "百度",
-      "name": "🎏百度┃采集",
-      "type": 1,
-      "api": "https://api.apibdzy.com/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "filterable": 0
-    },
-    {
-      "key": "ikunzy",
-      "name": "🐓┃爱坤┃资源",
-      "type": 1,
-      "api": "https://ikunzyapi.com/api.php/provide/vod ",
-      "searchable": 1,
-      "filterable": 0,
-      "categories": [
-        "欧美剧",
-        "韩剧",
-        "日剧",
-        "动作片",
-        "喜剧片",
-        "爱情片",
-        "科幻片",
-        "恐怖片",
-        "剧情片",
-        "战争片"
-      ]
     },
     {
       "key": "xiaoma_百度",
@@ -1187,15 +1076,32 @@
       }
     },
     {
-      "key": "电影天堂",
-      "name": "影视 | 电影天堂",
+      "key": "红牛资源",
+      "name": "红牛资源(切)",
       "type": 1,
-      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod",
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
       "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "changeable": 1,
-      "playerType": 2
+      "quickSearch": 1
+    },
+    {
+      "key": "ikunzy",
+      "name": "🐓┃爱坤┃资源",
+      "type": 1,
+      "api": "https://ikunzyapi.com/api.php/provide/vod ",
+      "searchable": 1,
+      "filterable": 0,
+      "categories": [
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片"
+      ]
     },
     {
       "key": "drpy_js_有声小说吧",
@@ -1207,6 +1113,51 @@
       "quickSearch": 0,
       "filterable": 0,
       "ext": "http://xhztv.top/xhz/js/%E6%9C%89%E5%A3%B0%E5%B0%8F%E8%AF%B4%E5%90%A7.js"
+    },
+    {
+      "key": "电影天堂",
+      "name": "影视 | 电影天堂",
+      "type": 1,
+      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 1,
+      "playerType": 2
+    },
+    {
+      "key": "非凡",
+      "name": "影视 | 非凡[直连]",
+      "type": 1,
+      "api": "http://ffzy.tv/api.php/provide/vod/",
+      "searchable": 1,
+      "categories": [
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片",
+        "国产剧",
+        "香港剧",
+        "韩国剧",
+        "欧美剧",
+        "记录片",
+        "台湾剧",
+        "日本剧",
+        "海外剧",
+        "泰国剧",
+        "大陆综艺",
+        "港台综艺",
+        "日韩综艺",
+        "欧美综艺",
+        "国产动漫",
+        "日韩动漫",
+        "欧美动漫",
+        "港台动漫",
+        "海外动漫"
+      ]
     },
     {
       "key": "建安采集",
@@ -1293,6 +1244,31 @@
       ]
     },
     {
+      "key": "量子资源",
+      "name": "🥑┃量子┃资源",
+      "type": 1,
+      "api": "https://lzizy1.com/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "categories": [
+        "国产剧",
+        "国产动漫",
+        "泰国剧",
+        "台湾剧",
+        "香港剧",
+        "欧美剧",
+        "韩国剧",
+        "日本剧",
+        "动漫",
+        "体育",
+        "剧情片",
+        "动作片",
+        "爱情片",
+        "喜剧片"
+      ]
+    },
+    {
       "key": "暴风采集",
       "name": "🌪️暴风影音",
       "type": 1,
@@ -1323,29 +1299,11 @@
       ]
     },
     {
-      "key": "量子资源",
-      "name": "🥑┃量子┃资源",
-      "type": 1,
-      "api": "https://lzizy1.com/api.php/provide/vod/",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0,
-      "categories": [
-        "国产剧",
-        "国产动漫",
-        "泰国剧",
-        "台湾剧",
-        "香港剧",
-        "欧美剧",
-        "韩国剧",
-        "日本剧",
-        "动漫",
-        "体育",
-        "剧情片",
-        "动作片",
-        "爱情片",
-        "喜剧片"
-      ]
+      "key": "MG",
+      "name": "芒果TV",
+      "type": 3,
+      "api": "https://szyyds.cn/js/6F02.js",
+      "ext": "https://szyyds.cn/js/930ec.js"
     },
     {
       "key": "暴風",
@@ -1356,36 +1314,11 @@
       "changeable": 1
     },
     {
-      "key": "MG",
-      "name": "芒果TV",
-      "type": 3,
-      "api": "https://szyyds.cn/js/6F02.js",
-      "ext": "https://szyyds.cn/js/930ec.js"
-    },
-    {
       "key": "TX",
       "name": "腾讯视频",
       "type": 3,
       "api": "https://szyyds.cn/js/6F02.js",
       "ext": "https://szyyds.cn/js/7294.js"
-    },
-    {
-      "key": "drpy_js_豆瓣",
-      "name": "🔥聚玩盒子4K",
-      "type": 3,
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
-    },
-    {
-      "key": "xiaoma_电影天堂",
-      "name": "️天堂┃采集",
-      "type": 1,
-      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod/from/dyttm3u8/at/m3u8/",
-      "searchable": 1,
-      "quickSearch": 1,
-      "changeable": 1,
-      "filterable": 1,
-      "timeout": 10
     },
     {
       "key": "极速资源",
@@ -1431,6 +1364,24 @@
       }
     },
     {
+      "key": "drpy_js_豆瓣",
+      "name": "🔥聚玩盒子4K",
+      "type": 3,
+      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
+      "ext": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/douban.js"
+    },
+    {
+      "key": "xiaoma_电影天堂",
+      "name": "️天堂┃采集",
+      "type": 1,
+      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod/from/dyttm3u8/at/m3u8/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 1,
+      "filterable": 1,
+      "timeout": 10
+    },
+    {
       "key": "xiaoma_量子资源",
       "name": "量子资源(切)",
       "type": 1,
@@ -1460,6 +1411,13 @@
         "剧情片",
         "战争片"
       ]
+    },
+    {
+      "key": "YK",
+      "name": "优酷视频",
+      "type": 3,
+      "api": "https://szyyds.cn/js/6F02.js",
+      "ext": "https://szyyds.cn/js/8aae.js"
     },
     {
       "key": "量子",
@@ -1494,13 +1452,6 @@
         "港台动漫",
         "海外动漫"
       ]
-    },
-    {
-      "key": "YK",
-      "name": "优酷视频",
-      "type": 3,
-      "api": "https://szyyds.cn/js/6F02.js",
-      "ext": "https://szyyds.cn/js/8aae.js"
     },
     {
       "key": "taopian",
